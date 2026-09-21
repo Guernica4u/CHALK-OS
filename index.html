@@ -7,7 +7,7 @@
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' rx='15' fill='%230F6E56'/><path d='M30 8V42H11Z' fill='%23fff'/><path d='M35 17V42H51Z' fill='%23fff' fill-opacity='.72'/><path d='M9 46H55L48 55H16Z' fill='%23fff'/></svg>">
 <style>
 /* ============================================================
-   SEA OS 0.97 - a mini desktop in a single HTML file
+   SEA OS 0.98 - a mini desktop in a single HTML file
    Flat colours, no gradients.
    ============================================================ */
 /* an app icon that is inline SVG rather than an emoji */
@@ -1569,7 +1569,7 @@ try {
   </div>
   <div class="name" aria-label="SEA"><span>S</span><span>E</span><span>A</span></div>
   <div class="sub">operating system</div>
-  <div class="ver">version 0.97</div>
+  <div class="ver">version 0.98</div>
   <div class="bar"><i id="bootbar"></i></div>
   <div class="tip">click anywhere to skip</div>
   </div>
@@ -1889,7 +1889,7 @@ function seedDisk(){
   ensureDir("/etc");
 
   writeFile(HOME + "/readme.txt", brand(
-"SEA OS 0.97\n" +
+"SEA OS 0.98\n" +
 "==========\n\n" +
 "Welcome. This entire operating system is one HTML file.\n\n" +
 "Make it yours\n" +
@@ -1985,12 +1985,12 @@ function seedDisk(){
 "    <div id=\"out\"></div>\n  </div>\n</body>\n</html>\n");
 
   writeFile("/etc/motd", brand(
-"Welcome to SEA OS 0.97 (bsh 0.97)\n\n" +
+"Welcome to SEA OS 0.98 (bsh 0.98)\n\n" +
 "  * Documentation:  type \"help\"\n" +
 "  * Filesystem is volatile. Nothing survives a refresh.\n"));
 
   writeFile("/etc/os-release", brand(
-"NAME=\"SEA OS\"\nVERSION=\"0.97\"\nID=seaos\nPRETTY_NAME=\"SEA OS 0.97\"\n"));
+"NAME=\"SEA OS\"\nVERSION=\"0.98\"\nID=seaos\nPRETTY_NAME=\"SEA OS 0.98\"\n"));
 }
 /* seedDisk() runs from boot, only when there is no saved disk to restore */
 
@@ -3604,7 +3604,7 @@ function backupBlob(){
   const settings = {};
   for (const k of SETTING_KEYS) settings[k] = State[k];
   return JSON.stringify({
-    boxos: 1, version: "0.97", saved: new Date().toISOString(),
+    boxos: 1, version: "0.98", saved: new Date().toISOString(),
     fs: FS.root, settings, shortcuts: State.shortcuts, builtins: State.builtins, trash: Trash.items
   });
 }
@@ -4700,7 +4700,7 @@ function tideStart(){
     await navigator.serviceWorker.register(base + "sw.js", { scope: base });
     await navigator.serviceWorker.ready;
     const conn = new BareMux.BareMuxConnection(base + "tide/baremux/worker.js");
-    await conn.setTransport(base + "tide/libcurl/index.mjs", [{ websocket: tideWisp() }]);
+    await conn.setTransport(base + "tide/libcurl/transport.mjs", [{ websocket: tideWisp() }]);
     Tide.ctl = ctl;
     return ctl;
   })();
@@ -5872,7 +5872,7 @@ function terminalApp(win){
       for (const id in APPS)
         if (!APPS[id].hidden) line([[id.padEnd(12), "t-key"], [APPS[id].name + " - " + APPS[id].desc, ""]]);
     },
-    uname(a){ line(a[0] === "-a" ? "SEA OS seaos 0.97 single-file " + (navigator.platform || "web") + " browser" : "SEA OS"); },
+    uname(a){ line(a[0] === "-a" ? "SEA OS seaos 0.98 single-file " + (navigator.platform || "web") + " browser" : "SEA OS"); },
     theme(a){
       const t = (a[0] || "").toLowerCase();
       const next = (t === "l" || t === "light") ? "light" : (t === "d" || t === "dark") ? "dark" : (State.theme === "dark" ? "light" : "dark");
@@ -6198,9 +6198,9 @@ function terminalApp(win){
 "     \\________________/";
     const info = [
       ["box", "@", "seaos"], null,
-      ["OS", "SEA OS 0.97 (single file)"],
+      ["OS", "SEA OS 0.98 (single file)"],
       ["Kernel", "javascript " + (navigator.hardwareConcurrency || "?") + "-core"],
-      ["Shell", "bsh 0.97"],
+      ["Shell", "bsh 0.98"],
       ["Uptime", fmtDuration(Date.now() - BOOT_TIME)],
       ["WM", "boxwm" + (State.wobbly ? " (wobbly)" : "") + " - " + windows.size + " window(s)"],
       ["Theme", (State.theme === "dark" ? "Dark" : "Light") + " / " + State.accent],
@@ -11215,7 +11215,7 @@ function settingsApp(win){
     const ab = section("About this system");
     const dl = el("dl", "about");
     const pairs = [
-      ["System", "SEA OS 0.97 \u2014 a desktop in one HTML file"],
+      ["System", "SEA OS 0.98 \u2014 a desktop in one HTML file"],
       ["Session", "\u2014"], ["Windows", "\u2014"], ["Disk", "\u2014"],
       ["Shortcuts", "\u2014"], ["Display", "\u2014"],
       ["Storage", "-"]
@@ -11604,8 +11604,8 @@ function placeWidget(box, id){
   if (pos){
     const W = layer.clientWidth || innerWidth, H = layer.clientHeight || innerHeight;
     box.style.right = "auto";
-    box.style.left = Math.round(Math.min(pos.x, 0.97) * W) + "px";
-    box.style.top = Math.round(Math.min(pos.y, 0.97) * H) + "px";
+    box.style.left = Math.round(Math.min(pos.x, 0.98) * W) + "px";
+    box.style.top = Math.round(Math.min(pos.y, 0.98) * H) + "px";
   } else {
     /* unplaced widgets stack down the right-hand side */
     const order = WIDGETS.filter(w => State.widgets[w] && !State.widgetPos[w]).indexOf(id);
