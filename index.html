@@ -139,6 +139,38 @@ body.dragging,body.dragging *{user-select:none !important}
   .sea-port,.sea-port .sun,.sea-port .wave,.sea-port .boat,#boot .name span,#boot .sub,#boot .ver{animation:none}
 }
 
+/* ---------- Locked Notes ---------- */
+.app-lock .win-body{display:flex;flex-direction:column}
+.lk-bar{
+  display:flex;align-items:center;gap:8px;padding:8px 10px;flex:0 0 auto;
+  border-bottom:1px solid var(--border-soft);background:var(--surface-2);
+}
+.lk-where{font-size:11.5px;color:var(--dim);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.lk-body{flex:1;min-height:0;display:flex}
+.lk-list{width:190px;flex:0 0 auto;border-right:1px solid var(--border-soft);overflow:auto;padding:6px;background:var(--surface-2)}
+.lk-row{
+  display:flex;align-items:center;gap:8px;width:100%;padding:8px 9px;border:0;border-radius:8px;
+  background:none;color:var(--text);font:inherit;font-size:12.5px;text-align:left;cursor:pointer;
+}
+.lk-row:hover{background:var(--surface-3)}
+.lk-row.on{background:var(--surface-3);color:var(--accent)}
+.lk-row .n{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.lk-none{padding:18px 8px;text-align:center;color:var(--dim);font-size:12px}
+.lk-main{flex:1;min-width:0;display:flex;flex-direction:column;padding:12px;gap:10px}
+.lk-lock{margin:auto;max-width:360px;display:flex;flex-direction:column;align-items:center;gap:10px;text-align:center}
+.lk-lock h2{margin:0;font-size:17px}
+.lk-lock .modal-in{width:100%;margin:0}
+.lk-big{font-size:38px;line-height:1}
+.lk-msg{font-size:12.5px;color:var(--dim);line-height:1.55}
+.lk-warn{color:#c9534b;min-height:17px}
+.lk-area{
+  flex:1;min-height:0;width:100%;resize:none;padding:10px 12px;border-radius:8px;
+  border:1px solid var(--border-soft);background:var(--surface);color:var(--text);
+  font:13px/1.55 ui-monospace,Menlo,Consolas,monospace;outline:none;
+}
+.lk-area:focus{border-color:var(--accent)}
+.lk-foot{flex:0 0 auto}
+
 /* ---------- MP3 Player ---------- */
 .app-mp3 .win-body{display:flex;flex-direction:column;background:var(--surface);overflow:hidden;position:relative}
 .m3-stage{flex:1;min-height:0;display:flex;align-items:center;justify-content:center;padding:18px 16px 4px}
@@ -1942,18 +1974,39 @@ function seedDisk(){
 "Nothing is saved unless you turn on \"Save my files\" in Settings.\n" +
 "Big videos may not fit in browser storage - SEA OS will tell you when.\n"));
 
-  writeFile(HOME + "/notes.md",
-"# Notes\n\n" +
-"## Working\n" +
-"- [x] Window manager with wobbly windows\n" +
-"- [x] Files with a built-in editor\n" +
-"- [x] Terminal shell over the virtual filesystem\n" +
-"- [x] Browser with switchable search engines\n" +
-"- [x] Desktop shortcuts you can add and remove\n" +
-"- [x] Notification centre on the clock\n\n" +
-"## Next up\n" +
-"- [ ] Persist the disk across reloads\n" +
-"- [ ] Multiple browser tabs\n");
+  writeFile(HOME + "/notes.md", brand(
+"# Notes on SEA OS\n\n" +
+"One HTML file. Everything here is drawn by it, and nothing leaves the browser\n" +
+"unless you ask it to.\n\n" +
+"## The parts\n" +
+"- Files, with an editor built in. Import from the computer, or drag files onto it.\n" +
+"- Seahorse reads the web. Sites that refuse to open on their own come through Tide.\n" +
+"- Media plays your music and videos, and links from YouTube, Vimeo, Spotify and more.\n" +
+"- MP3 Player is the one to leave open: cover turning, Playing next along the bottom.\n" +
+"- Videos remembers where you stopped and picks up there.\n" +
+"- Playground runs HTML, CSS, JS and Python. Terminal is a small shell over this disk.\n" +
+"- SEA Store installs apps from apps/, Games plays what is in games/.\n" +
+"- Locked Notes keeps a note nothing opens without its own password.\n\n" +
+"## Worth knowing\n" +
+"- Saving is off until you turn it on in Settings > Storage. With it off, every\n" +
+"  reload is a fresh machine.\n" +
+"- Settings > Appearance > Call it switches the whole desktop between CHALK OS\n" +
+"  and SEA OS.\n" +
+"- Settings > Startup opens the desktop, a game, or the MP3 Player full screen.\n" +
+"- The screen saver comes up after ten idle minutes and waits while anything plays.\n" +
+"- Music, videos and pictures in the repository show up on their own. Off GitHub\n" +
+"  Pages they need listing in media/manifest.js.\n" +
+"- Backups: Settings > Storage. A backup carries your files and settings, never\n" +
+"  a password or a key.\n\n" +
+"## Tide, the way out to the web\n" +
+"- A small server on a machine of your own opens the connections; Settings > Tide\n" +
+"  takes its address and its key.\n" +
+"- Keep the key in a locked note rather than here. Locked Notes > New locked note,\n" +
+"  give it a password, paste the key in. Anything written in this file is plain text\n" +
+"  and rides along in every backup.\n" +
+"- Video through Tide needs Chrome or Edge. Pages work anywhere. Media plays\n" +
+"  YouTube links without Tide at all.\n" +
+"- If a page stops loading: Settings > Tide > Test, then Clear what it cached.\n"));
 
   writeFile(HOME + "/Documents/welcome.md",
 "# Hello from SEA OS\n\n" +
@@ -3184,6 +3237,7 @@ const APPS = {
   playground: { name: "Playground", desc: "Web pages and Python, run as you type", icon: "🧪", w: 1000, h: 640, cls: "app-play", run: playgroundApp },
   photos:   { name: "Photos",     desc: "Every picture you have, and a slideshow", icon: "\uD83D\uDCF7", w: 860, h: 600, cls: "app-photos", run: photosApp },
   videos:   { name: "Videos",     desc: "A library of everything you can watch", icon: "\uD83C\uDFAC", w: 860, h: 600, cls: "app-vid", run: videosApp },
+  vault:    { name: "Locked Notes", desc: "Notes only a password opens", icon: "\uD83D\uDD12", w: 720, h: 520, cls: "app-lock", run: lockApp },
   mp3:      { name: "MP3 Player", desc: "One song at a time, cover turning", icon: "\uD83D\uDCBF", w: 400, h: 640, cls: "app-mp3", run: mp3App },
   music:    { name: "Media",      desc: "Play video and audio",            icon: "\uD83C\uDFB5", w: 640, h: 560, cls: "app-music", run: musicApp },
   trash:    { name: "Trash",      desc: "Put deleted files back",         icon: "\uD83D\uDDD1\uFE0F", w: 660, h: 440, cls: "app-trash", run: trashApp, single: true },
@@ -3236,6 +3290,7 @@ function openNode(path){
   const n = node(path);
   if (!n) return;
   if (n.type === "dir") openInFiles(path);
+  else if (isLockNote(baseName(path))) openLockNote(path);
   else if (isHtml(baseName(path))) openInBrowser("box:" + path);
   else if (isAudio(baseName(path))) openAudio(path);
   else if (isVideo(baseName(path))) openImage(path);
@@ -4634,6 +4689,21 @@ function tideTest(){
     ws.onopen = () => { clearTimeout(timer); try { ws.close(); } catch (e){} finish({ ok: true, why: tideHost() + " answered, and the key was accepted." }); };
     ws.onerror = ws.onclose = () => { clearTimeout(timer); finish({ ok: false, why: "Turned away. Check the key, and that this address is one the server allows." }); };
   });
+}
+/* Whether this browser can pass a stream from one page to another. Where it
+   cannot - Firefox, as of now - bare-mux has to download each answer whole
+   before handing it over. Pages are fine; video is not, because a video is
+   fetched as an open-ended stream that never finishes. */
+let tideStreams = null;
+function tideCanStream(){
+  if (tideStreams !== null) return tideStreams;
+  try {
+    const ch = new MessageChannel();
+    const rs = new ReadableStream();
+    ch.port1.postMessage(rs, [rs]);
+    tideStreams = true;
+  } catch (e){ tideStreams = false; }
+  return tideStreams;
 }
 const SCRIPTS = new Map();
 function loadScriptOnce(src){
@@ -7032,6 +7102,12 @@ const EMBED_SITES = [
       const m = u.pathname.match(/^\/(?:w|videos\/watch|videos\/embed)\/([\w-]{6,})$/);
       return m ? u.origin + "/videos/embed/" + m[1] + "?autoplay=1" : null;
     } },
+  { name: "Spotify", audio: true, test(u, h){
+      if (!/(^|\.)spotify\.com$/.test(h)) return null;
+      /* a playlist, an album, one song, a podcast - all the same shape */
+      const m = u.pathname.match(/^\/(?:intl-[a-z]{2}\/)?(playlist|album|track|episode|show|artist)\/([A-Za-z0-9]+)/);
+      return m ? "https://open.spotify.com/embed/" + m[1] + "/" + m[2] + "?utm_source=generator" : null;
+    } },
   { name: "SoundCloud", audio: true, test(u, h){
       if (!/(^|\.)soundcloud\.com$/.test(h) || h.startsWith("w.")) return null;
       return "https://w.soundcloud.com/player/?auto_play=true&visual=true&url=" + encodeURIComponent(u.href);
@@ -7083,6 +7159,15 @@ async function webInfo(url){
     return { title: j.title || "", author: j.author_name || j.provider_name || "", thumb: j.thumbnail_url || "" };
   } catch (e){ return null; } finally { clearTimeout(timer); }
 }
+/* Spotify names its own playlists, and hands over the cover picture with it */
+async function spotifyInfo(url){
+  try {
+    const res = await fetch("https://open.spotify.com/oembed?url=" + encodeURIComponent(url));
+    if (!res.ok) return null;
+    const j = await res.json();
+    return { title: j.title || "", author: "Spotify", thumb: j.thumbnail_url || "" };
+  } catch (e){ return null; }
+}
 /* the Internet Archive is not on noembed, but describes its items itself */
 async function archiveInfo(embed){
   const id = embed.replace(/^https:\/\/archive\.org\/embed\//, "").split("/")[0];
@@ -7115,7 +7200,8 @@ async function resolveWebLink(raw){
   if (isAudio(path) || isVideo(path))
     return { kind: "file", url, title: baseName(path) || url, author: host };
   const e = parseEmbed(url);
-  const info = (e && e.site === "Internet Archive" ? await archiveInfo(e.embed) : null) || await webInfo(url);
+  const info = (e && e.site === "Internet Archive" ? await archiveInfo(e.embed)
+             : e && e.site === "Spotify" ? await spotifyInfo(url) : null) || await webInfo(url);
   const item = { kind: "embed", url, site: e ? e.site : host, embed: e ? e.embed : url, audio: e ? e.audio : false,
                  title: (info && info.title) || (e ? e.site + " video" : host),
                  author: (info && info.author) || (e ? e.site : host), thumb: (info && info.thumb) || "" };
@@ -7126,7 +7212,8 @@ async function resolveWebLink(raw){
 async function askMediaLink(videoOnly){
   const raw = await osPrompt("Paste a link",
     "A video from YouTube, Vimeo, Dailymotion, Twitch, Kick, Streamable, the Internet Archive, Bilibili, " +
-    "Odysee, TED, TikTok, Facebook or any PeerTube server" + (videoOnly ? "" : ", a SoundCloud track") +
+    "Odysee, TED, TikTok, Facebook or any PeerTube server" +
+    (videoOnly ? "" : ", a Spotify playlist, album or song, a SoundCloud track") +
     ", or a direct link to a media file. Other sites are tried too.", "");
   if (!raw) return null;
   const item = await resolveWebLink(raw);
@@ -8415,6 +8502,251 @@ function videosApp(win, startPath){
   };
 }
 /* ============================================================
+   12n. Locked Notes - a note nothing opens without the password
+
+   The note is encrypted before it is written, so what sits in the
+   filesystem, in a backup file, or in the repository if you upload one, is
+   a block of nonsense. The password is never stored anywhere: it makes the
+   key each time it is typed, and the key lives only in this window until
+   you lock the note again. Lose it and the note is gone for good - there is
+   no way back in, which is the point.
+
+   AES-GCM for the note itself, and the password is stretched into a key
+   with PBKDF2 so guessing at it is slow.
+   ============================================================ */
+const LOCK_ROUNDS = 310000;
+const b64 = bytes => btoa(String.fromCharCode.apply(null, Array.from(bytes)));
+const unb64 = text => Uint8Array.from(atob(text), c => c.charCodeAt(0));
+
+async function lockKeyFrom(password, salt, rounds){
+  const base = await crypto.subtle.importKey("raw", new TextEncoder().encode(password), "PBKDF2", false, ["deriveKey"]);
+  return crypto.subtle.deriveKey(
+    { name: "PBKDF2", salt, iterations: rounds || LOCK_ROUNDS, hash: "SHA-256" },
+    base, { name: "AES-GCM", length: 256 }, false, ["encrypt", "decrypt"]);
+}
+async function lockSeal(text, password){
+  const salt = crypto.getRandomValues(new Uint8Array(16));
+  const iv = crypto.getRandomValues(new Uint8Array(12));
+  const key = await lockKeyFrom(password, salt, LOCK_ROUNDS);
+  const sealed = new Uint8Array(await crypto.subtle.encrypt({ name: "AES-GCM", iv }, key, new TextEncoder().encode(text)));
+  return JSON.stringify({ lockednote: 1, rounds: LOCK_ROUNDS, salt: b64(salt), iv: b64(iv), data: b64(sealed) });
+}
+async function lockOpen(json, password){
+  let o;
+  try { o = JSON.parse(json); } catch (e){ throw new Error("This does not look like a locked note."); }
+  if (!o || o.lockednote !== 1) throw new Error("This does not look like a locked note.");
+  const key = await lockKeyFrom(password, unb64(o.salt), o.rounds);
+  let plain;
+  try { plain = await crypto.subtle.decrypt({ name: "AES-GCM", iv: unb64(o.iv) }, key, unb64(o.data)); }
+  catch (e){ throw new Error("Wrong password."); }
+  return new TextDecoder().decode(plain);
+}
+const isLockNote = name => /\.locknote$/i.test(String(name || ""));
+
+function lockApp(win, startPath){
+  const B = win.body;
+  B.innerHTML =
+    '<div class="lk-bar">' +
+      '<button class="tb-btn accent" data-k="new">New locked note…</button>' +
+      '<button class="tb-btn" data-k="lock">Lock</button>' +
+      '<button class="tb-btn" data-k="save">Save</button>' +
+      '<span class="ed-sp"></span><span class="lk-where"></span>' +
+    '</div>' +
+    '<div class="lk-body">' +
+      '<div class="lk-list"></div>' +
+      '<div class="lk-main"></div>' +
+    '</div>';
+  const listEl = $(".lk-list", B), main = $(".lk-main", B), whereEl = $(".lk-where", B);
+  const kb = k => $('[data-k="' + k + '"]', B);
+  let notes = [], at = null, pass = "", text = "", dirty = false;
+
+  function scan(){
+    notes = [];
+    walkFS((p, n, name) => { if (n.type === "file" && isLockNote(name)) notes.push(p); });
+    drawList();
+  }
+  function drawList(){
+    listEl.innerHTML = "";
+    if (!notes.length){
+      listEl.appendChild(el("div", "lk-none", "No locked notes yet."));
+      return;
+    }
+    for (const p of notes){
+      const b = el("button", "lk-row" + (p === at ? " on" : ""));
+      b.append(el("span", "g", p === at && pass ? "🔓" : "🔒"),
+               el("span", "n", baseName(p).replace(/\.locknote$/i, "")));
+      b.onclick = () => select(p);
+      listEl.appendChild(b);
+    }
+  }
+  function buttons(){
+    kb("save").disabled = !(at && pass);
+    kb("lock").disabled = !(at && pass);
+    whereEl.textContent = at ? tilde(at) : "";
+  }
+  function forget(){
+    pass = "";
+    text = "";
+    dirty = false;
+  }
+  function select(p){
+    forget();
+    at = p;
+    drawList();
+    buttons();
+    askPassword();
+  }
+
+  /* ---- the locked view ---- */
+  function askPassword(){
+    main.innerHTML = "";
+    const n = node(at);
+    if (!n) { scan(); return blank(); }
+    const box = el("div", "lk-lock");
+    box.append(el("div", "lk-big", "🔒"),
+               el("h2", null, baseName(at).replace(/\.locknote$/i, "")),
+               el("p", "lk-msg", "This note is locked. Type its password to read it."));
+    const inp = el("input", "modal-in");
+    inp.type = "password";
+    inp.autocomplete = "off";
+    inp.placeholder = "Password";
+    const msg = el("div", "lk-msg lk-warn");
+    const open = el("button", "btn primary", "Unlock");
+    const tryIt = async () => {
+      if (!inp.value) return;
+      open.disabled = true;
+      msg.textContent = "Unlocking…";
+      try {
+        const out = await lockOpen(String(node(at).content), inp.value);
+        pass = inp.value;
+        text = out;
+        dirty = false;
+        editor();
+        drawList();
+        buttons();
+      } catch (err){
+        msg.textContent = err.message;
+        open.disabled = false;
+        inp.select();
+      }
+    };
+    open.onclick = tryIt;
+    inp.onkeydown = e => { if (e.key === "Enter"){ e.preventDefault(); tryIt(); } };
+    box.append(inp, open, msg);
+    main.appendChild(box);
+    setTimeout(() => inp.focus(), 0);
+  }
+  function blank(){
+    main.innerHTML = "";
+    const box = el("div", "lk-lock");
+    box.append(el("div", "lk-big", "🔐"),
+               el("h2", null, "Locked Notes"),
+               el("p", "lk-msg", "A note here is encrypted with a password of its own. Nothing can read it " +
+                 "without that password - not the rest of SEA OS, not a backup file, and not anyone who ends up " +
+                 "with a copy of it. Forget the password and the note is gone."));
+    main.appendChild(box);
+    buttons();
+  }
+  /* ---- the unlocked view ---- */
+  function editor(){
+    main.innerHTML = "";
+    const area = el("textarea", "lk-area");
+    area.value = text;
+    area.spellcheck = false;
+    area.oninput = () => { text = area.value; dirty = true; retitle(); };
+    const foot = el("div", "lk-foot");
+    foot.append(el("span", "lk-msg", "Unlocked in this window only. Lock it, or close the window, and it goes back to being unreadable."));
+    main.append(area, foot);
+    retitle();
+    setTimeout(() => area.focus(), 0);
+  }
+  function retitle(){
+    win.setTitle((at ? baseName(at).replace(/\.locknote$/i, "") : "Locked Notes") + (dirty ? " •" : ""));
+  }
+  async function save(){
+    if (!at || !pass) return;
+    writeFile(at, await lockSeal(text, pass), "text", "application/json");
+    dirty = false;
+    retitle();
+    refreshFilesViews();
+    notify("Locked note saved", tilde(at), "🔒");
+  }
+  async function make(){
+    const name = await osPrompt("New locked note", "What should it be called?", "Keys");
+    if (!name) return;
+    const clean = safeName(String(name).replace(/\.locknote$/i, "")) + ".locknote";
+    const dir = HOME + "/Documents";
+    ensureDir(dir);
+    const path = dir + "/" + clean;
+    if (node(path)) return osAlert("Already there", tilde(path) + " exists. Pick another name.");
+    main.innerHTML = "";
+    const box = el("div", "lk-lock");
+    box.append(el("div", "lk-big", "🔐"), el("h2", null, clean.replace(/\.locknote$/i, "")),
+               el("p", "lk-msg", "Choose a password for this note. It is never stored anywhere, so if you " +
+                 "forget it there is no way back in."));
+    const one = el("input", "modal-in"), two = el("input", "modal-in");
+    one.type = two.type = "password";
+    one.autocomplete = two.autocomplete = "off";
+    one.placeholder = "Password";
+    two.placeholder = "The same again";
+    const msg = el("div", "lk-msg lk-warn");
+    const ok = el("button", "btn primary", "Create it");
+    ok.onclick = async () => {
+      if (one.value.length < 4) return msg.textContent = "Use at least four characters.";
+      if (one.value !== two.value) return msg.textContent = "Those two do not match.";
+      ok.disabled = true;
+      msg.textContent = "Locking…";
+      writeFile(path, await lockSeal("", one.value), "text", "application/json");
+      refreshFilesViews();
+      at = path;
+      pass = one.value;
+      text = "";
+      dirty = false;
+      scan();
+      buttons();
+      editor();
+    };
+    two.onkeydown = e => { if (e.key === "Enter"){ e.preventDefault(); ok.click(); } };
+    box.append(one, two, ok, msg);
+    main.appendChild(box);
+    setTimeout(() => one.focus(), 0);
+  }
+
+  kb("new").onclick = make;
+  kb("save").onclick = save;
+  kb("lock").onclick = () => { forget(); drawList(); buttons(); askPassword(); };
+  B.addEventListener("keydown", e => {
+    if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "s"){ e.preventDefault(); save(); }
+  });
+
+  scan();
+  if (startPath && node(startPath)) select(startPath);
+  else blank();
+
+  return {
+    refresh: scan,
+    open: select,
+    menus(){
+      return {
+        File: [
+          { label: "New locked note…", run: make },
+          { label: "Save", run: save, disabled: !(at && pass) },
+          { label: "Lock it again", run: () => kb("lock").click(), disabled: !(at && pass) },
+          "-",
+          { label: "Close Window", run: () => win.close() }
+        ]
+      };
+    },
+    onClose(){ forget(); return true; }
+  };
+}
+function openLockNote(path){
+  for (const w of windows.values())
+    if (w.appId === "vault"){ focusWin(w); w.api.open(path); return w; }
+  return launch("vault", path);
+}
+
+/* ============================================================
    12m. Help - what everything is and how to drive it
    ============================================================ */
 const HELP_TOPICS = [
@@ -8545,7 +8877,9 @@ const HELP_TOPICS = [
            "Every site you open sees that machine's address as the visitor, not yours.",
            "Downloads land in ~/Downloads inside SEA OS, never on the real computer, and anything over 100 MB is refused.",
            "If a page will not load, Settings \u203A Tide \u203A Test says whether the machine is answering.",
-           "Clear what it cached, in the same place, throws away the helper Tide installs in this browser and starts it fresh."]]
+           "Clear what it cached, in the same place, throws away the helper Tide installs in this browser and starts it fresh."]],
+    ["h", "Video"],
+    ["p", "Sites load in any browser, but video through Tide needs one that can pass a half-finished download between pages. Chrome and Edge can; Firefox cannot yet, so YouTube opens but a video says an error occurred. Media plays YouTube links directly without Tide, which is the easier way to watch something."]
   ]},
   { id: "store", icon: "🛍️", title: "SEA Store and making apps", body: [
     ["p", "An app is one HTML file. Put it in the apps/ folder of the repository and it shows up in the SEA Store, ready to install. You can also install any HTML file from Files, or build one in Playground and choose Install as app."],
@@ -8587,7 +8921,8 @@ const HELP_TOPICS = [
     ["l", ["Press Add media at the top right and pick one of three ways in: paste a link, play a file already in SEA OS, or bring a file over from this computer.",
            "An imported file lands in ~/Music or ~/Videos and stays in SEA OS. Nothing is written to the real computer."]],
     ["h", "Playing a link"],
-    ["l", ["Choose Paste a link and give it a link from YouTube, Vimeo, Dailymotion, Twitch (videos, clips and live channels), Kick, Streamable, the Internet Archive, Bilibili, Odysee, TED, TikTok, Facebook, Loom, Rumble embed links, any PeerTube server, or SoundCloud.",
+    ["l", ["Choose Paste a link and give it a link from YouTube, Vimeo, Dailymotion, Twitch (videos, clips and live channels), Kick, Streamable, the Internet Archive, Bilibili, Odysee, TED, TikTok, Facebook, Loom, Rumble embed links, any PeerTube server, SoundCloud, or Spotify.",
+           "A Spotify playlist, album, song or podcast opens in Spotify's own player inside Media, and stays in the list afterwards. Spotify decides how much of it plays: whole songs when you are signed in to Spotify in this browser, and thirty-second tastes when you are not.",
            "A direct link to an audio or video file - one ending in .mp3, .mp4 and so on - works too.",
            "Any other site is tried as well: the page itself is shown, which works for sites that allow it. Most big sites refuse, and the player stays blank - Open on the site is always there.",
            "YouTube plays in YouTube's own player inside Media, and Media's play, skip, seek and volume controls work on it. Other sites play in their own players, with their own controls.",
@@ -8609,6 +8944,13 @@ const HELP_TOPICS = [
            "The + button adds music the same three ways Media does: a link, a file already in SEA OS, or one from this computer."]],
     ["h", "Starting straight into it"],
     ["p", "Settings › Startup › Open with → MP3 Player makes SEA OS boot into the player, filling the screen. Close it and the desktop is there."]
+  ]},
+  { id: "locked", icon: "\uD83D\uDD12", title: "Locked Notes", body: [
+    ["p", "A locked note is encrypted with a password of its own. What sits in the filesystem is a block of nonsense, so a backup file, or a copy of SEA OS someone else ends up with, gives nothing away. It is the place for a key or a password rather than an ordinary note."],
+    ["l", ["New locked note asks for a name, then a password twice. Four characters is the minimum, but a real one is worth using.",
+           "Unlocking holds the note open in that window only. Lock, or close the window, and it goes back to being unreadable.",
+           "The password is never written down anywhere. Forget it and the note is gone - there is no way back in, and that is the point.",
+           "Notes are ordinary files ending .locknote, kept in ~/Documents. Double-clicking one in Files opens it here."]]
   ]},
   { id: "widgets", icon: "🧩", title: "Widgets", body: [
     ["l", ["Right-click the desktop and choose Widgets, or open Settings › Widgets.",
@@ -11033,6 +11375,14 @@ function settingsApp(win){
       warn.textContent = "Saving is off, so the key is forgotten when you reload.";
       td.appendChild(warn);
     }
+    if (!tideCanStream()){
+      const slow = el("div", "store-note");
+      slow.style.color = "#c9534b";
+      slow.textContent = "This browser cannot hand a half-finished download from one page to another, so Tide has " +
+        "to fetch each thing whole before showing it. Ordinary pages are fine. Video mostly will not play, " +
+        "because a video never finishes arriving. Chrome and Edge can do it; Firefox cannot yet.";
+      td.appendChild(slow);
+    }
     td.appendChild(el("div", "store-note",
       "The key only lets the machine open connections for you, and it is kept out of backup files. " +
       "Help \u203A Tide has the whole of it."));
@@ -11604,8 +11954,8 @@ function placeWidget(box, id){
   if (pos){
     const W = layer.clientWidth || innerWidth, H = layer.clientHeight || innerHeight;
     box.style.right = "auto";
-    box.style.left = Math.round(Math.min(pos.x, 0.99) * W) + "px";
-    box.style.top = Math.round(Math.min(pos.y, 0.99) * H) + "px";
+    box.style.left = Math.round(Math.min(pos.x, 1.0) * W) + "px";
+    box.style.top = Math.round(Math.min(pos.y, 1.0) * H) + "px";
   } else {
     /* unplaced widgets stack down the right-hand side */
     const order = WIDGETS.filter(w => State.widgets[w] && !State.widgetPos[w]).indexOf(id);
