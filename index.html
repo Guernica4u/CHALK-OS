@@ -142,116 +142,6 @@ body.dragging,body.dragging *{user-select:none !important}
 
 .modal-area{min-height:130px;resize:vertical;line-height:1.5;font:inherit;white-space:pre;overflow:auto}
 
-/* ---------- Flash Player ---------- */
-.app-flash .win-body{position:relative;background:#000;overflow:hidden}
-.fl-stage{position:absolute;inset:0}
-.fl-stage ruffle-player{display:block;width:100%;height:100%}
-.fl-msg{
-  position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);max-width:min(420px,86%);
-  color:#cfcfcf;font-size:13px;line-height:1.6;text-align:center;pointer-events:none;
-}
-.fl-msg.bad{color:#ef8f86}
-
-/* ---------- Locked Notes ---------- */
-.app-lock .win-body{display:flex;flex-direction:column}
-.lk-bar{
-  display:flex;align-items:center;gap:8px;padding:8px 10px;flex:0 0 auto;
-  border-bottom:1px solid var(--border-soft);background:var(--surface-2);
-}
-.lk-where{font-size:11.5px;color:var(--dim);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.lk-body{flex:1;min-height:0;display:flex}
-.lk-list{width:190px;flex:0 0 auto;border-right:1px solid var(--border-soft);overflow:auto;padding:6px;background:var(--surface-2)}
-.lk-row{
-  display:flex;align-items:center;gap:8px;width:100%;padding:8px 9px;border:0;border-radius:8px;
-  background:none;color:var(--text);font:inherit;font-size:12.5px;text-align:left;cursor:pointer;
-}
-.lk-row:hover{background:var(--surface-3)}
-.lk-row.on{background:var(--surface-3);color:var(--accent)}
-.lk-row .n{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.lk-none{padding:18px 8px;text-align:center;color:var(--dim);font-size:12px}
-.lk-main{flex:1;min-width:0;display:flex;flex-direction:column;padding:12px;gap:10px}
-.lk-lock{margin:auto;max-width:360px;display:flex;flex-direction:column;align-items:center;gap:10px;text-align:center}
-.lk-lock h2{margin:0;font-size:17px}
-.lk-lock .modal-in{width:100%;margin:0}
-.lk-big{font-size:38px;line-height:1}
-.lk-msg{font-size:12.5px;color:var(--dim);line-height:1.55}
-.lk-warn{color:#c9534b;min-height:17px}
-.lk-area{
-  flex:1;min-height:0;width:100%;resize:none;padding:10px 12px;border-radius:8px;
-  border:1px solid var(--border-soft);background:var(--surface);color:var(--text);
-  font:13px/1.55 ui-monospace,Menlo,Consolas,monospace;outline:none;
-}
-.lk-area:focus{border-color:var(--accent)}
-.lk-foot{flex:0 0 auto}
-
-/* ---------- MP3 Player ---------- */
-.app-mp3 .win-body{display:flex;flex-direction:column;background:var(--surface);overflow:hidden;position:relative}
-.m3-stage{flex:1;min-height:0;display:flex;align-items:center;justify-content:center;padding:18px 16px 4px}
-.m3-card{display:flex;flex-direction:column;align-items:center;gap:14px;width:100%;text-align:center}
-.m3-disc{
-  position:relative;width:min(64%,300px);aspect-ratio:1;border-radius:50%;flex:0 0 auto;
-  background:var(--surface-3);box-shadow:0 10px 30px rgba(0,0,0,.28),0 0 0 1px var(--border-soft) inset;
-  animation:m3spin 16s linear infinite;animation-play-state:paused;overflow:hidden;
-}
-.app-mp3 .win-body.playing .m3-disc{animation-play-state:running}
-.m3-art{position:absolute;inset:0;background-size:cover;background-position:center;border-radius:50%}
-.m3-art.letter{display:flex;align-items:center;justify-content:center;font-size:clamp(44px,18vh,84px);font-weight:600;color:var(--accent-fg);background:var(--accent)}
-.m3-hole{
-  position:absolute;left:50%;top:50%;width:17%;height:17%;margin:-8.5% 0 0 -8.5%;border-radius:50%;
-  background:var(--surface);box-shadow:0 0 0 1px var(--border-soft),0 0 0 7px rgba(0,0,0,.12);
-}
-.m3-text{width:100%;min-width:0}
-.m3-title{font-size:19px;font-weight:600;line-height:1.25;max-width:94%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.m3-sub{font-size:12.5px;color:var(--dim);max-width:94%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.m3-bar{padding:4px 18px 0;display:flex;flex-direction:column;gap:2px;width:100%;max-width:560px;margin:0 auto}
-/* with no cover the disc is a plain record label, so the spindle hole goes */
-.m3-art.letter ~ .m3-hole{display:none}
-.m3-seek{width:100%}
-.m3-times{display:flex;justify-content:space-between;font-size:11px;color:var(--dim);font-variant-numeric:tabular-nums}
-.m3-ctl{display:flex;align-items:center;justify-content:center;gap:12px;padding:6px 16px 2px}
-.m3-ctl button{
-  width:38px;height:38px;border-radius:50%;border:1px solid var(--border-soft);background:var(--surface-2);
-  color:var(--text);font-size:15px;display:flex;align-items:center;justify-content:center;cursor:pointer;
-}
-.m3-ctl button:hover{border-color:var(--accent)}
-.m3-ctl button.on{color:var(--accent);border-color:var(--accent)}
-.m3-ctl .m3-play{width:52px;height:52px;font-size:19px;background:var(--accent);border-color:var(--accent);color:var(--accent-fg)}
-.m3-vol{display:flex;align-items:center;gap:8px;padding:2px 18px 8px;color:var(--dim);font-size:12px;width:100%;max-width:560px;margin:0 auto}
-.m3-vol input{flex:1}
-.m3-next{
-  display:flex;align-items:center;gap:8px;width:100%;padding:11px 16px;border:0;border-top:1px solid var(--border-soft);
-  background:var(--surface-2);color:var(--text);font:inherit;font-size:12.5px;text-align:left;cursor:pointer;
-}
-.m3-next:hover{background:var(--surface-3)}
-.m3-next-l{color:var(--dim);flex:0 0 auto}
-.m3-next-t{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.m3-chev{color:var(--dim);transition:transform .25s ease}
-.app-mp3 .win-body.queued .m3-chev{transform:rotate(180deg)}
-.m3-queue{
-  position:absolute;left:0;right:0;bottom:0;height:72%;z-index:3;display:flex;flex-direction:column;
-  background:var(--surface);border-top:1px solid var(--border-soft);border-radius:12px 12px 0 0;
-  box-shadow:0 -14px 34px rgba(0,0,0,.22);transform:translateY(101%);transition:transform .32s cubic-bezier(.2,.8,.3,1);
-}
-.app-mp3 .win-body.queued .m3-queue{transform:none}
-.m3-q-head{display:flex;align-items:center;gap:8px;padding:10px 12px;border-bottom:1px solid var(--border-soft)}
-.m3-q-head .t{font-weight:600;font-size:13px;flex:0 0 auto}
-.m3-lists{flex:1;min-width:0;max-width:190px}
-.m3-q-list{flex:1;min-height:0;overflow:auto;padding:6px}
-.m3-row{
-  display:flex;align-items:center;gap:9px;width:100%;padding:8px 10px;border:0;border-radius:8px;
-  background:none;color:var(--text);font:inherit;font-size:12.5px;text-align:left;cursor:pointer;
-}
-.m3-row:hover{background:var(--surface-2)}
-.m3-row.on{background:var(--surface-3);color:var(--accent)}
-.m3-row .n{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.m3-row .d{color:var(--dim);font-size:11px;flex:0 0 auto}
-.m3-none{padding:26px 12px;text-align:center;color:var(--dim);line-height:1.6;font-size:12.5px}
-@keyframes m3spin{from{transform:rotate(0)}to{transform:rotate(360deg)}}
-@media (prefers-reduced-motion: reduce){
-  .m3-disc{animation:none}
-  .m3-queue{transition:none}
-}
-
 /* ---------- the chalkboard, CHALK OS's boot and screen saver ----------
    SEA OS keeps the porthole; data-brand on the page picks which one shows,
    and is set before the first frame so the wrong one never flashes up. */
@@ -633,7 +523,14 @@ body.anim .win.closing{animation:winOut .15s ease-in forwards}
 .dock-app.drop-on,.task.drop-on{background:var(--accent);color:var(--accent-fg)}
 .win.drop-on{box-shadow:0 0 0 2px var(--accent),var(--shadow)}
 
-/* ---------- Videos: a library of its own, not the Media list ---------- */
+/* ---------- the Gallery: videos and pictures, with a player ---------- */
+.vd-img{display:none;flex:1;min-height:0;width:100%;object-fit:contain;background:#0d0d0d}
+.app-vid .win-body.picture .vd-img{display:block}
+.app-vid .win-body.picture .vd-player video,
+.app-vid .win-body.picture .vd-seek,.app-vid .win-body.picture .vd-time,
+.app-vid .win-body.picture .vd-vol,.app-vid .win-body.picture [data-v="play"]{display:none}
+.vd-shot img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.vd-ctl .tb-btn.on{background:var(--accent);border-color:var(--accent);color:var(--accent-fg)}
 .app-vid .win-body{overflow:hidden;background:var(--surface);display:flex;flex-direction:column}
 .vd-bar{
   flex:0 0 auto;display:flex;align-items:center;gap:7px;padding:6px 9px;
@@ -758,39 +655,6 @@ body.anim .win.closing{animation:winOut .15s ease-in forwards}
 .ext-wrap{flex:1;min-height:0;display:flex}
 .ext-frame{flex:1;border:0;width:100%;height:100%;background:#fff}
 .ext-msg{margin:auto;padding:24px;max-width:380px;text-align:center;color:var(--dim);line-height:1.6}
-
-/* ---------- Photos ---------- */
-.app-photos .win-body{overflow:hidden;display:flex;flex-direction:column;background:var(--surface)}
-.ph-count{font-size:11.5px;color:var(--dim);font-variant-numeric:tabular-nums}
-.app-photos .ph-back{display:none}
-.app-photos .win-body.viewing .ph-back{display:block}
-.app-photos .win-body.viewing .vd-find,.app-photos .win-body.viewing [data-p="show"],
-.app-photos .win-body.viewing .ph-count{display:none}
-.ph-grid{flex:1;min-height:0;overflow:auto;padding:12px;display:grid;gap:8px;
-  grid-template-columns:repeat(auto-fill,minmax(132px,1fr));align-content:start}
-.app-photos .win-body.viewing .ph-grid{display:none}
-.ph-tile{position:relative;aspect-ratio:1;padding:0;border:1px solid var(--border-soft);border-radius:6px;
-  overflow:hidden;background:var(--surface-2);cursor:default}
-.ph-tile:hover{border-color:var(--accent)}
-.ph-tile img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .25s ease}
-.ph-tile:hover img{transform:scale(1.04)}
-.ph-tile.broken img{visibility:hidden}
-.ph-tile.broken::after{content:"?";position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:var(--dim);font-size:24px}
-.ph-cap{position:absolute;left:0;right:0;bottom:0;padding:4px 7px;font-size:11px;color:#fff;text-align:left;
-  background:rgba(0,0,0,.62);opacity:0;transition:opacity .15s;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.ph-tile:hover .ph-cap{opacity:1}
-.ph-view{flex:1;min-height:0;display:none;flex-direction:column}
-.app-photos .win-body.viewing .ph-view{display:flex}
-.ph-stage{position:relative;flex:1;min-height:0;overflow:auto;background:#111;display:flex}
-.ph-stage img{margin:auto;opacity:0;transition:opacity .35s ease}
-.ph-stage img.in{opacity:1}
-.ph-stage.fit img{max-width:100%;max-height:100%;object-fit:contain}
-.ph-nav{position:absolute;top:50%;transform:translateY(-50%);width:40px;height:64px;border:0;border-radius:6px;
-  background:rgba(0,0,0,.4);color:#fff;font-size:30px;line-height:1;cursor:pointer;opacity:0;transition:opacity .15s}
-.ph-stage:hover .ph-nav{opacity:1}
-.ph-nav.prev{left:10px}
-.ph-nav.next{right:10px}
-.app-photos .win-body.showing .ph-nav{opacity:0}
 
 /* ---------- Playground ---------- */
 .app-play .win-body{overflow:hidden;display:flex;flex-direction:column}
@@ -994,6 +858,24 @@ body.shell-macos.sub-glass .seg{border-radius:999px}
 .mu-open.on{display:inline-flex;margin-left:auto}
 .mu-open.on + .mu-link{margin-left:0}
 .mu-art.thumb{background-size:cover;background-position:center}
+.mu-disc{
+  position:relative;width:58px;height:58px;flex:0 0 auto;border-radius:50%;overflow:hidden;
+  background:var(--surface-3);box-shadow:0 2px 10px rgba(0,0,0,.25),0 0 0 1px var(--border-soft) inset;
+  animation:muSpin 16s linear infinite;animation-play-state:paused;
+}
+.app-music .win-body.playing .mu-disc{animation-play-state:running}
+.mu-disc .mu-art{
+  position:absolute;inset:0;border-radius:50%;display:flex;align-items:center;justify-content:center;
+  font-size:22px;font-weight:600;color:var(--accent-fg);background:var(--accent);
+}
+.mu-disc .mu-art.thumb{background-color:transparent;color:transparent}
+.mu-hole{
+  position:absolute;left:50%;top:50%;width:14%;height:14%;margin:-7% 0 0 -7%;border-radius:50%;
+  background:var(--surface);box-shadow:0 0 0 1px var(--border-soft);
+}
+.mu-disc .mu-art:not(.thumb) ~ .mu-hole{display:none}
+@keyframes muSpin{from{transform:rotate(0)}to{transform:rotate(360deg)}}
+@media (prefers-reduced-motion: reduce){ .mu-disc{animation:none} }
 .mu-yt{display:none;width:100%;aspect-ratio:16/9;max-height:46%;background:#000;flex:0 0 auto}
 .mu-yt iframe{display:block;width:100%;height:100%;border:0}
 .app-music .win-body.showing-yt .mu-yt{display:block}
@@ -1095,22 +977,23 @@ body.shell-macos.sub-glass .seg{border-radius:999px}
 @keyframes wbspin{to{transform:rotate(360deg)}}
 .wb-sad{font-size:44px;color:var(--dim);margin-bottom:6px;font-family:ui-monospace,monospace}
 
-/* ---------- image viewer ---------- */
-.app-view .win-body{overflow:hidden;background:var(--surface-2)}
-.vw-stage{
-  flex:1;min-height:0;overflow:auto;display:flex;align-items:center;justify-content:center;padding:12px;
-  background-color:#e0e0e0;
-}
-.vw-stage img{display:block;box-shadow:0 2px 14px rgba(0,0,0,.28);background:#fff}
-.vw-stage.fit img,.vw-stage.fit video{max-width:100%;max-height:100%;object-fit:contain}
-.vw-stage video{display:block;max-width:100%;background:#000}
-.vw-bar{
-  flex:0 0 auto;display:flex;align-items:center;gap:8px;padding:6px 10px;
-  background:var(--surface-2);border-top:1px solid var(--border-soft);font-size:12px;color:var(--dim);
-}
-
 /* ---------- settings ---------- */
-.app-set .win-body{overflow:auto;padding:0}
+.st-inset{margin-top:10px;border:1px solid var(--border-soft);border-radius:10px;overflow:hidden;background:var(--surface)}
+.st-inset .st-bar{border-radius:0}
+.st-inset .st-body{max-height:420px;overflow:auto}
+.app-set .win-body{display:flex;overflow:hidden;padding:0}
+.set-side{
+  width:168px;flex:0 0 auto;padding:8px;overflow:auto;background:var(--surface-2);
+  border-right:1px solid var(--border-soft);
+}
+.set-tab{
+  display:flex;align-items:center;gap:9px;width:100%;padding:9px 10px;margin-bottom:2px;border:0;
+  border-radius:8px;background:none;color:var(--text);font:inherit;font-size:13px;text-align:left;cursor:pointer;
+}
+.set-tab:hover{background:var(--surface-3)}
+.set-tab.on{background:var(--accent);color:var(--accent-fg)}
+.set-main{flex:1;min-width:0;overflow:auto}
+.set-page{display:block}
 .set-sec{padding:15px 18px;border-bottom:1px solid var(--border-soft)}
 .set-sec:last-child{border-bottom:0}
 .set-h{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);margin:0 0 11px}
@@ -1185,57 +1068,6 @@ body.shell-macos.sub-glass .seg{border-radius:999px}
 .pt-stage{flex:1;min-height:0;display:flex;align-items:center;justify-content:center;padding:12px;background:var(--surface-3)}
 .pt-stage canvas{background:#fff;box-shadow:0 2px 12px rgba(0,0,0,.25);cursor:crosshair;touch-action:none;max-width:100%;max-height:100%}
 .pt-status{flex:0 0 auto;padding:5px 11px;font-size:11.5px;color:var(--dim);background:var(--surface-2);border-top:1px solid var(--border-soft)}
-
-/* ---------- minesweeper ---------- */
-.app-mines .win-body{overflow:hidden}
-.ms-tb{
-  flex:0 0 auto;display:flex;align-items:center;gap:9px;padding:7px 9px;
-  background:var(--surface-2);border-bottom:1px solid var(--border-soft);
-}
-.ms-levels button{padding:4px 11px}
-.ms-stat{font-variant-numeric:tabular-nums;font-size:13px;color:var(--dim);min-width:52px;text-align:center}
-.ms-stat span{font-weight:700;color:var(--text);font-size:15px}
-.ms-stage{flex:1;min-height:0;overflow:auto;display:flex;align-items:center;justify-content:center;padding:14px;background:var(--surface-3)}
-.ms-grid{display:grid;gap:2px}
-.ms-cell{
-  width:22px;height:22px;padding:0;border:0;border-radius:3px;cursor:pointer;
-  background:var(--surface);box-shadow:0 1px 0 rgba(0,0,0,.16);
-  font:700 12px/1 "Segoe UI",system-ui,sans-serif;
-}
-.ms-cell:hover:not(.open){background:var(--surface-2)}
-.ms-cell.open{background:var(--surface-3);box-shadow:none;cursor:default}
-.ms-cell.flag{background:var(--surface);font-size:11px}
-.ms-cell.mine{background:#e0b4b0}
-.ms-cell.boom{background:#c9534b}
-.ms-cell[data-n="1"]{color:#4a90d9}
-.ms-cell[data-n="2"]{color:#5f8039}
-.ms-cell[data-n="3"]{color:#c9534b}
-.ms-cell[data-n="4"]{color:#5a4a9c}
-.ms-cell[data-n="5"]{color:#8c4a2f}
-.ms-cell[data-n="6"]{color:#3aa99f}
-.ms-cell[data-n="7"]{color:#7a3f6d}
-.ms-cell[data-n="8"]{color:#777}
-
-/* ---------- calculator ---------- */
-.app-calc .win-body{overflow:hidden;background:var(--surface-2)}
-.ca-out{
-  flex:0 0 auto;padding:16px 18px 12px;text-align:right;background:var(--surface);
-  border-bottom:1px solid var(--border-soft);
-}
-.ca-sub{font-size:12px;color:var(--dim);min-height:16px;font-variant-numeric:tabular-nums}
-.ca-main{font-size:33px;font-weight:300;font-variant-numeric:tabular-nums;word-break:break-all;line-height:1.2}
-.ca-pad{flex:1;min-height:0;display:flex;flex-direction:column;gap:6px;padding:10px}
-.ca-row{flex:1;display:flex;gap:6px}
-.ca-key{
-  flex:1;border:1px solid var(--border);background:var(--surface);border-radius:6px;
-  cursor:pointer;font-size:17px;
-}
-.ca-key:hover{background:var(--surface-3)}
-.ca-key:active{transform:translateY(1px)}
-.ca-key.op{background:var(--accent);color:var(--accent-fg);border-color:var(--accent);font-weight:600}
-.ca-key.op:hover{filter:brightness(1.08)}
-.ca-key.wide{flex:2.08}
-
 
 /* ---------- files: selection, clipboard, drop target ---------- */
 .fm-tab tr.cut td{opacity:.45;font-style:italic}
@@ -1762,6 +1594,11 @@ function el(tag, cls, txt){
 }
 const clamp = (v, lo, hi) => Math.max(lo, Math.min(hi, v));
 let idSeq = 0;
+/* The version, in one place. Everything that shows it reads this, and the
+   system files a saved disk carries are rewritten at startup when they were
+   written by an older one - otherwise the Terminal would go on greeting you
+   with the version you first installed. */
+const VERSION = "0.99";
 const uid = p => (p || "id") + "_" + (++idSeq) + "_" + Math.random().toString(36).slice(2, 6);
 
 function fmtBytes(n){
@@ -1931,8 +1768,6 @@ function nodeIcon(name, n){
   if (n.kind === "image" || IMG_EXT.includes(extOf(name))) return "\uD83D\uDDBC\uFE0F";
   if (isVideo(name)) return "\uD83C\uDFAC";
   if (isAudio(name)) return "\uD83C\uDFB5";
-  if (isSwf(name)) return "\u26A1";
-  if (isLockNote(name)) return "\uD83D\uDD12";
   if (n.kind === "binary") return "\uD83D\uDCE6";
   const e = extOf(name);
   if (isHtml(name)) return "\uD83C\uDF10";
@@ -1990,7 +1825,7 @@ function seedDisk(){
   ensureDir("/etc");
 
   writeFile(HOME + "/readme.txt", brand(
-"SEA OS 0.99\n" +
+"SEA OS " + VERSION + "\n" +
 "==========\n\n" +
 "Welcome. This entire operating system is one HTML file.\n\n" +
 "Make it yours\n" +
@@ -2106,13 +1941,23 @@ function seedDisk(){
 "    <button onclick=\"document.getElementById('out').textContent='Clicked at ' + new Date().toLocaleTimeString()\">Click me</button>\n" +
 "    <div id=\"out\"></div>\n  </div>\n</body>\n</html>\n");
 
-  writeFile("/etc/motd", brand(
-"Welcome to SEA OS 0.99 (bsh 0.99)\n\n" +
-"  * Documentation:  type \"help\"\n" +
-"  * Filesystem is volatile. Nothing survives a refresh.\n"));
-
-  writeFile("/etc/os-release", brand(
-"NAME=\"SEA OS\"\nVERSION=\"0.99\"\nID=seaos\nPRETTY_NAME=\"SEA OS 0.99\"\n"));
+  writeFile("/etc/motd", brand(motdText()));
+  writeFile("/etc/os-release", brand(osReleaseText()));
+}
+const motdText = () =>
+  "Welcome to SEA OS " + VERSION + " (bsh " + VERSION + ")\n\n" +
+  "  * Documentation:  type \"help\"\n" +
+  "  * Filesystem is volatile. Nothing survives a refresh.\n";
+const osReleaseText = () =>
+  "NAME=\"SEA OS\"\nVERSION=\"" + VERSION + "\"\nID=seaos\nPRETTY_NAME=\"SEA OS " + VERSION + "\"\n";
+/* A disk saved by an older version still carries its greeting and its
+   os-release. They belong to the system rather than to you, so they are put
+   back in step here. */
+function refreshSystemFiles(){
+  if (!node("/etc")) return;
+  const motd = node("/etc/motd"), rel = node("/etc/os-release");
+  if (motd && String(motd.content).indexOf(VERSION) < 0) writeFile("/etc/motd", brand(motdText()));
+  if (rel && String(rel.content).indexOf(VERSION) < 0) writeFile("/etc/os-release", brand(osReleaseText()));
 }
 /* seedDisk() runs from boot, only when there is no saved disk to restore */
 
@@ -2204,22 +2049,24 @@ function refreshTrashViews(){
    ============================================================ */
 const BRANDS = {
   chalk: { os: "CHALK OS", short: "CHALK", store: "CHALK Store", host: "chalkos", browser: "ChalkBrowser",
+           code: "Chalk Code",
            logo: '<path d="M36 34 48 14" stroke="currentColor" stroke-width="16" stroke-linecap="round"/><path d="M31 42.3 36.2 33.7" stroke="currentColor" stroke-opacity=".45" stroke-width="16" stroke-linecap="round"/><path d="M6 55c4-5 8 2 12-1.5s7-2 10-.5" stroke="currentColor" stroke-width="6" stroke-linecap="round"/><circle cx="36" cy="54" r="2.6" fill="currentColor" fill-opacity=".5"/>',
            favicon: "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' rx='15' fill='%232f5d4e'/><g transform='translate(7 5) scale(.8)' fill='none' stroke='%23fff' stroke-linecap='round'><path d='M36 34 48 14' stroke-width='16'/><path d='M31 42.3 36.2 33.7' stroke-opacity='.45' stroke-width='16'/><path d='M6 55c4-5 8 2 12-1.5s7-2 10-.5' stroke-width='6'/><circle cx='36' cy='54' r='2.6' fill='%23fff' fill-opacity='.5' stroke='none'/></g></svg>",
            art: ["         ____", "        /   /", "       /   /", "      /   /", "     /___/", "    .'.'", "  ~~~'   ."] },
   sea:   { os: "SEA OS",   short: "SEA",   store: "SEA Store",   host: "seaos",   browser: "Seahorse",
+           code: "Playground",
            logo: '<path d="M30 8V42H11Z" fill="currentColor"/><path d="M35 17V42H51Z" fill="currentColor" fill-opacity=".72"/><path d="M9 46H55L48 55H16Z" fill="currentColor"/>',
            favicon: "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' rx='15' fill='%230F6E56'/><path d='M30 8V42H11Z' fill='%23fff'/><path d='M35 17V42H51Z' fill='%23fff' fill-opacity='.72'/><path d='M9 46H55L48 55H16Z' fill='%23fff'/></svg>",
            art: null }
 };
 /* words the brand pass looks for - anything else is left alone */
-const BRAND_WORDS = /SEA|Seahorse/;
+const BRAND_WORDS = /SEA|Seahorse|Playground/;
 function theBrand(){ return BRANDS[State.brand] || BRANDS.chalk; }
 function brand(text){
   const b = theBrand();
   if (b === BRANDS.sea || typeof text !== "string" || !BRAND_WORDS.test(text)) return text;
   return text.replace(/SEA OS/g, b.os).replace(/SEA Store/g, b.store).replace(/Seahorse/g, b.browser)
-             .replace(/seaos/g, b.host).replace(/\bSEA\b/g, b.short);
+             .replace(/Playground/g, b.code).replace(/seaos/g, b.host).replace(/\bSEA\b/g, b.short);
 }
 /* the same swap over everything already on screen inside one element */
 function brandTree(root){
@@ -2260,6 +2107,8 @@ function applyBrand(){
       name.appendChild(sp);
     });
   }
+  const ver = $("#boot .ver");
+  if (ver) ver.textContent = "version " + VERSION;
   const mb = $(".mb-app");
   if (mb) mb.textContent = b.os;
   const who = $(".who");
@@ -2330,7 +2179,9 @@ const State = {
   screensaver: 10,     /* minutes of nothing before it comes up; 0 is never */
   resume: {},          /* where each video was stopped: { key: { t, d } } */
   tideHost: "tide.chalkbored.win",  /* the machine that opens sites for Tide */
-  useRepo: true,       /* read music, videos, apps and games from the folders beside index.html */
+  devMode: false,      /* shows the Developer page, where Tide lives */
+  useRepo: true,       /* read music, videos, apps and games from the repository */
+  repo: "",            /* "user/name" on GitHub; worked out on its own on a Pages site */
   myGames: [],         /* games added from inside: { name, url, icon } */
   mp3List: "all",      /* the MP3 Player's playlist, shuffle and repeat */
   mp3Shuffle: false,
@@ -2353,7 +2204,7 @@ let BOOT_TIME = Date.now();
    ============================================================ */
 const K = { on: "boxos.on", fs: "boxos.fs", set: "boxos.settings", sc: "boxos.shortcuts", trash: "boxos.trash" };
 const SETTING_KEYS = ["theme","accent","wallColor","customWall","wallFit","animations",
-                      "wobbly","panelPos","clock24","iconSize","engine","wallVideo","bootMedia","shell","dock","bookmarks","sounds","installed","widgets","widgetPos","weatherPlace","tempUnit","highScores","subthemes","menuFolded","helpDockPhase","webMedia","startMode","gameApp","screensaver","resume","brand","tideHost","useRepo","myGames","mp3List","mp3Shuffle","mp3Repeat"];
+                      "wobbly","panelPos","clock24","iconSize","engine","wallVideo","bootMedia","shell","dock","bookmarks","sounds","installed","widgets","widgetPos","weatherPlace","tempUnit","highScores","subthemes","menuFolded","helpDockPhase","webMedia","startMode","gameApp","screensaver","resume","brand","devMode","tideHost","useRepo","repo","myGames","mp3List","mp3Shuffle","mp3Repeat"];
 /* Only a soft gauge for the usage bar. The real localStorage ceiling is not
    knowable from script and varies a lot - roughly 5 MB on a file:// page, but
    far more on some origins - so nothing here claims a hard number. */
@@ -2812,22 +2663,12 @@ function linkNode(url, name){
 }
 /* ask GitHub what is in the folders, which only works on a Pages site */
 async function discoverViaGitHub(){
-  const m = location.hostname.match(/^([\w-]+)\.github\.io$/i);
-  if (!m) return null;
-  const user = m[1];
-  const seg = location.pathname.split("/").filter(Boolean);
-  const repo = seg.length ? seg[0] : user + ".github.io";
   const found = [];
   for (const dir in MEDIA_DIRS){
-    try {
-      const r = await fetch("https://api.github.com/repos/" + user + "/" + repo + "/contents/" + dir);
-      if (!r.ok) continue;
-      const list = await r.json();
-      if (!Array.isArray(list)) continue;
-      for (const f of list)
-        if (f.type === "file" && (isVideo(f.name) || isAudio(f.name) || IMG_EXT.includes(extOf(f.name))))
-          found.push(dir + "/" + f.name);
-    } catch (e){ /* offline, rate limited, or not a repo we can read */ }
+    const names = await repoList(dir);
+    if (!names) continue;
+    for (const name of names)
+      if (isVideo(name) || isAudio(name) || IMG_EXT.includes(extOf(name))) found.push(dir + "/" + name);
   }
   return found.length ? found : null;
 }
@@ -2855,7 +2696,7 @@ function mountMedia(paths){
     ensureDir(home);
     const parent = node(home);
     if (parent.children[name]) continue;      /* already mounted, or you own a file by that name */
-    parent.children[name] = linkNode(clean, name);
+    parent.children[name] = linkNode(repoBase() + clean, name);
     added++;
   }
   if (added){
@@ -3573,24 +3414,19 @@ const APPS = {
   chat:     { name: "Chat",       desc: "Talk to people, over Firebase",   icon: "\uD83D\uDCAC", w: 430, h: 640, cls: "app-chat",  run: chatApp },
   editor:   { name: "Text Editor", desc: "Write and edit text files",      icon: "\uD83D\uDCDD", w: 720, h: 540, cls: "app-editor", run: editorApp },
   playground: { name: "Playground", desc: "Web pages and Python, run as you type", icon: "🧪", w: 1000, h: 640, cls: "app-play", run: playgroundApp },
-  photos:   { name: "Photos",     desc: "Every picture you have, and a slideshow", icon: "\uD83D\uDCF7", w: 860, h: 600, cls: "app-photos", run: photosApp },
-  videos:   { name: "Videos",     desc: "A library of everything you can watch", icon: "\uD83C\uDFAC", w: 860, h: 600, cls: "app-vid", run: videosApp },
-  flash:    { name: "Flash Player", desc: "Plays .swf games and animations", icon: "\u26A1", w: 820, h: 620, cls: "app-flash", run: flashApp },
-  vault:    { name: "Locked Notes", desc: "Notes only a password opens", icon: "\uD83D\uDD12", w: 720, h: 520, cls: "app-lock", run: lockApp },
-  mp3:      { name: "MP3 Player", desc: "One song at a time, cover turning", icon: "\uD83D\uDCBF", w: 400, h: 640, cls: "app-mp3", run: mp3App },
+  videos:   { name: "Gallery",    desc: "Your videos and pictures, in one place", icon: "\uD83D\uDDBC\uFE0F", w: 880, h: 620, cls: "app-vid", run: galleryApp },
   music:    { name: "Media",      desc: "Play video and audio",            icon: "\uD83C\uDFB5", w: 640, h: 560, cls: "app-music", run: musicApp },
   trash:    { name: "Trash",      desc: "Put deleted files back",         icon: "\uD83D\uDDD1\uFE0F", w: 660, h: 440, cls: "app-trash", run: trashApp, single: true },
   paint:    { name: "Paint",      desc: "Draw something and keep it",     icon: "\uD83C\uDFA8", w: 760, h: 560, cls: "app-paint", run: paintApp },
   games:    { name: "Games",      desc: "The games in the repo's games/ folder", icon: "\uD83C\uDFAE", w: 780, h: 580, cls: "app-games", run: gamesApp, single: true },
-  mines:    { name: "Minesweeper",desc: "The classic, with three sizes",  icon: "\uD83D\uDCA3", w: 520, h: 480, cls: "app-mines", run: minesApp },
-  calc:     { name: "Calculator", desc: "Sums, with keyboard support",    icon: "\uD83E\uDDEE", w: 320, h: 440, cls: "app-calc",  run: calcApp },
-  store:    { name: "SEA Store",  desc: "Apps from the repo, and ones you made", icon: "\uD83D\uDECD\uFE0F", w: 700, h: 580, cls: "app-store", run: storeApp, single: true },
   settings: { name: "Settings",  desc: "Appearance, desktop, system",  icon: "\u2699\uFE0F", w: 640, h: 580, cls: "app-set",   run: settingsApp, single: true },
   help:     { name: "Help",       desc: "How everything here works",        icon: "\u2753", w: 780, h: 600, cls: "app-help", run: helpApp, single: true },
-  viewer:   { name: "Image Viewer", desc: "View pictures",             icon: "\uD83D\uDDBC\uFE0F", w: 740, h: 540, cls: "app-view", run: viewerApp, hidden: true }
 };
 
+/* apps that were folded into others - a Dock pin or shortcut still works */
+const APP_ALIAS = { photos: "videos", viewer: "videos", mp3: "music", store: "settings", flash: "files", vault: "files", mines: "games", calc: "files" };
 function launch(appId, arg, forceNew){
+  appId = APP_ALIAS[appId] || appId;
   const app = APPS[appId];
   if (!app) return null;
   if (app.single && !forceNew){
@@ -3611,11 +3447,11 @@ function openInFiles(path){
   w.api.reveal(path);
   return w;
 }
+/* pictures and videos both open in the Gallery */
 function openImage(path){
-  const w = createWindow({ title: baseName(path), icon: APPS.viewer.icon, w: APPS.viewer.w, h: APPS.viewer.h, appId: "viewer", cls: "app-view" });
-  w.api = viewerApp(w, path);
-  focusWin(w);
-  return w;
+  for (const w of windows.values())
+    if (w.appId === "videos"){ focusWin(w); w.api.play(path); return w; }
+  return launch("videos", path);
 }
 function openInBrowser(target){
   let reuse = null;
@@ -3629,8 +3465,6 @@ function openNode(path){
   const n = node(path);
   if (!n) return;
   if (n.type === "dir") openInFiles(path);
-  else if (isLockNote(baseName(path))) openLockNote(path);
-  else if (isSwf(baseName(path))) openFlash(path);
   else if (isHtml(baseName(path))) openInBrowser("box:" + path);
   else if (isAudio(baseName(path))) openAudio(path);
   else if (isVideo(baseName(path))) openImage(path);
@@ -3817,14 +3651,11 @@ function appAccepts(appId, paths){
     case "terminal": return true;
     case "browser":  return all(p => isHtml(p) || fileIsText(p));
     case "editor":   return all(fileIsText);
-    case "paint":
-    case "viewer":   return all(fileIsImage);
+    case "paint":    return all(fileIsImage);
     case "music":    return all(p => isFile(p) && (isAudio(p) || isVideo(p)));
-    case "mp3":      return all(p => isFile(p) && isAudio(p));
-    case "videos":   return all(p => isFile(p) && isVideo(p));
-    case "photos":   return all(fileIsImage);
+    case "videos":   return all(p => isFile(p) && (isVideo(p) || fileIsImage(p)));
+
     case "playground": return paths.length === 1 && fileIsText(paths[0]) && isHtml(paths[0]);
-    case "store":    return paths.length === 1 && isFile(paths[0]) && isHtml(paths[0]);
     default:         return false;
   }
 }
@@ -3860,17 +3691,10 @@ function dropOnApp(appId, paths, w){
       break;
     case "music":
     case "videos":
-    case "mp3":
       (w || mediaWin(appId)).api.play(paths[0]);
       break;
     case "playground":
       if (api.open) api.open(paths[0]); else launch("playground", paths[0]);
-      break;
-    case "photos":
-      if (api.play) api.play(paths[0]); else launch("photos", paths[0]);
-      break;
-    case "store":
-      if (api.addPath) api.addPath(paths[0]); else storeInstallFromPath(paths[0]);
       break;
     case "terminal":
       if (api.insert) api.insert(paths.map(p => tilde(p)).join(" "));
@@ -4015,7 +3839,7 @@ function backupBlob(){
   const settings = {};
   for (const k of SETTING_KEYS) settings[k] = State[k];
   return JSON.stringify({
-    boxos: 1, version: "0.99", saved: new Date().toISOString(),
+    boxos: 1, version: VERSION, saved: new Date().toISOString(),
     fs: FS.root, settings, shortcuts: State.shortcuts, builtins: State.builtins, trash: Trash.items
   });
 }
@@ -5612,7 +5436,19 @@ function browserApp(win, startTarget){
       return;
     }
 
-    if (t.kind === "search") return renderSearch(t, my);
+    if (t.kind === "search"){
+      /* With Tide on, the search engine you chose opens for real. Without it,
+         only what can be read directly - which is not a search engine. */
+      const eng = ENGINES[State.engine] || ENGINES.ddg;
+      if (tideOn()){
+        setAddr(t.q);
+        setTitle(t.q + " - " + eng.name);
+        let host = eng.name;
+        try { host = new URL(eng.url).hostname.replace(/^www\./, ""); } catch (e){}
+        return tideOpen({ kind: "web", url: eng.url + encodeURIComponent(t.q) }, host, my);
+      }
+      return renderSearch(t, my);
+    }
     if (t.kind === "hn")     return renderHN(my);
     if (t.kind === "so")     return renderSO(t, my);
     if (t.kind === "sopost") return renderSOPost(t, my);
@@ -5890,7 +5726,11 @@ function browserApp(win, startTarget){
     const hq = el("h1");
     hq.style.cssText = "font-size:20px;margin:0 0 3px;font-family:inherit";
     hq.textContent = t.q;
-    head.append(hq, el("div", "wb-none", "Results from DuckDuckGo and Wikipedia, read directly - no page you visit is sent anywhere else."));
+    const eng = ENGINES[State.engine] || ENGINES.ddg;
+    head.append(hq, el("div", "wb-none", State.engine === "ddg"
+      ? "Answers from DuckDuckGo and Wikipedia, read directly - no page you visit is sent anywhere else."
+      : "Answers from DuckDuckGo and Wikipedia, read directly. " + eng.name + " will not open inside another " +
+        "page, so set up Tide in Settings to search it properly, or use the button below."));
     p.appendChild(head);
 
     if (ddg && (ddg.AbstractText || ddg.Answer)){
@@ -6299,7 +6139,7 @@ function terminalApp(win){
       for (const id in APPS)
         if (!APPS[id].hidden) line([[id.padEnd(12), "t-key"], [APPS[id].name + " - " + APPS[id].desc, ""]]);
     },
-    uname(a){ line(a[0] === "-a" ? "SEA OS seaos 0.99 single-file " + (navigator.platform || "web") + " browser" : "SEA OS"); },
+    uname(a){ line(a[0] === "-a" ? "SEA OS seaos " + VERSION + " single-file " + (navigator.platform || "web") + " browser" : "SEA OS"); },
     theme(a){
       const t = (a[0] || "").toLowerCase();
       const next = (t === "l" || t === "light") ? "light" : (t === "d" || t === "dark") ? "dark" : (State.theme === "dark" ? "light" : "dark");
@@ -6625,9 +6465,9 @@ function terminalApp(win){
 "     \\________________/";
     const info = [
       ["box", "@", "seaos"], null,
-      ["OS", "SEA OS 0.99 (single file)"],
+      ["OS", "SEA OS " + VERSION + " (single file)"],
       ["Kernel", "javascript " + (navigator.hardwareConcurrency || "?") + "-core"],
-      ["Shell", "bsh 0.99"],
+      ["Shell", "bsh " + VERSION],
       ["Uptime", fmtDuration(Date.now() - BOOT_TIME)],
       ["WM", "boxwm" + (State.wobbly ? " (wobbly)" : "") + " - " + windows.size + " window(s)"],
       ["Theme", (State.theme === "dark" ? "Dark" : "Light") + " / " + State.accent],
@@ -6858,45 +6698,6 @@ function terminalApp(win){
 }
 
 /* ============================================================
-   12. Image viewer
-   ============================================================ */
-function viewerApp(win, path){
-  const n = node(path), B = win.body;
-  const video = isVideo(baseName(path));
-  B.innerHTML =
-    '<div class="vw-stage fit">' + (video
-      ? '<video controls autoplay loop playsinline></video>'
-      : '<img alt="">') + '</div>' +
-    '<div class="vw-bar"><span class="vw-info"></span><span style="flex:1"></span>' +
-    (video ? '<button class="tb-btn" data-v="wall">Set as wallpaper</button>' +
-             '<button class="tb-btn" data-v="boot">Set as boot screen</button>'
-           : '<button class="tb-btn" data-v="wall">Set as wallpaper</button>') +
-    '<button class="tb-btn" data-v="save">Save to computer</button>' +
-    '<button class="tb-btn" data-v="fit">Fit</button><button class="tb-btn" data-v="full">100%</button></div>';
-  const stage = $(".vw-stage", B), info = $(".vw-info", B);
-  const media = $(video ? "video" : "img", B);
-  if (!n || n.type !== "file"){ info.textContent = "File not found."; return {}; }
-  media.src = n.content;
-  const size = fmtBytes(nodeSize(n));
-  if (video){
-    media.onloadedmetadata = () => {
-      info.textContent = baseName(path) + " \u00b7 " + media.videoWidth + "x" + media.videoHeight +
-        " \u00b7 " + Math.round(media.duration) + "s \u00b7 " + size;
-    };
-    media.onerror = () => { info.textContent = baseName(path) + " \u00b7 this video cannot be played here"; };
-    $('[data-v="boot"]', B).onclick = () => setBootFrom(path);
-  } else {
-    media.onload = () => { info.textContent = baseName(path) + " \u00b7 " + media.naturalWidth + "x" + media.naturalHeight + " \u00b7 " + size; };
-    media.onerror = () => { info.textContent = baseName(path) + " \u00b7 could not be displayed"; };
-  }
-  $('[data-v="wall"]', B).onclick = () => setWallpaperFrom(path);
-  $('[data-v="save"]', B).onclick = () => saveToComputer(path);
-  $('[data-v="fit"]',  B).onclick = () => stage.classList.add("fit");
-  $('[data-v="full"]', B).onclick = () => stage.classList.remove("fit");
-  return { onClose(){ if (video){ media.pause(); media.removeAttribute("src"); } return true; } };
-}
-
-/* ============================================================
    12b. Paint - draws to a canvas and saves a real PNG into Pictures
    ============================================================ */
 const PAINT_COLORS = ["#1e1e1e","#ffffff","#c9534b","#e08a3c","#d8bd6a","#8bae5a",
@@ -7034,203 +6835,6 @@ function paintApp(win, startPath){
   ro.observe(stage);
   setTimeout(() => { fit(); say(); if (startPath) loadImage(startPath); }, 0);
   return { loadImage, onClose(){ ro.disconnect(); return true; } };
-}
-
-/* ============================================================
-   12c. Minesweeper
-   ============================================================ */
-const MINE_LEVELS = {
-  easy:   { w: 9,  h: 9,  m: 10, label: "Easy" },
-  medium: { w: 16, h: 16, m: 40, label: "Medium" },
-  hard:   { w: 24, h: 16, m: 70, label: "Hard" }
-};
-
-function minesApp(win){
-  const B = win.body;
-  B.innerHTML =
-    '<div class="ms-tb">' +
-      '<div class="seg ms-levels"></div>' +
-      '<span class="ed-sp"></span>' +
-      '<div class="ms-stat"><span class="ms-flags">0</span> left</div>' +
-      '<button class="tb-btn ms-face">Reset</button>' +
-      '<div class="ms-stat"><span class="ms-time">0</span>s</div>' +
-    '</div>' +
-    '<div class="ms-stage"><div class="ms-grid"></div></div>';
-
-  const grid = $(".ms-grid", B), flagsEl = $(".ms-flags", B), timeEl = $(".ms-time", B);
-  let level = "easy", cells = [], W = 0, H = 0, M = 0;
-  let started = false, over = false, t0 = 0, timer = 0, revealed = 0;
-
-  const seg = $(".ms-levels", B);
-  for (const id in MINE_LEVELS){
-    const b = el("button", id === level ? "on" : null, MINE_LEVELS[id].label);
-    b.onclick = () => { level = id; $$("button", seg).forEach(o => o.classList.toggle("on", o === b)); reset(); };
-    seg.appendChild(b);
-  }
-  $(".ms-face", B).onclick = reset;
-
-  const idx = (x, y) => y * W + x;
-  function neighbours(x, y){
-    const out = [];
-    for (let dy = -1; dy <= 1; dy++)
-      for (let dx = -1; dx <= 1; dx++){
-        if (!dx && !dy) continue;
-        const nx = x + dx, ny = y + dy;
-        if (nx >= 0 && ny >= 0 && nx < W && ny < H) out.push(cells[idx(nx, ny)]);
-      }
-    return out;
-  }
-  function reset(){
-    const L = MINE_LEVELS[level];
-    W = L.w; H = L.h; M = L.m;
-    started = over = false;
-    revealed = 0;
-    clearInterval(timer);
-    timeEl.textContent = "0";
-    flagsEl.textContent = String(M);
-    cells = [];
-    grid.innerHTML = "";
-    grid.style.gridTemplateColumns = "repeat(" + W + ", 22px)";
-    for (let y = 0; y < H; y++)
-      for (let x = 0; x < W; x++){
-        const b = el("button", "ms-cell");
-        const c = { x, y, el: b, mine: false, open: false, flag: false, n: 0 };
-        b.onclick = () => open(c);
-        b.oncontextmenu = e => { e.preventDefault(); e.stopPropagation(); flag(c); };
-        cells.push(c);
-        grid.appendChild(b);
-      }
-    $(".ms-face", B).textContent = "Reset";
-    win.setTitle("Minesweeper");
-  }
-  function layMines(safe){
-    const pool = cells.filter(c => c !== safe && !neighbours(safe.x, safe.y).includes(c));
-    for (let i = 0; i < M && pool.length; i++){
-      const k = Math.floor(Math.random() * pool.length);
-      pool[k].mine = true;
-      pool.splice(k, 1);
-    }
-    for (const c of cells) c.n = neighbours(c.x, c.y).filter(o => o.mine).length;
-  }
-  function open(c){
-    if (over || c.open || c.flag) return;
-    if (!started){
-      started = true;
-      layMines(c);
-      t0 = Date.now();
-      timer = setInterval(() => { timeEl.textContent = String(Math.floor((Date.now() - t0) / 1000)); }, 500);
-    }
-    if (c.mine) return boom(c);
-    const stack = [c];
-    while (stack.length){
-      const cur = stack.pop();
-      if (cur.open || cur.flag) continue;
-      cur.open = true;
-      revealed++;
-      cur.el.classList.add("open");
-      if (cur.n){ cur.el.textContent = String(cur.n); cur.el.dataset.n = String(cur.n); }
-      else neighbours(cur.x, cur.y).forEach(o => { if (!o.open && !o.mine) stack.push(o); });
-    }
-    if (revealed === W * H - M) win_();
-  }
-  function flag(c){
-    if (over || c.open) return;
-    c.flag = !c.flag;
-    c.el.classList.toggle("flag", c.flag);
-    c.el.textContent = c.flag ? String.fromCodePoint(0x1F6A9) : "";
-    flagsEl.textContent = String(M - cells.filter(o => o.flag).length);
-  }
-  function boom(c){
-    over = true;
-    clearInterval(timer);
-    c.el.classList.add("boom");
-    for (const o of cells){
-      if (o.mine){ o.el.classList.add("open", "mine"); o.el.textContent = String.fromCodePoint(0x1F4A3); }
-      else if (o.flag && !o.mine) o.el.textContent = String.fromCodePoint(0x274C);
-    }
-    $(".ms-face", B).textContent = "Try again";
-    win.setTitle("Minesweeper - boom");
-    notify("Minesweeper", "You hit a mine on " + MINE_LEVELS[level].label.toLowerCase() + ".", String.fromCodePoint(0x1F4A3));
-  }
-  function win_(){
-    over = true;
-    clearInterval(timer);
-    const secs = Math.floor((Date.now() - t0) / 1000);
-    for (const o of cells) if (o.mine && !o.flag){ o.el.classList.add("flag"); o.el.textContent = String.fromCodePoint(0x1F6A9); }
-    $(".ms-face", B).textContent = "Play again";
-    win.setTitle("Minesweeper - cleared");
-    notify("Minesweeper cleared", MINE_LEVELS[level].label + " in " + secs + " seconds.", String.fromCodePoint(0x1F3C6));
-  }
-  reset();
-  return { onClose(){ clearInterval(timer); return true; } };
-}
-
-/* ============================================================
-   12d. Calculator
-   ============================================================ */
-function calcApp(win){
-  const B = win.body;
-  const keys = [["C","+/-","%","/"],["7","8","9","x"],["4","5","6","-"],["1","2","3","+"],["0",".","="]];
-  B.innerHTML = '<div class="ca-out"><div class="ca-sub"></div><div class="ca-main">0</div></div><div class="ca-pad"></div>';
-  const out = $(".ca-main", B), sub = $(".ca-sub", B), pad = $(".ca-pad", B);
-
-  let acc = null, op = null, cur = "0", fresh = true;
-  const show = () => {
-    const n = parseFloat(cur);
-    out.textContent = (cur.length > 12 && Number.isFinite(n)) ? String(+n.toPrecision(9)) : cur;
-    sub.textContent = acc === null ? "" : acc + " " + (op || "");
-  };
-  function digit(d){
-    if (fresh){ cur = d === "." ? "0." : d; fresh = false; }
-    else if (d === "." && cur.includes(".")) return;
-    else cur = cur === "0" && d !== "." ? d : cur + d;
-    show();
-  }
-  const compute = (a, b, o) =>
-    o === "+" ? a + b : o === "-" ? a - b : o === "x" ? a * b : o === "/" ? (b === 0 ? NaN : a / b) : b;
-  function setOp(o){
-    const v = parseFloat(cur);
-    if (acc !== null && op && !fresh) acc = compute(acc, v, op);
-    else acc = v;
-    op = o;
-    fresh = true;
-    cur = String(acc);
-    show();
-    cur = String(acc);
-  }
-  function equals(){
-    if (acc === null || !op) return;
-    const r = compute(acc, parseFloat(cur), op);
-    cur = Number.isFinite(r) ? String(+r.toFixed(10)) : "Cannot divide by zero";
-    acc = null; op = null; fresh = true;
-    show();
-  }
-  function press(k){
-    if (/^[0-9.]$/.test(k)) return digit(k);
-    if (k === "C"){ acc = null; op = null; cur = "0"; fresh = true; return show(); }
-    if (k === "+/-"){ cur = String(parseFloat(cur) * -1); return show(); }
-    if (k === "%"){ cur = String(parseFloat(cur) / 100); return show(); }
-    if (k === "=") return equals();
-    return setOp(k);
-  }
-  keys.forEach(rowKeys => {
-    const row = el("div", "ca-row");
-    rowKeys.forEach(k => {
-      const b = el("button", "ca-key" + (/[+\-x\/=]/.test(k) && k.length === 1 ? " op" : "") + (k === "0" ? " wide" : ""), k);
-      b.onclick = () => press(k);
-      row.appendChild(b);
-    });
-    pad.appendChild(row);
-  });
-  B.tabIndex = 0;
-  B.addEventListener("keydown", e => {
-    const map = { Enter: "=", "*": "x", Escape: "C", Backspace: "C" };
-    const k = map[e.key] || e.key;
-    if (/^([0-9.]|[+\-x/=%]|C)$/.test(k)){ e.preventDefault(); press(k); }
-  });
-  setTimeout(() => B.focus(), 0);
-  show();
-  return {};
 }
 
 /* ============================================================
@@ -7622,7 +7226,7 @@ async function askMediaLinks(videoOnly){
 }
 
 /* ---- the three players, and getting things into them ---- */
-const MEDIA_APPS = new Set(["music", "videos", "mp3"]);
+const MEDIA_APPS = new Set(["music", "videos"]);
 /* the player's window if one is open, a new one if not */
 function mediaWin(appId){
   for (const w of windows.values()) if (w.appId === appId){ focusWin(w); return w; }
@@ -7630,16 +7234,16 @@ function mediaWin(appId){
 }
 /* real files, from the computer, copied into ~/Music or ~/Videos */
 async function importMediaFiles(files, appId){
-  const want = appId === "videos" ? n => isVideo(n) : appId === "mp3" ? n => isAudio(n) : n => isAudio(n) || isVideo(n);
+  const want = appId === "videos" ? n => isVideo(n) || IMG_EXT.includes(extOf(n)) : n => isAudio(n) || isVideo(n);
   const ok = files.filter(f => want(f.name)), paths = [];
   for (const f of ok){
-    const dir = HOME + (isVideo(f.name) ? "/Videos" : "/Music");
+    const dir = HOME + (isVideo(f.name) ? "/Videos" : IMG_EXT.includes(extOf(f.name)) ? "/Pictures" : "/Music");
     const name = await importMediaFile(f, dir);
     if (name) paths.push(dir + "/" + name);
   }
   if (files.length > ok.length)
     notify("Some files were left out", (files.length - ok.length) + " of them " +
-      (appId === "videos" ? "were not videos." : appId === "mp3" ? "were not songs." : "were not audio or video."), "\u26A0\uFE0F");
+      (appId === "videos" ? "were not videos or pictures." : "were not audio or video."), "\u26A0\uFE0F");
   if (paths.length){
     refreshFilesViews();
     notify(paths.length === 1 ? "Added " + baseName(paths[0]) : "Added " + paths.length + " files",
@@ -7748,11 +7352,12 @@ function showAddMedia(btn, ways){
 }
 
 /* ============================================================
-   12g2. MP3 Player - one song at a time, with its cover turning
+   12g2. Covers and tags - what Media shows while a song plays
 
-   Media is the library; this is the record player. It reads the same music
-   Media does, groups it into playlists by the folder it sits in, and shows
-   the cover art out of the file's own ID3 tags where there is any.
+   A song carries its own name, artist, album and cover inside it, in ID3
+   tags. They are read here, out of the file itself, and shown on the disc
+   that turns while it plays. Failing that, a picture sitting next to the
+   song is used.
    ============================================================ */
 const ID3 = new Map();          /* path -> promise of { title, artist, album, art } */
 
@@ -7835,352 +7440,6 @@ function coverBeside(path){
   return pick ? (dir.children[pick].content || "") : "";
 }
 
-function mp3App(win, startPath){
-  const B = win.body;
-  B.innerHTML =
-    '<div class="m3-stage"><div class="m3-card">' +
-      '<div class="m3-disc"><div class="m3-art letter"></div><span class="m3-hole"></span></div>' +
-      '<div class="m3-text"><div class="m3-title">Nothing playing</div><div class="m3-sub">Pick something from Up next</div></div>' +
-    '</div></div>' +
-    '<div class="m3-bar">' +
-      '<input class="m3-seek" type="range" min="0" max="1000" value="0" title="Seek">' +
-      '<div class="m3-times"><span class="m3-at">0:00</span><span class="m3-of">0:00</span></div>' +
-    '</div>' +
-    '<div class="m3-ctl">' +
-      '<button data-m="shuffle" title="Shuffle">🔀</button>' +
-      '<button data-m="prev" title="Previous">&#9198;</button>' +
-      '<button class="m3-play" data-m="play" title="Play or pause">&#9654;</button>' +
-      '<button data-m="next" title="Next">&#9197;</button>' +
-      '<button data-m="repeat" title="Repeat">🔁</button>' +
-    '</div>' +
-    '<div class="m3-vol"><span>🔈</span><input class="m3-v" type="range" min="0" max="100" value="90" title="Volume"></div>' +
-    '<button class="m3-next" data-m="queue">' +
-      '<span class="m3-next-l">Playing next</span><span class="m3-next-t">—</span><span class="m3-chev">⌃</span>' +
-    '</button>' +
-    '<div class="m3-queue">' +
-      '<div class="m3-q-head"><span class="t">Up next</span>' +
-        '<select class="m3-lists wb-eng"></select>' +
-        '<span class="ed-sp"></span>' +
-        '<button class="tb-btn" data-m="add" title="Add a link, a file already in SEA OS, or a file from this computer">➕</button>' +
-        '<button class="tb-btn" data-m="shut" title="Close">✕</button>' +
-      '</div>' +
-      '<div class="m3-q-list"></div>' +
-    '</div>';
-
-  const audio = new Audio();
-  const card = $(".m3-card", B), art = $(".m3-art", B);
-  const titleEl = $(".m3-title", B), subEl = $(".m3-sub", B);
-  const seek = $(".m3-seek", B), atEl = $(".m3-at", B), ofEl = $(".m3-of", B), vol = $(".m3-v", B);
-  const listSel = $(".m3-lists", B), qList = $(".m3-q-list", B), nextT = $(".m3-next-t", B);
-  const mb = k => $('[data-m="' + k + '"]', B);
-  let lists = [], tracks = [], at = -1, order = [], seeking = false, slideTok = 0;
-
-  const fmt = s => (Number.isFinite(s) ? Math.floor(s / 60) + ":" + String(Math.floor(s % 60)).padStart(2, "0") : "0:00");
-  const isWeb = t => typeof t !== "string";
-  const nameOf = t => (isWeb(t) ? t.title : baseName(t).replace(/\.[^.]+$/, ""));
-  const whereOf = t => (isWeb(t) ? t.author || "a link" : tilde(dirName(t)));
-
-  /* ---- what there is to play, grouped by the folder it lives in ---- */
-  function build(){
-    const byDir = new Map();
-    walkFS((p, n, name) => {
-      if (n.type !== "file" || !isAudio(name)) return;
-      const d = dirName(p);
-      if (!byDir.has(d)) byDir.set(d, []);
-      byDir.get(d).push(p);
-    });
-    const every = [];
-    for (const arr of byDir.values()) every.push(...arr);
-    const web = (State.webMedia || []).filter(t => t.kind === "file" && isAudio(pathOfLink(t.url)));
-    lists = [{ id: "all", name: "Everything", tracks: every.concat(web) }];
-    for (const [d, arr] of byDir) lists.push({ id: d, name: baseName(d) || "/", tracks: arr });
-    if (web.length) lists.push({ id: "web", name: "From the web", tracks: web });
-    const want = lists.find(l => l.id === State.mp3List) || lists[0];
-    State.mp3List = want.id;
-    const current = at >= 0 ? tracks[at] : null;
-    tracks = want.tracks;
-    at = current == null ? -1 : tracks.indexOf(current);
-    drawLists();
-    reorder();
-    drawQueue();
-    drawNext();
-  }
-  function drawLists(){
-    listSel.innerHTML = "";
-    for (const l of lists){
-      const o = el("option", null, l.name + " (" + l.tracks.length + ")");
-      o.value = l.id;
-      listSel.appendChild(o);
-    }
-    listSel.value = State.mp3List;
-  }
-  /* shuffle keeps its own running order so Previous still goes back */
-  function reorder(){
-    order = tracks.map((t, i) => i);
-    if (State.mp3Shuffle){
-      for (let i = order.length - 1; i > 0; i--){
-        const j = Math.floor(Math.random() * (i + 1));
-        [order[i], order[j]] = [order[j], order[i]];
-      }
-      if (at >= 0){
-        const k = order.indexOf(at);
-        if (k > 0){ order.splice(k, 1); order.unshift(at); }
-      }
-    }
-  }
-  function stepIndex(dir){
-    if (!tracks.length) return -1;
-    if (at < 0) return order[0];
-    const k = order.indexOf(at);
-    if (k < 0) return order[0];
-    if (State.mp3Repeat === "one") return at;
-    const n = k + dir;
-    if (n < 0) return order[order.length - 1];
-    if (n >= order.length) return State.mp3Repeat === "all" ? order[0] : -1;
-    return order[n];
-  }
-  function drawNext(){
-    const i = stepIndex(1);
-    nextT.textContent = i >= 0 && tracks[i] && i !== at ? nameOf(tracks[i])
-      : State.mp3Repeat === "one" && at >= 0 ? nameOf(tracks[at]) + " again"
-      : tracks.length ? "Nothing - this is the last one" : "Nothing yet";
-  }
-  function drawQueue(){
-    qList.innerHTML = "";
-    if (!tracks.length){
-      qList.appendChild(el("div", "m3-none",
-        "No music in this playlist yet. Press ➕ to add a song, or put .mp3 files in the repo's music/ folder."));
-      return;
-    }
-    order.forEach(i => {
-      const t = tracks[i];
-      const b = el("button", "m3-row" + (i === at ? " on" : ""));
-      b.append(el("span", "g", i === at && !audio.paused ? "▶" : isWeb(t) ? "🔗" : "🎵"),
-               el("span", "n", nameOf(t)), el("span", "d", whereOf(t)));
-      b.onclick = () => play(i);
-      qList.appendChild(b);
-    });
-  }
-
-  /* ---- the sliding change of track ---- */
-  function slide(dir, fill){
-    if (!State.animations || !card.animate) return fill();
-    const tok = ++slideTok;
-    const out = card.animate(
-      [{ transform: "none", opacity: 1 }, { transform: "translateX(" + (-dir * 70) + "px)", opacity: 0 }],
-      { duration: 190, easing: "ease-in", fill: "forwards" });
-    let swapped = false;
-    const swap = () => {
-      /* a hidden window stops animating, so the swap also runs on a timer */
-      if (swapped || tok !== slideTok) return;
-      swapped = true;
-      fill();
-      out.cancel();
-      card.animate(
-        [{ transform: "translateX(" + (dir * 70) + "px)", opacity: 0 }, { transform: "none", opacity: 1 }],
-        { duration: 280, easing: "cubic-bezier(.2,.8,.3,1)" });
-    };
-    out.onfinish = swap;
-    setTimeout(swap, 230);
-  }
-  async function dressUp(t){
-    /* the words first, then the cover when it has been dug out of the file */
-    let title = nameOf(t), sub = whereOf(t), cover = isWeb(t) ? t.thumb || "" : "";
-    titleEl.textContent = title;
-    subEl.textContent = sub;
-    setArt(cover, title);
-    win.setTitle(title);
-    keys({ title, artist: isWeb(t) ? sub : "", art: cover });
-    if (isWeb(t)) return;
-    const tag = await id3Of(t);
-    if (tracks[at] !== t) return;
-    if (tag && tag.title) titleEl.textContent = tag.title;
-    if (tag && (tag.artist || tag.album))
-      subEl.textContent = [tag.artist, tag.album].filter(Boolean).join(" \u2014 ");
-    const art = (tag && tag.art) || coverBeside(t);
-    setArt(art, titleEl.textContent);
-    keys({ title: titleEl.textContent, artist: (tag && tag.artist) || "", album: (tag && tag.album) || "", art });
-  }
-  /* the keyboard's media keys, and what Windows shows in its pop-up */
-  const keys = info => claimMediaKeys(win, info, {
-    play: () => audio.play().catch(() => {}),
-    pause: () => audio.pause(),
-    next: () => step(1),
-    prev: () => step(-1),
-    seek: t => { if (audio.duration) audio.currentTime = t; },
-    playing: () => !audio.paused
-  });
-  function setArt(url, title){
-    if (url){
-      art.classList.remove("letter");
-      art.textContent = "";
-      art.style.backgroundImage = 'url("' + String(url).replace(/"/g, "%22") + '")';
-    } else {
-      art.classList.add("letter");
-      art.style.backgroundImage = "";
-      art.textContent = (title || "?").trim().charAt(0).toUpperCase() || "?";
-    }
-  }
-  function play(i, dir){
-    if (i < 0 || i >= tracks.length) return;
-    const back = dir != null ? dir : (i < at ? -1 : 1);
-    at = i;
-    const t = tracks[i];
-    const src = isWeb(t) ? t.url : (node(t) ? node(t).content : "");
-    if (!src) return build();
-    audio.src = src;
-    audio.play().catch(() => {});
-    slide(back, () => dressUp(t));
-    drawQueue();
-    drawNext();
-  }
-  function toggle(){
-    if (at < 0) return play(order.length ? order[0] : 0);
-    audio.paused ? audio.play().catch(() => {}) : audio.pause();
-  }
-  function step(dir){
-    if (!tracks.length) return;
-    /* going back in the first seconds means the start of this song */
-    if (dir < 0 && audio.currentTime > 4){ audio.currentTime = 0; return; }
-    const i = stepIndex(dir);
-    if (i < 0) return;
-    play(i, dir);
-  }
-  function openQueue(on){
-    B.classList.toggle("queued", on == null ? !B.classList.contains("queued") : !!on);
-  }
-
-  /* ---- adding music, the same three ways Media offers ---- */
-  /* only links straight to a song can play here; the rest stay in Media's list */
-  function takeLinks(items){
-    const songs = items.filter(it => it.kind === "file" && isAudio(pathOfLink(it.url)));
-    if (!songs.length){
-      if (items.length) osAlert("Not a song", "The MP3 Player plays audio files - links straight to a song. " +
-        "Those links are in Media's list instead, where " + (siteOf(items[0]) || "they") + " can play.");
-      return;
-    }
-    State.mp3List = "all";
-    build();
-    const i = tracks.findIndex(x => isWeb(x) && x.url === songs[0].url);
-    if (i >= 0) play(i);
-  }
-  const addLink = async () => takeLinks(await askMediaLinks(false));
-  async function addFromFiles(){
-    const p = await pickFile({ title: "Add a song", ok: "Play", start: HOME + "/Music", hint: "Audio",
-                               accept: nm => isAudio(nm) });
-    if (p) openPath(p);
-  }
-  async function addFromComputer(){
-    const p = await importMediaFromComputer(false);
-    if (p) openPath(p);
-  }
-  function openPath(p){
-    if (!isAudio(baseName(p))) return osAlert("Not a song", baseName(p) + " is not an audio file.");
-    State.mp3List = dirName(p);
-    build();
-    const i = tracks.indexOf(p);
-    if (i >= 0) play(i); else { State.mp3List = "all"; build(); play(tracks.indexOf(p)); }
-  }
-
-  mb("play").onclick = toggle;
-  mb("next").onclick = () => step(1);
-  mb("prev").onclick = () => step(-1);
-  mb("queue").onclick = () => openQueue();
-  mb("shut").onclick = () => openQueue(false);
-  mb("add").onclick = () => showAddMedia(mb("add"), { link: addLink, files: addFromFiles, computer: addFromComputer });
-  mb("shuffle").onclick = () => {
-    State.mp3Shuffle = !State.mp3Shuffle;
-    saveSettings();
-    mb("shuffle").classList.toggle("on", State.mp3Shuffle);
-    reorder();
-    drawQueue();
-    drawNext();
-  };
-  mb("repeat").onclick = () => {
-    State.mp3Repeat = State.mp3Repeat === "off" ? "all" : State.mp3Repeat === "all" ? "one" : "off";
-    saveSettings();
-    mb("repeat").classList.toggle("on", State.mp3Repeat !== "off");
-    mb("repeat").textContent = State.mp3Repeat === "one" ? "🔂" : "🔁";
-    mb("repeat").title = State.mp3Repeat === "one" ? "Repeat this song"
-                       : State.mp3Repeat === "all" ? "Repeat the playlist" : "Repeat";
-    drawNext();
-  };
-  listSel.onchange = () => { State.mp3List = listSel.value; saveSettings(); build(); };
-  seek.oninput = () => { seeking = true; };
-  seek.onchange = () => {
-    seeking = false;
-    if (audio.duration) audio.currentTime = audio.duration * (seek.value / 1000);
-  };
-  vol.oninput = () => { audio.volume = vol.value / 100; };
-  audio.volume = 0.9;
-  audio.onplay = audio.onpause = () => {
-    mediaKeysPlaying(win, !audio.paused);
-    B.classList.toggle("playing", !audio.paused);
-    mb("play").innerHTML = audio.paused ? "&#9654;" : "&#10074;&#10074;";
-    drawQueue();
-    nowPlaying(win, at >= 0 ? titleEl.textContent : "", !audio.paused);
-  };
-  audio.ontimeupdate = () => {
-    if (!seeking && audio.duration) seek.value = String(Math.round(audio.currentTime / audio.duration * 1000));
-    atEl.textContent = fmt(audio.currentTime);
-    ofEl.textContent = fmt(audio.duration);
-  };
-  audio.onended = () => {
-    if (State.mp3Repeat === "one"){ audio.currentTime = 0; audio.play().catch(() => {}); return; }
-    const i = stepIndex(1);
-    if (i >= 0) play(i, 1); else { B.classList.remove("playing"); drawNext(); }
-  };
-  audio.onerror = () => { if (at >= 0) subEl.textContent = "That file would not play."; };
-  B.addEventListener("keydown", e => {
-    if (e.target.tagName === "INPUT" || e.target.tagName === "SELECT") return;
-    if (e.key === " "){ e.preventDefault(); toggle(); }
-    else if (e.key === "ArrowRight"){ e.preventDefault(); step(1); }
-    else if (e.key === "ArrowLeft"){ e.preventDefault(); step(-1); }
-  });
-  B.tabIndex = 0;
-
-  mb("shuffle").classList.toggle("on", !!State.mp3Shuffle);
-  mb("repeat").classList.toggle("on", State.mp3Repeat !== "off");
-  if (State.mp3Repeat === "one") mb("repeat").textContent = "🔂";
-  build();
-  if (startPath) openPath(startPath);
-
-  return {
-    play: openPath,
-    addLinks: async urls => takeLinks(await addMediaLinks(urls, false)),
-    refresh: build,
-    toggle,
-    next: () => step(1),
-    menus(){
-      return {
-        File: [
-          { label: "Add media…", run: () => mb("add").click() },
-          { label: "Paste a link…", run: addLink },
-          { label: "Open from Files…", run: addFromFiles },
-          { label: "Import from this computer…", run: addFromComputer },
-          "-",
-          { label: "Close Window", run: () => win.close() }
-        ],
-        View: [
-          { label: B.classList.contains("queued") ? "Hide Up next" : "Show Up next", run: () => openQueue() },
-          { label: "Rescan music", run: build },
-          "-",
-          { label: State.mp3Shuffle ? "Stop shuffling" : "Shuffle", run: () => mb("shuffle").click() },
-          { label: "Repeat: " + (State.mp3Repeat === "one" ? "this song" : State.mp3Repeat === "all" ? "playlist" : "off"),
-            run: () => mb("repeat").click() }
-        ]
-      };
-    },
-    onClose(){
-      if (NowPlaying.win === win) nowPlaying(null);
-      releaseMediaKeys(win);
-      audio.pause();
-      audio.src = "";
-      return true;
-    }
-  };
-}
-
 /* ============================================================
    12g. Media - plays local audio and video, YouTube links and
    direct links to media files, all from one list
@@ -8191,9 +7450,10 @@ function musicApp(win, startPath, only){
     '<video class="mu-video" playsinline></video>' +
     '<div class="mu-yt"></div>' +
     '<div class="mu-now">' +
-      '<div class="mu-art">🎵</div>' +
+      '<div class="mu-disc"><div class="mu-art"></div><span class="mu-hole"></span></div>' +
       '<div class="mu-meta"><div class="mu-title">Nothing playing</div><div class="mu-sub">Pick a track below</div></div>' +
       '<button class="tb-btn mu-open" data-m="open" title="Open this on YouTube">Open on YouTube</button>' +
+      '<button class="tb-btn" data-m="gallery" title="Videos and pictures">\uD83D\uDDBC\uFE0F</button>' +
       '<button class="tb-btn mu-link" data-m="link" title="Add a link, a file already in SEA OS, or a file from this computer">➕ Add media</button>' +
     '</div>' +
     '<div class="mu-controls">' +
@@ -8231,17 +7491,13 @@ function musicApp(win, startPath, only){
     $(".mu-sub", B).textContent = sub;
     art.style.backgroundImage = thumb ? 'url("' + String(thumb).replace(/"/g, "%22") + '")' : "";
     art.classList.toggle("thumb", !!thumb);
-    art.textContent = thumb ? "" : "🎵";
+    art.textContent = thumb ? "" : (title || "?").trim().charAt(0).toUpperCase() || "\uD83C\uDFB5";
   }
 
   function scan(){
     const current = at >= 0 ? tracks[at] : null;
     tracks = [];
-    walkFS((p, n, name) => {
-      if (n.type !== "file") return;
-      const v = isVideo(name), a = isAudio(name);
-      if (only === "video" ? v : only === "audio" ? a : (v || a)) tracks.push(p);
-    });
+    walkFS((p, n, name) => { if (n.type === "file" && isAudio(name)) tracks.push(p); });
     tracks = tracks.concat(State.webMedia || []);
     /* keep pointing at the same track wherever the list moved it, or "next"
        after a rescan or a removal starts again from the top */
@@ -8251,9 +7507,8 @@ function musicApp(win, startPath, only){
   function drawList(){
     listEl.innerHTML = "";
     if (!tracks.length){
-      listEl.appendChild(el("div", "wb-none", only === "video"
-        ? "No videos yet. Press Add media, or drop an .mp4 into the repo's videos/ folder."
-        : "Nothing to play yet. Press Add media, or put files in the repo's music/ folder."));
+      listEl.appendChild(el("div", "wb-none",
+        "Nothing to play yet. Press Add media for a song or a link, or put files in the repo's music/ folder."));
       return;
     }
     let webHeading = false;
@@ -8309,7 +7564,7 @@ function musicApp(win, startPath, only){
     ytBox.innerHTML = "";
     ytBox.classList.remove("audio");
     openBtn.classList.remove("on");
-    B.classList.remove("showing-video", "showing-yt");
+    B.classList.remove("showing-video", "showing-yt", "playing");
   }
   function playIndex(i){
     if (i < 0 || i >= tracks.length) return;
@@ -8340,12 +7595,26 @@ function musicApp(win, startPath, only){
     media = now;
     now.src = src;
     now.play().catch(() => {});
-    setNow(title, sub, "");
-    keys({ title, artist: sub });
+    setNow(title, sub, isWeb(t) ? t.thumb || "" : "");
+    keys({ title, artist: sub, art: isWeb(t) ? t.thumb || "" : "" });
+    if (!isWeb(t)) dressLocal(t);
     win.setTitle(title);
     drawList();
   }
 
+  /* a song's own tags: its real name, who made it, and the cover to turn */
+  async function dressLocal(t){
+    const tag = await id3Of(t);
+    if (tracks[at] !== t) return;
+    const title = (tag && tag.title) || baseName(t);
+    const sub = tag && (tag.artist || tag.album)
+      ? [tag.artist, tag.album].filter(Boolean).join(" \u2014 ")
+      : tilde(dirName(t));
+    const art = (tag && tag.art) || coverBeside(t);
+    setNow(title, sub, art);
+    win.setTitle(title);
+    keys({ title, artist: (tag && tag.artist) || "", album: (tag && tag.album) || "", art });
+  }
   /* ---- any other site, in that site's own player and with its controls ---- */
   function playEmbed(t){
     mode = "embed";
@@ -8396,6 +7665,7 @@ function musicApp(win, startPath, only){
           if (tracks[at] !== t) return;
           if (e.data === YT.PlayerState.PLAYING || e.data === YT.PlayerState.PAUSED){
             mediaKeysPlaying(win, e.data === YT.PlayerState.PLAYING);
+            B.classList.toggle("playing", e.data === YT.PlayerState.PLAYING);
             playBtn.innerHTML = e.data === YT.PlayerState.PLAYING ? "&#10074;&#10074;" : "&#9654;";
             /* a playlist moves on by itself, so follow its title */
             const d = yt && yt.getVideoData ? yt.getVideoData() : null;
@@ -8479,10 +7749,12 @@ function musicApp(win, startPath, only){
   $('[data-m="next"]', B).onclick = () => step(1);
   $('[data-m="prev"]', B).onclick = () => step(-1);
   $('[data-m="link"]', B).onclick = addMedia;
+  $('[data-m="gallery"]', B).onclick = () => launch("videos");
   for (const m of [audio, video]){
     m.onplay = m.onpause = () => {
       if (m !== media || mode !== "file") return;
       mediaKeysPlaying(win, !m.paused);
+      B.classList.toggle("playing", !m.paused);
       playBtn.innerHTML = m.paused ? "&#9654;" : "&#10074;&#10074;";
       drawList();
       nowPlaying(win, at >= 0 ? titleOf(tracks[at]) : "", !m.paused);
@@ -8559,100 +7831,32 @@ function musicApp(win, startPath, only){
    ============================================================ */
 function chatApp(win){
   const B = win.body;
-  B.innerHTML = '<div class="chat-wrap"><div class="chat-loading">Opening chat\u2026</div></div>';
-  const wrap = $(".chat-wrap", B);
-  let settled = false;
-
-  function missing(why){
-    if (settled) return;
-    settled = true;
-    wrap.innerHTML = "";
-    const p = el("div", "chat-missing");
-    p.append(
-      el("div", "chat-missing-g", "\uD83D\uDCAC"),
-      el("h2", null, "chat.html is not here"),
-      el("p", null, why || "Chat lives in its own file. Put chat.html in the same folder as SEA OS and open this again."),
-      el("p", "wb-none", "On GitHub Pages that means committing chat.html next to index.html.")
-    );
-    const again = el("button", "btn primary", "Try again");
-    again.onclick = () => { win.close(); launch("chat"); };
-    p.appendChild(again);
-    wrap.appendChild(p);
-  }
-  /* Paint the chat in the desktop's colours, and keep it in step with the
-     theme. chat.html keeps its own palette when opened on its own. */
-  function sendTheme(){
-    const cs = getComputedStyle(document.documentElement);
-    const v = n => cs.getPropertyValue(n).trim();
-    const dark = State.theme === "dark";
-    const frame = $(".chat-frame", B);
-    if (!frame || !frame.contentWindow) return;
-    frame.contentWindow.postMessage({ boxtheme: {
-      bg: v("--bg"), panel: v("--surface"), panel2: v("--surface-2"),
-      border: v("--border-soft"), accent: v("--accent"), accentInk: v("--accent-fg"),
-      text: v("--text"), muted: v("--dim"),
-      mine: v("--accent") + (dark ? "33" : "22"),
-      theirs: v("--surface-2"), danger: "#c9534b"
-    } }, "*");
-  }
-  /* setInterval hands back a number, so the last value it sent lives here */
-  let themeSent = "";
-  const themeWatch = setInterval(() => {
-    const now = State.theme + State.accent;
-    if (themeSent !== now){ themeSent = now; sendTheme(); }
-  }, 600);
-
-  function mount(html){
-    wrap.innerHTML = "";
-    const frame = el("iframe", "chat-frame");
-    frame.title = "Chat";
-    /* first-party: it ships with SEA OS, so it runs same-origin and can reach
-       Firebase normally. HTML you import yourself stays sandboxed. */
-    frame.setAttribute("sandbox", "allow-scripts allow-same-origin allow-forms allow-popups allow-modals allow-pointer-lock");
-    frame.addEventListener("load", () => {
-      try {
-        const d = frame.contentDocument;
-        if (!d || !d.body || !d.body.children.length) return missing();
-      } catch (e){ /* cross-origin means it genuinely loaded */ }
-      settled = true;
-      sendTheme();
-      chatSeen();
-    });
-    /* Mounted from the copy we already fetched, so it is never a stale
-       cached one and the browser only asks for the file once. */
-    if (html) frame.srcdoc = html; else frame.src = "chat.html";
-    wrap.appendChild(frame);
-    setTimeout(() => { if (!settled) missing("chat.html did not finish loading."); }, 8000);
-  }
-
-  /* A 404 page still has content, so "is the document empty" is not enough -
-     ask the server what it thinks first. On file:// fetch is blocked, and we
-     fall back to the emptiness check, which does work there. */
-  (async () => {
-    try {
-      const res = await fetch("chat.html", { cache: "no-store" });
-      if (!res.ok) return missing("The folder next to SEA OS has no chat.html (the server returned " + res.status + ").");
-      const text = await res.text();
-      if (!/<html|<body|firebase/i.test(text)) return missing("chat.html is there but does not look like the chat page.");
-      if (!settled) return mount(text);
-    } catch (e){
-      /* file:// or offline - let the frame try on its own */
+  B.innerHTML = "";
+  const box = el("div", "chat-missing");
+  box.append(
+    el("div", "chat-missing-g", "\uD83D\uDEA7"),
+    el("h2", null, "Chat is under construction"),
+    el("p", null, "It is being rebuilt, and is switched off in the meantime. Nothing you said before has gone " +
+                  "anywhere - it is still in the same place, waiting."),
+    el("p", null, "Everything else in SEA OS works as usual."));
+  B.appendChild(box);
+  return {
+    menus(){
+      return { File: [{ label: "Close Window", run: () => win.close() }] };
     }
-    if (!settled) mount();
-  })();
-
-  return { onClose(){ clearInterval(themeWatch); return true; } };
+  };
 }
+
 /* ============================================================
    12g2. Videos - a library with posters and a player meant for
    watching, rather than the track list Media uses
    ============================================================ */
-function videosApp(win, startPath){
+function galleryApp(win, startPath){
   const B = win.body;
   B.innerHTML =
     '<div class="vd-bar">' +
       '<button class="tb-btn vd-back" title="Back to the library">&#8592;</button>' +
-      '<span class="vd-title">Videos</span>' +
+      '<span class="vd-title">Gallery</span>' +
       '<span style="flex:1"></span>' +
       '<input class="vd-find" spellcheck="false" autocomplete="off" placeholder="Filter">' +
       '<button class="tb-btn" data-v="refresh" title="Look again">&#8635;</button>' +
@@ -8661,6 +7865,7 @@ function videosApp(win, startPath){
     '<div class="vd-grid"></div>' +
     '<div class="vd-player">' +
       '<video playsinline></video>' +
+      '<img class="vd-img" alt="">' +
       '<div class="vd-web"></div>' +
       '<div class="vd-resume"><span></span><button class="tb-btn" data-v="over">Start over</button></div>' +
       '<div class="vd-oops"><b>This one will not play here</b>' +
@@ -8675,12 +7880,13 @@ function videosApp(win, startPath){
         '<span class="vd-time">0:00 / 0:00</span>' +
         '<input class="vd-vol" type="range" min="0" max="100" value="90" title="Volume">' +
         '<span class="vd-web-note"></span>' +
+        '<button class="tb-btn" data-v="show" title="Slideshow">&#9654; Slideshow</button>' +
         '<button class="tb-btn" data-v="site">Open on site</button>' +
         '<button class="tb-btn" data-v="full" title="Full screen">&#9974;</button>' +
       '</div>' +
     '</div>';
 
-  const grid = $(".vd-grid", B), video = $(".vd-player video", B);
+  const grid = $(".vd-grid", B), video = $(".vd-player video", B), img = $(".vd-img", B);
   const seek = $(".vd-seek", B), vol = $(".vd-vol", B), timeEl = $(".vd-time", B);
   const find = $(".vd-find", B), titleEl = $(".vd-title", B);
   const vb = k => $('[data-v="' + k + '"]', B);
@@ -8692,6 +7898,8 @@ function videosApp(win, startPath){
   const watching = () => B.classList.contains("playing");
   const webBox = $(".vd-web", B);
   const isWeb = t => typeof t !== "string";
+  const isPic = t => !isWeb(t) && IMG_EXT.includes(extOf(baseName(t)));
+  let showing = 0;   /* the slideshow timer */
   const nameOf = t => (isWeb(t) ? t.title || t.url : baseName(t));
   const whereOf = t => (isWeb(t) ? t.author || siteOf(t) || hostOf(t.url) : tilde(dirName(t)));
   const hostOf = url => { try { return new URL(url).hostname.replace(/^www\./, ""); } catch (e){ return ""; } };
@@ -8726,10 +7934,11 @@ function videosApp(win, startPath){
 
   function scan(){
     all = [];
-    walkFS((p, n, name) => { if (n.type === "file" && isVideo(name)) all.push(p); });
-    /* links added with Add media, here or in Media - only the ones with a picture */
-    for (const t of State.webMedia || [])
-      if (!t.audio && (t.kind !== "file" || isVideo(pathOfLink(t.url)))) all.push(t);
+    /* videos and pictures, from your files. Links live in Media. */
+    walkFS((p, n, name) => {
+      if (n.type !== "file") return;
+      if (isVideo(name) || IMG_EXT.includes(extOf(name))) all.push(p);
+    });
     draw();
   }
   function draw(){
@@ -8741,13 +7950,14 @@ function videosApp(win, startPath){
     if (!shown.length){
       grid.appendChild(el("div", "vd-none", all.length
         ? "Nothing here matches that."
-        : "No videos yet. Press Add media, put an .mp4 in the videos folder of the repo, " +
-          "or run  unbox video <words>  in the Terminal."));
+        : "Nothing here yet. Press Add media, draw something in Paint, or put files in the repository's " +
+          "videos/ and pictures/ folders."));
       return;
     }
     const jobs = [];
     shown.forEach((p, i) => {
       if (isWeb(p)){ grid.appendChild(webTile(p, i)); return; }
+      if (isPic(p)){ grid.appendChild(picTile(p, i)); return; }
       const tile = el("button", "vd-tile" + (i === at ? " on" : ""));
       const shot = el("div", "vd-shot");
       const cv = el("canvas");
@@ -8772,6 +7982,31 @@ function videosApp(win, startPath){
       jobs.push({ path: p, cv, tile });
     });
     queuePosters(jobs);
+  }
+  function picTile(p, i){
+    const tile = el("button", "vd-tile" + (i === at ? " on" : ""));
+    const shot = el("div", "vd-shot");
+    const im = el("img");
+    im.alt = "";
+    im.loading = "lazy";
+    im.src = node(p) ? node(p).content : "";
+    shot.append(im, el("span", "vd-dur", "picture"));
+    const cap = el("div", "vd-cap");
+    cap.append(el("div", "vd-n", baseName(p)), el("div", "vd-w", tilde(dirName(p))));
+    tile.append(shot, cap);
+    tile.title = baseName(p);
+    tile.onclick = () => openAt(i);
+    tile.oncontextmenu = e => {
+      e.preventDefault(); e.stopPropagation();
+      showCtx(e.clientX, e.clientY, [
+        { icon: "\uD83D\uDDBC\uFE0F", label: "Open", run: () => openAt(i) },
+        { icon: "\uD83C\uDFA8", label: "Edit in Paint", run: () => launch("paint", p) },
+        { icon: "\uD83D\uDCC1", label: "Show in Files", run: () => openInFiles(p) },
+        "-",
+        { icon: "\uD83D\uDDBC\uFE0F", label: "Set as wallpaper", run: () => setWallpaperFrom(p) }
+      ]);
+    };
+    return tile;
   }
   function webTile(t, i){
     const tile = el("button", "vd-tile" + (i === at ? " on" : ""));
@@ -8886,6 +8121,24 @@ function videosApp(win, startPath){
     stopWeb();
     B.classList.add("playing");
     B.classList.remove("badmedia");
+    B.classList.toggle("picture", isPic(p));
+    if (isPic(p)){
+      const n = node(p);
+      if (!n) return scan();
+      video.pause();
+      video.removeAttribute("src");
+      video.load();
+      releaseMediaKeys(win);
+      img.src = n.content;
+      vb("site").hidden = true;
+      vb("prev").disabled = i <= 0;
+      vb("next").disabled = i >= shown.length - 1;
+      titleEl.textContent = baseName(p);
+      win.setTitle(baseName(p));
+      drawMenuBar();
+      return;
+    }
+    img.removeAttribute("src");
     if (isWeb(p) && p.kind !== "file"){
       /* a site's own player, with its own controls - and its own media keys */
       releaseMediaKeys(win);
@@ -8927,7 +8180,19 @@ function videosApp(win, startPath){
     vb("next").disabled = i >= shown.length - 1;
     drawMenuBar();
   }
+  function slideshow(on){
+    clearInterval(showing);
+    showing = 0;
+    if (on){
+      showing = setInterval(() => {
+        const next = shown.findIndex((p, i) => i > at && isPic(p));
+        openAt(next >= 0 ? next : shown.findIndex(isPic));
+      }, 4000);
+    }
+    vb("show").classList.toggle("on", !!showing);
+  }
   function library(){
+    slideshow(false);
     keepPlace(true);
     resumeBox.classList.remove("on");
     stopWeb();
@@ -8968,6 +8233,7 @@ function videosApp(win, startPath){
 
   $(".vd-back", B).onclick = library;
   vb("refresh").onclick = scan;
+  vb("show").onclick = () => slideshow(!showing);
   vb("add").onclick = addMedia;
   vb("play").onclick = () => { if (video.paused) video.play().catch(() => {}); else video.pause(); };
   vb("prev").onclick = () => openAt(at - 1);
@@ -9028,259 +8294,17 @@ function videosApp(win, startPath){
           { label: "Library", run: library, disabled: !watching() },
           { label: "Full screen", run: () => vb("full").click(), disabled: !watching() },
           "-",
+          { label: "Edit in Paint", disabled: at < 0 || !isPic(shown[at]), run: () => launch("paint", shown[at]) },
+          { label: "Slideshow", run: () => slideshow(!showing) },
+          "-",
           { label: "Set as wallpaper", disabled: at < 0 || isWeb(shown[at]), run: () => setWallpaperFrom(shown[at]) },
           { label: "Set as boot screen", disabled: at < 0 || isWeb(shown[at]), run: () => setBootFrom(shown[at]) }
         ]
       };
     },
-    onClose(){ keepPlace(true); releaseMediaKeys(win); generation++; stopWeb(); video.pause(); return true; }
+    onClose(){ keepPlace(true); releaseMediaKeys(win); slideshow(false); generation++; stopWeb(); video.pause(); return true; }
   };
 }
-/* ============================================================
-   12n. Locked Notes - a note nothing opens without the password
-
-   The note is encrypted before it is written, so what sits in the
-   filesystem, in a backup file, or in the repository if you upload one, is
-   a block of nonsense. The password is never stored anywhere: it makes the
-   key each time it is typed, and the key lives only in this window until
-   you lock the note again. Lose it and the note is gone for good - there is
-   no way back in, which is the point.
-
-   AES-GCM for the note itself, and the password is stretched into a key
-   with PBKDF2 so guessing at it is slow.
-   ============================================================ */
-const LOCK_ROUNDS = 310000;
-const b64 = bytes => btoa(String.fromCharCode.apply(null, Array.from(bytes)));
-const unb64 = text => Uint8Array.from(atob(text), c => c.charCodeAt(0));
-
-async function lockKeyFrom(password, salt, rounds){
-  const base = await crypto.subtle.importKey("raw", new TextEncoder().encode(password), "PBKDF2", false, ["deriveKey"]);
-  return crypto.subtle.deriveKey(
-    { name: "PBKDF2", salt, iterations: rounds || LOCK_ROUNDS, hash: "SHA-256" },
-    base, { name: "AES-GCM", length: 256 }, false, ["encrypt", "decrypt"]);
-}
-async function lockSeal(text, password){
-  const salt = crypto.getRandomValues(new Uint8Array(16));
-  const iv = crypto.getRandomValues(new Uint8Array(12));
-  const key = await lockKeyFrom(password, salt, LOCK_ROUNDS);
-  const sealed = new Uint8Array(await crypto.subtle.encrypt({ name: "AES-GCM", iv }, key, new TextEncoder().encode(text)));
-  return JSON.stringify({ lockednote: 1, rounds: LOCK_ROUNDS, salt: b64(salt), iv: b64(iv), data: b64(sealed) });
-}
-async function lockOpen(json, password){
-  let o;
-  try { o = JSON.parse(json); } catch (e){ throw new Error("This does not look like a locked note."); }
-  if (!o || o.lockednote !== 1) throw new Error("This does not look like a locked note.");
-  const key = await lockKeyFrom(password, unb64(o.salt), o.rounds);
-  let plain;
-  try { plain = await crypto.subtle.decrypt({ name: "AES-GCM", iv: unb64(o.iv) }, key, unb64(o.data)); }
-  catch (e){ throw new Error("Wrong password."); }
-  return new TextDecoder().decode(plain);
-}
-const isLockNote = name => /\.locknote$/i.test(String(name || ""));
-
-function lockApp(win, startPath){
-  const B = win.body;
-  B.innerHTML =
-    '<div class="lk-bar">' +
-      '<button class="tb-btn accent" data-k="new">New locked note…</button>' +
-      '<button class="tb-btn" data-k="lock">Lock</button>' +
-      '<button class="tb-btn" data-k="save">Save</button>' +
-      '<span class="ed-sp"></span><span class="lk-where"></span>' +
-    '</div>' +
-    '<div class="lk-body">' +
-      '<div class="lk-list"></div>' +
-      '<div class="lk-main"></div>' +
-    '</div>';
-  const listEl = $(".lk-list", B), main = $(".lk-main", B), whereEl = $(".lk-where", B);
-  const kb = k => $('[data-k="' + k + '"]', B);
-  let notes = [], at = null, pass = "", text = "", dirty = false;
-
-  function scan(){
-    notes = [];
-    walkFS((p, n, name) => { if (n.type === "file" && isLockNote(name)) notes.push(p); });
-    drawList();
-  }
-  function drawList(){
-    listEl.innerHTML = "";
-    if (!notes.length){
-      listEl.appendChild(el("div", "lk-none", "No locked notes yet."));
-      return;
-    }
-    for (const p of notes){
-      const b = el("button", "lk-row" + (p === at ? " on" : ""));
-      b.append(el("span", "g", p === at && pass ? "🔓" : "🔒"),
-               el("span", "n", baseName(p).replace(/\.locknote$/i, "")));
-      b.onclick = () => select(p);
-      listEl.appendChild(b);
-    }
-  }
-  function buttons(){
-    kb("save").disabled = !(at && pass);
-    kb("lock").disabled = !(at && pass);
-    whereEl.textContent = at ? tilde(at) : "";
-  }
-  function forget(){
-    pass = "";
-    text = "";
-    dirty = false;
-  }
-  function select(p){
-    forget();
-    at = p;
-    drawList();
-    buttons();
-    askPassword();
-  }
-
-  /* ---- the locked view ---- */
-  function askPassword(){
-    main.innerHTML = "";
-    const n = node(at);
-    if (!n) { scan(); return blank(); }
-    const box = el("div", "lk-lock");
-    box.append(el("div", "lk-big", "🔒"),
-               el("h2", null, baseName(at).replace(/\.locknote$/i, "")),
-               el("p", "lk-msg", "This note is locked. Type its password to read it."));
-    const inp = el("input", "modal-in");
-    inp.type = "password";
-    inp.autocomplete = "off";
-    inp.placeholder = "Password";
-    const msg = el("div", "lk-msg lk-warn");
-    const open = el("button", "btn primary", "Unlock");
-    const tryIt = async () => {
-      if (!inp.value) return;
-      open.disabled = true;
-      msg.textContent = "Unlocking…";
-      try {
-        const out = await lockOpen(String(node(at).content), inp.value);
-        pass = inp.value;
-        text = out;
-        dirty = false;
-        editor();
-        drawList();
-        buttons();
-      } catch (err){
-        msg.textContent = err.message;
-        open.disabled = false;
-        inp.select();
-      }
-    };
-    open.onclick = tryIt;
-    inp.onkeydown = e => { if (e.key === "Enter"){ e.preventDefault(); tryIt(); } };
-    box.append(inp, open, msg);
-    main.appendChild(box);
-    setTimeout(() => inp.focus(), 0);
-  }
-  function blank(){
-    main.innerHTML = "";
-    const box = el("div", "lk-lock");
-    box.append(el("div", "lk-big", "🔐"),
-               el("h2", null, "Locked Notes"),
-               el("p", "lk-msg", "A note here is encrypted with a password of its own. Nothing can read it " +
-                 "without that password - not the rest of SEA OS, not a backup file, and not anyone who ends up " +
-                 "with a copy of it. Forget the password and the note is gone."));
-    main.appendChild(box);
-    buttons();
-  }
-  /* ---- the unlocked view ---- */
-  function editor(){
-    main.innerHTML = "";
-    const area = el("textarea", "lk-area");
-    area.value = text;
-    area.spellcheck = false;
-    area.oninput = () => { text = area.value; dirty = true; retitle(); };
-    const foot = el("div", "lk-foot");
-    foot.append(el("span", "lk-msg", "Unlocked in this window only. Lock it, or close the window, and it goes back to being unreadable."));
-    main.append(area, foot);
-    retitle();
-    setTimeout(() => area.focus(), 0);
-  }
-  function retitle(){
-    win.setTitle((at ? baseName(at).replace(/\.locknote$/i, "") : "Locked Notes") + (dirty ? " •" : ""));
-  }
-  async function save(){
-    if (!at || !pass) return;
-    writeFile(at, await lockSeal(text, pass), "text", "application/json");
-    dirty = false;
-    retitle();
-    refreshFilesViews();
-    notify("Locked note saved", tilde(at), "🔒");
-  }
-  async function make(){
-    const name = await osPrompt("New locked note", "What should it be called?", "Keys");
-    if (!name) return;
-    const clean = safeName(String(name).replace(/\.locknote$/i, "")) + ".locknote";
-    const dir = HOME + "/Documents";
-    ensureDir(dir);
-    const path = dir + "/" + clean;
-    if (node(path)) return osAlert("Already there", tilde(path) + " exists. Pick another name.");
-    main.innerHTML = "";
-    const box = el("div", "lk-lock");
-    box.append(el("div", "lk-big", "🔐"), el("h2", null, clean.replace(/\.locknote$/i, "")),
-               el("p", "lk-msg", "Choose a password for this note. It is never stored anywhere, so if you " +
-                 "forget it there is no way back in."));
-    const one = el("input", "modal-in"), two = el("input", "modal-in");
-    one.type = two.type = "password";
-    one.autocomplete = two.autocomplete = "off";
-    one.placeholder = "Password";
-    two.placeholder = "The same again";
-    const msg = el("div", "lk-msg lk-warn");
-    const ok = el("button", "btn primary", "Create it");
-    ok.onclick = async () => {
-      if (one.value.length < 4) return msg.textContent = "Use at least four characters.";
-      if (one.value !== two.value) return msg.textContent = "Those two do not match.";
-      ok.disabled = true;
-      msg.textContent = "Locking…";
-      writeFile(path, await lockSeal("", one.value), "text", "application/json");
-      refreshFilesViews();
-      at = path;
-      pass = one.value;
-      text = "";
-      dirty = false;
-      scan();
-      buttons();
-      editor();
-    };
-    two.onkeydown = e => { if (e.key === "Enter"){ e.preventDefault(); ok.click(); } };
-    box.append(one, two, ok, msg);
-    main.appendChild(box);
-    setTimeout(() => one.focus(), 0);
-  }
-
-  kb("new").onclick = make;
-  kb("save").onclick = save;
-  kb("lock").onclick = () => { forget(); drawList(); buttons(); askPassword(); };
-  B.addEventListener("keydown", e => {
-    if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "s"){ e.preventDefault(); save(); }
-  });
-
-  scan();
-  if (startPath && node(startPath)) select(startPath);
-  else blank();
-
-  return {
-    refresh: scan,
-    open: select,
-    menus(){
-      return {
-        File: [
-          { label: "New locked note…", run: make },
-          { label: "Save", run: save, disabled: !(at && pass) },
-          { label: "Lock it again", run: () => kb("lock").click(), disabled: !(at && pass) },
-          "-",
-          { label: "Close Window", run: () => win.close() }
-        ]
-      };
-    },
-    onClose(){ forget(); return true; }
-  };
-}
-function openLockNote(path){
-  for (const w of windows.values())
-    if (w.appId === "vault"){ focusWin(w); w.api.open(path); return w; }
-  return launch("vault", path);
-}
-
 /* ============================================================
    12m. Help - what everything is and how to drive it
    ============================================================ */
@@ -9384,8 +8408,12 @@ const HELP_TOPICS = [
   { id: "saving", icon: "💾", title: "Saving, and what is lost", body: [
     ["p", "By default SEA OS keeps nothing. Reload the page and you get a fresh machine."],
     ["p", "Settings › System › Save my files turns on browser storage. Your files, settings and shortcuts then survive a reload, in this browser on this computer only."],
-    ["h", "Without the repository"],
-    ["p", "Settings › Storage › Use the repository's files decides whether SEA OS reads the folders next to index.html at all - its music, videos, pictures, apps and games. Switched off, it asks GitHub nothing and loads no manifests, and only what you have added from inside is there. It takes effect the next time SEA OS starts."],
+    ["h", "The repository"],
+    ["p", "SEA OS can take music, videos, pictures, apps and games from a GitHub repository. It asks GitHub what is in those folders, so anything you put there shows up on its own - no manifest.js listing files by hand. Settings › Storage names the repository, as user/repository, and works that out for itself when SEA OS is served from that repository's own Pages site."],
+    ["l", ["GitHub allows sixty questions an hour from one network, so each answer is kept for a few hours, and an old answer is used rather than none when they run out.",
+           "Read from anywhere else - chalkbored.win, say - the files themselves come from the repository's Pages site.",
+           "The manifest.js files beside index.html are only a fallback now: for when no repository is named, GitHub cannot be reached, or index.html is opened straight off a disk.",
+           "Use the repository's files, in the same place, switches the whole lot off. Then SEA OS asks GitHub nothing and only what you have added from inside is there. It takes effect the next time SEA OS starts."]],
     ["h", "The limits"],
     ["l", ["Your files go into the browser's own file storage, which holds gigabytes - songs, videos and all. The list of what is where stays in ordinary browser storage, which is small but instant.",
            "How much fits depends on the free space on this computer; Settings › Storage shows it. When it is on, SEA OS asks the browser not to clear it away when space runs short.",
@@ -9394,7 +8422,8 @@ const HELP_TOPICS = [
            "Terminal: backup writes everything to a file you can keep, and restore reads it back."]]
   ]},
   { id: "look", icon: "🎨", title: "Making it yours", body: [
-    ["l", ["Settings › Appearance › Call it switches the whole desktop between CHALK OS and SEA OS. CHALK OS has the chalk logo, the chalkboard boot screen and ChalkBrowser; SEA OS brings back the sailboat, the porthole and Seahorse. The menu bar, the Terminal, the Store and this help follow along, and your files and settings stay as they are.",
+    ["l", ["Settings is a handful of pages: Appearance, Desktop, Apps & web, System, and Developer when you switch that on in System. Developer holds Tide and the workings.",
+           "Settings › Appearance › Call it switches the whole desktop between CHALK OS and SEA OS. CHALK OS has the chalk logo, the chalkboard boot screen and ChalkBrowser; SEA OS brings back the sailboat, the porthole and Seahorse. The menu bar, the Terminal, the Store and this help follow along, and your files and settings stay as they are.",
            "Settings › Appearance for light and dark, the accent colour and the wallpaper.",
            "A wallpaper can be a video. It loops behind everything.",
            "Settings › Boot screen takes a video or a picture of your own.",
@@ -9404,6 +8433,7 @@ const HELP_TOPICS = [
            "Drop an .mp4 into the videos folder of the repository and it appears in Videos without any importing."]]
   ]},
   { id: "tide", icon: "\uD83C\uDF0A", title: "Tide", body: [
+    ["p", "Tide lives in Settings › Developer, which appears once Developer mode is on in Settings › System."],
     ["p", "Almost every site refuses to be shown inside another page, which is why Seahorse can only read a handful of them on its own. Tide is the way round it: a small server on a machine you own opens the connection, and what comes back is rewritten so the site behaves normally - scripts, logins and all."],
     ["h", "Setting it up"],
     ["l", ["The server runs on a machine of your own. Once it is up it prints a key.",
@@ -9420,7 +8450,7 @@ const HELP_TOPICS = [
     ["p", "Sites load in any browser, but video through Tide needs one that can pass a half-finished download between pages. Chrome and Edge can; Firefox cannot yet, so YouTube opens but a video says an error occurred. Media plays YouTube links directly without Tide, which is the easier way to watch something."]
   ]},
   { id: "store", icon: "🛍️", title: "SEA Store and making apps", body: [
-    ["p", "An app is one HTML file. Put it in the apps/ folder of the repository and it shows up in the SEA Store, ready to install. You can also install any HTML file from Files, or build one in Playground and choose Install as app."],
+    ["p", "The SEA Store is a page of Settings now, under Apps. An app is one HTML file: install one from Files, build one in Playground and choose Install as app, or put it in the apps/ folder of the repository."],
     ["h", "Naming it"],
     ["c", "<title>My App</title>\n<meta name=\"description\" content=\"What it does\">\n<meta name=\"box-icon\" content=\"🧩\">\n<meta name=\"box-size\" content=\"640x480\">"],
     ["h", "What an app can do"],
@@ -9430,11 +8460,60 @@ const HELP_TOPICS = [
     ["h", "Off GitHub Pages"],
     ["p", "On Pages the Store asks GitHub what is in apps/. Anywhere else it reads apps/manifest.js, so add a line there for each app."]
   ]},
-  { id: "photos", icon: "📷", title: "Photos", body: [
-    ["l", ["Photos shows every picture on the disk.",
-           "Click one to view it. The arrow keys page through, Space starts a slideshow, Escape goes back.",
-           "Put images in the repo's pictures/ folder and they appear in ~/Pictures without importing anything.",
-           "Right-click a photo to make it your wallpaper or open it in Paint."]]
+  { id: "gallery", icon: "\uD83D\uDDBC\uFE0F", title: "Gallery", body: [
+    ["p", "The Gallery holds your videos and your pictures together - whatever is on the disk, wherever it sits."],
+    ["l", ["Click one to watch or look at it. The arrows either side move to the next and the last.",
+           "Slideshow steps through the pictures on its own, every few seconds.",
+           "A video remembers where you stopped and picks up there, with Start over if you would rather not.",
+           "Right-click a picture to edit it in Paint, show it in Files, or make it the wallpaper.",
+           "Add media brings in videos and pictures: from a link, from your files, or from this computer.",
+           "Paint saves into ~/Pictures, so anything you draw turns up here."]]
+  ]},
+  { id: "playground", icon: "🧪", title: "Playground", body: [
+    ["p", "Write a web page, or Python, and run it right here. A web page runs on the right as you type; untick Live to run only when you press Run or Ctrl+Enter."],
+    ["h", "Web pages"],
+    ["l", ["HTML, CSS and JS each get a tab. A dot on a tab means it has something in it.",
+           "They are saved together as one .html file, so Open in Seahorse and Install as app work on the whole page. Opening that file again puts each part back in its own tab.",
+           "The console under the preview shows console.log output and errors. An error in the JS tab says which line of that tab it came from.",
+           "The preview gets window.box too, so an app behaves the same before and after you install it."]],
+    ["h", "Python"],
+    ["l", ["New › Python script starts one. Opening any .py file does too.",
+           "Python downloads the first time it runs, which takes a few seconds, and is quick after that.",
+           "print() goes to the console. input() reads the Input box above it, one line for each call.",
+           "Importing a package that ships with Pyodide, like numpy, downloads it the first time you use it.",
+           "Stop ends a script that runs too long, including one that never finishes.",
+           "Python scripts save to ~/Documents unless they already live somewhere."]],
+    ["h", "Saving"],
+    ["p", "Ctrl+S saves and Ctrl+Shift+S saves as. A new web page goes in ~/Sites."]
+  ]},
+  { id: "media", icon: "\uD83C\uDFB5", title: "Media", body: [
+    ["p", "Media is the music player: your songs, and links from the web. Videos and pictures live in the Gallery, which the picture button at the top opens."],
+    ["h", "Songs"],
+    ["l", ["A song's name, artist, album and cover are read out of the file itself, so a song called 01.mp3 still shows properly.",
+           "The cover turns while it plays. With no cover in the file, a picture named cover or folder beside it is used, and failing that the first letter of its name.",
+           "Without any tags at all it falls back to the file name."]],
+    ["h", "Adding something"],
+    ["l", ["Add media offers three ways in: paste links, play a file already in SEA OS, or bring a file over from this computer.",
+           "Paste links takes as many as you like, one a line. Enter starts a new line; Ctrl+Enter adds them all.",
+           "Ctrl+V anywhere in Media or the Gallery adds whatever link - or links - you copied.",
+           "Drag files from your computer's desktop, or a link from another browser tab, onto either player or its Dock icon.",
+           "An imported file lands in ~/Music, ~/Videos or ~/Pictures and stays in SEA OS. Nothing is written to the real computer."]],
+    ["h", "Links"],
+    ["l", ["Links all live in Media, whether they are music or video, so nothing turns up in the Gallery that does not belong there.",
+           "YouTube, Vimeo, Dailymotion, Twitch, Kick, Streamable, the Internet Archive, Bilibili, Odysee, TED, TikTok, Facebook, Loom, PeerTube, SoundCloud and Spotify all play in their own players.",
+           "A Spotify playlist, album, song or podcast plays whole songs when you are signed in to Spotify in this browser, and thirty-second tastes when you are not.",
+           "The play, pause and skip keys on your keyboard work whichever player you used last, and Windows shows the song and its cover in its own media pop-up.",
+           "Everything you add stays in the list under From the web. Right-click one to remove it.",
+           "Links need the internet, and nothing from those sites is saved into your files."]]
+  ]},
+  { id: "gallery", icon: "\uD83D\uDDBC\uFE0F", title: "Gallery", body: [
+    ["p", "The Gallery holds your videos and your pictures together - whatever is on the disk, wherever it sits."],
+    ["l", ["Click one to watch or look at it. The arrows either side move to the next and the last.",
+           "Slideshow steps through the pictures on its own, every few seconds.",
+           "A video remembers where you stopped and picks up there, with Start over if you would rather not.",
+           "Right-click a picture to edit it in Paint, show it in Files, or make it the wallpaper.",
+           "Add media brings in videos and pictures: from a link, from your files, or from this computer.",
+           "Paint saves into ~/Pictures, so anything you draw turns up here."]]
   ]},
   { id: "playground", icon: "🧪", title: "Playground", body: [
     ["p", "Write a web page, or Python, and run it right here. A web page runs on the right as you type; untick Live to run only when you press Run or Ctrl+Enter."],
@@ -9456,7 +8535,8 @@ const HELP_TOPICS = [
   { id: "media", icon: "🎵", title: "Media and links", body: [
     ["p", "Media plays the music and video in your files, and links from the web."],
     ["h", "Adding something"],
-    ["l", ["Press Add media at the top right and pick one of three ways in: paste links, play a file already in SEA OS, or bring a file over from this computer.",
+    ["l", ["Searching uses the engine chosen in Settings › Apps & web. Only with Tide set up can that engine open properly; without it, Seahorse answers from DuckDuckGo and Wikipedia, which are the two that can be read directly.",
+           "Press Add media at the top right and pick one of three ways in: paste links, play a file already in SEA OS, or bring a file over from this computer.",
            "Paste links takes as many as you like, one a line. Enter starts a new line; Ctrl+Enter adds them all.",
            "Ctrl+V anywhere in Media, Videos or the MP3 Player adds whatever link - or links - you copied.",
            "Drag files from your computer's desktop, or a link from another browser tab, onto a player or its Dock icon. Files are copied into ~/Music or ~/Videos.",
@@ -9473,27 +8553,6 @@ const HELP_TOPICS = [
            "Some uploaders do not let their videos play outside their site. Open on the site takes you there instead.",
            "Links need the internet, and nothing from these sites is saved into your files."]]
   ]},
-  { id: "mp3", icon: "💿", title: "MP3 Player", body: [
-    ["p", "The MP3 Player plays one song at a time, with its cover turning like a record. Media is the library; this is the player to leave open."],
-    ["l", ["The cover comes out of the song's own tags. When a file has none, a picture named cover or folder next to it is used, and failing that the first letter of the name on a coloured disc.",
-           "Titles and artists come from the same tags, so a file called 01.mp3 still shows its real name.",
-           "Changing song slides the old one out and the new one in.",
-           "Space plays and pauses, and the arrow keys move between songs. Going back in the first few seconds of a song starts it again instead."]],
-    ["h", "Playing next"],
-    ["l", ["The bar along the bottom names whatever comes next. Click it for the whole tracklist.",
-           "The list at the top of that panel picks the playlist: everything you have, one for each folder your music sits in, and one for links.",
-           "Shuffle deals a new order and keeps it, so Previous still goes back the way you came. Repeat runs through the playlist again, or the same song over and over.",
-           "The + button adds music the same three ways Media does: a link, a file already in SEA OS, or one from this computer."]],
-    ["h", "Starting straight into it"],
-    ["p", "Settings › Startup › Open with → MP3 Player makes SEA OS boot into the player, filling the screen. Close it and the desktop is there."]
-  ]},
-  { id: "locked", icon: "\uD83D\uDD12", title: "Locked Notes", body: [
-    ["p", "A locked note is encrypted with a password of its own. What sits in the filesystem is a block of nonsense, so a backup file, or a copy of SEA OS someone else ends up with, gives nothing away. It is the place for a key or a password rather than an ordinary note."],
-    ["l", ["New locked note asks for a name, then a password twice. Four characters is the minimum, but a real one is worth using.",
-           "Unlocking holds the note open in that window only. Lock, or close the window, and it goes back to being unreadable.",
-           "The password is never written down anywhere. Forget it and the note is gone - there is no way back in, and that is the point.",
-           "Notes are ordinary files ending .locknote, kept in ~/Documents. Double-clicking one in Files opens it here."]]
-  ]},
   { id: "widgets", icon: "🧩", title: "Widgets", body: [
     ["l", ["Right-click the desktop and choose Widgets, or open Settings › Widgets.",
            "Drag a widget anywhere and it stays there.",
@@ -9503,9 +8562,8 @@ const HELP_TOPICS = [
            "Widgets are hidden in the Hyprland shell, where windows cover the whole desktop."]]
   ]},
   { id: "games", icon: "🎮", title: "Games", body: [
-    ["p", "Games is a launcher for the games in the games/ folder of the repository, plus the built-in Minesweeper. Click one to play; each opens in its own window."],
-    ["l", ["A game pauses when you click away from it, and P pauses it by hand. M turns the sound off.",
-           "Best scores are kept for every game and show on its tile. Turn saving on to keep them after a reload.",
+    ["p", "Games is a launcher. Click one to play; each opens in its own window. What is listed comes from the games you add yourself, from games/manifest.js, and from the .html games in the repository's games/ folder."],
+    ["l", ["Best scores are kept for every game and show on its tile. Turn saving on to keep them after a reload.",
            "Right-click a game to keep it in the Dock, put it on the desktop, or reset its best score.",
            "Games are left out of the menu list to keep it short, but typing a game's name there still finds it.",
            "A game may lock the mouse pointer so moving the mouse aims instead of moving the cursor. Press Esc to get the pointer back."]],
@@ -9520,10 +8578,6 @@ const HELP_TOPICS = [
     ["p", "Games get the same window.box as apps, plus two calls for scores. Higher is better:"],
     ["c", "const best = await box.getHighScore()\nconst { best, isNew } = await box.submitScore(score)"],
     ["p", "Off GitHub Pages, list the file in games/manifest.js as well."],
-    ["h", "Flash games"],
-    ["l", ["A .swf file plays in the built-in Flash Player, through Ruffle. Double-click one in Files, or drop it in the repository's games/ folder and it turns up in Games.",
-           "Ruffle is about 14 MB and comes down the first time Flash is used, so the first game takes a moment to start.",
-           "A .swf on another site usually will not load: most sites do not let other pages read their files. Put a copy in games/, or link to a page that plays it."]],
     ["h", "Games that live somewhere else"],
     ["p", "A Unity build, an emulator, or any page with a game on it can go in Games without copying anything. Add a line to games/manifest.js with its name and address, and it opens in a window just as it is:"],
     ["c", "{ name: \"My Game\", url: \"https://example.com/game/\", icon: \"\uD83C\uDFAE\",\n  color: \"#3a7bd5\", desc: \"What you do\", size: \"960x640\" }"],
@@ -9771,19 +8825,58 @@ function loadFolderManifest(dir, globalName){
 /* What GitHub says is in a folder of the repository - only on a Pages site,
    and asked once per folder, since GitHub allows only sixty questions an hour */
 const REPO_LISTS = new Map();
+/* Which repository the files come from. "user/name", or worked out on its
+   own when SEA OS is served from that repository's own Pages site. */
+function repoName(){
+  const set = String(State.repo || "").trim()
+    .replace(/^https?:\/\/github\.com\//i, "").replace(/\.git$/i, "").replace(/^\/+|\/+$/g, "");
+  if (/^[\w.-]+\/[\w.-]+$/.test(set)) return set;
+  const m = location.hostname.match(/^([\w-]+)\.github\.io$/i);
+  if (!m) return "";
+  const seg = location.pathname.split("/").filter(Boolean);
+  return m[1] + "/" + (seg.length ? seg[0] : m[1] + ".github.io");
+}
+/* Where those files actually sit. On the repository's own Pages site they
+   are next to index.html; read from anywhere else, they come from it. */
+function repoBase(){
+  if (/^[\w-]+\.github\.io$/i.test(location.hostname)) return "";
+  const repo = repoName();
+  if (!repo) return "";
+  const cut = repo.split("/");
+  return "https://" + cut[0].toLowerCase() + ".github.io/" +
+         (cut[1].toLowerCase() === (cut[0] + ".github.io").toLowerCase() ? "" : cut[1] + "/");
+}
+/* GitHub answers sixty questions an hour per network, so each answer is
+   kept for a few hours - and an old one is better than none when it runs out. */
+const REPO_TTL = 6 * 3600 * 1000;
+const REPO_CACHE_KEY = "boxos.repolist";
+function repoCache(){ try { return JSON.parse(localStorage.getItem(REPO_CACHE_KEY) || "{}"); } catch (e){ return {}; } }
+function repoRemember(key, names){
+  try {
+    const all = repoCache();
+    all[key] = { at: Date.now(), names };
+    localStorage.setItem(REPO_CACHE_KEY, JSON.stringify(all));
+  } catch (e){}
+}
 function repoList(dir){
   if (repoOff()) return Promise.resolve(null);
   if (!REPO_LISTS.has(dir)) REPO_LISTS.set(dir, (async () => {
-    const m = location.hostname.match(/^([\w-]+)\.github\.io$/i);
-    if (!m) return null;
-    const seg = location.pathname.split("/").filter(Boolean);
-    const repo = seg.length ? seg[0] : m[1] + ".github.io";
+    const repo = repoName();
+    if (!repo) return null;
+    const key = repo + "/" + dir;
+    const known = repoCache()[key];
+    if (known && Date.now() - known.at < REPO_TTL) return known.names;
     try {
-      const r = await fetch("https://api.github.com/repos/" + m[1] + "/" + repo + "/contents/" + dir);
-      if (!r.ok) return null;
+      const r = await fetch("https://api.github.com/repos/" + repo + "/contents/" + dir);
+      if (!r.ok) throw new Error(String(r.status));
       const list = await r.json();
-      return Array.isArray(list) ? list.filter(f => f.type === "file").map(f => f.name) : null;
-    } catch (err){ return null; }   /* rate limited or offline - the manifest is the fallback */
+      if (!Array.isArray(list)) throw new Error("not a folder");
+      const names = list.filter(f => f.type === "file").map(f => f.name);
+      repoRemember(key, names);
+      return names;
+    } catch (err){
+      return known ? known.names : null;   /* rate limited or offline; the manifest is the last resort */
+    }
   })());
   const p = REPO_LISTS.get(dir);
   p.then(v => { if (!v) REPO_LISTS.delete(dir); });   /* a failed look is tried again next time */
@@ -9792,12 +8885,12 @@ function repoList(dir){
 async function discoverHtmlFolder(dir, globalName, prefix, skip){
   let paths = null;
   const names = await repoList(dir);
-  if (names) paths = names.filter(isHtml).map(n => dir + "/" + n);
+  if (names) paths = names.filter(isHtml).map(n => repoBase() + dir + "/" + n);
   /* a manifest may also name links and Flash files - only its pages are read here */
   if (!paths) paths = (await loadFolderManifest(dir, globalName)).filter(p => typeof p === "string" && isHtml(p));
   /* Each page is fetched whole just to read its title, which is wasteful for
      a big one - so anything named elsewhere with its own details is left out */
-  if (skip) paths = paths.filter(p => !skip.has(p));
+  if (skip) paths = paths.filter(p => !skip.has(p) && !skip.has(p.replace(repoBase(), "")));
   const found = await Promise.all(paths.map(async p => {
     try {
       const res = await fetch(p, { cache: "no-store" });
@@ -9818,7 +8911,8 @@ function registerStoreApp(a){
                  run: win => storeAppRun(win, a) };
 }
 function refreshStoreViews(){
-  for (const w of windows.values()) if (w.appId === "store" && w.api.refresh) w.api.refresh();
+  /* the Store is a page of Settings, so that is what redraws */
+  if (storeHost && storeHost.isConnected) storeSection(storeHost); else refreshSettings();
 }
 function storeInstall(a){
   const rec = { id: a.id, src: a.src, name: a.name, desc: a.desc, icon: a.icon, w: a.w, h: a.h };
@@ -9908,15 +9002,21 @@ function storeAppRun(win, a){
   };
 }
 
-function storeApp(win){
-  const B = win.body;
-  B.innerHTML =
-    '<div class="st-bar"><span class="st-title">' + theBrand().store + '</span><span class="ed-sp"></span>' +
-    '<input class="vd-find st-find" spellcheck="false" autocomplete="off" placeholder="Filter">' +
-    '<button class="tb-btn" data-s="add">Install from Files…</button>' +
-    '<button class="tb-btn" data-s="refresh" title="Look again">&#8635;</button></div>' +
-    '<div class="st-body"></div>';
-  const body = $(".st-body", B), find = $(".st-find", B);
+/* The Store lives in Settings now rather than in a window of its own. */
+let storeHost = null;
+function storeSection(host){
+  storeHost = host;
+  host.innerHTML = "";
+  const bar = el("div", "st-bar");
+  const find = el("input", "vd-find st-find");
+  find.placeholder = "Filter";
+  find.spellcheck = false;
+  const add = el("button", "tb-btn", "Install from Files\u2026");
+  const again = el("button", "tb-btn", "\u21BB");
+  again.title = "Look again";
+  bar.append(find, el("span", "ed-sp"), add, again);
+  const body = el("div", "st-body");
+  host.append(bar, body);
   let loading = false;
 
   function card(a, installed){
@@ -9952,21 +9052,23 @@ function storeApp(win){
     if (mine.length) mine.forEach(a => body.appendChild(card(a, true)));
     else body.appendChild(el("div", "st-none", q ? "Nothing installed matches that." : "Nothing installed yet."));
 
-    body.appendChild(el("h3", "st-h", "In the repo"));
-    if (loading && !repo.length) body.appendChild(el("div", "st-none", "Looking in apps/…"));
-    else if (avail.length) avail.forEach(a => body.appendChild(card(a, false)));
-    else body.appendChild(el("div", "st-none",
-      repo.length ? (q ? "Nothing in the repo matches that." : "Everything in the repo is installed.")
-                  : "No apps in the repo yet. Put an .html file in its apps/ folder."));
+    if (!repoOff()){
+      body.appendChild(el("h3", "st-h", "In the repository"));
+      if (loading && !repo.length) body.appendChild(el("div", "st-none", "Looking in apps/\u2026"));
+      else if (avail.length) avail.forEach(a => body.appendChild(card(a, false)));
+      else body.appendChild(el("div", "st-none",
+        repo.length ? (q ? "Nothing in the repository matches that." : "Everything in the repository is installed.")
+                    : "No apps in the repository yet. Put an .html file in its apps/ folder."));
+    }
 
     const how = el("div", "st-how");
     how.append(
       el("h3", "st-h", "Making your own"),
-      el("p", null, "An app is one .html file. Put it in the apps/ folder of the repository and it shows up here, " +
-                    "or build one in Playground and choose Install as app. These tags at the top name it:"),
+      el("p", null, "An app is one .html file. Install one from Files, build one in Playground and choose " +
+                    "Install as app, or put it in the apps/ folder of the repository. These tags at the top name it:"),
       el("pre", "hp-code", '<title>My App</title>\n<meta name="description" content="What it does">\n' +
-                           '<meta name="box-icon" content="🧩">\n<meta name="box-size" content="640x480">'),
-      el("p", null, "Inside, window.box lets it send notifications and keep its own files. Help › SEA Store has the details."));
+                           '<meta name="box-icon" content="\uD83E\uDDE9">\n<meta name="box-size" content="640x480">'),
+      el("p", null, "Inside, window.box lets it send notifications and keep its own files. Help \u203A SEA Store has the details."));
     body.appendChild(how);
   }
   async function refresh(){
@@ -9977,206 +9079,13 @@ function storeApp(win){
     draw();
   }
   find.oninput = draw;
-  $('[data-s="refresh"]', B).onclick = refresh;
-  $('[data-s="add"]', B).onclick = async () => {
+  again.onclick = refresh;
+  add.onclick = async () => {
     const p = await pickFile({ title: "Install an app from Files", ok: "Install", start: HOME + "/Sites", accept: nm => isHtml(nm) });
     if (p) storeInstallFromPath(p);
   };
   if (storeCatalogue) draw(); else refresh();
-
-  return {
-    refresh: draw,
-    addPath: storeInstallFromPath,
-    menus(){
-      return {
-        File: [
-          { label: "Install from Files…", run: () => $('[data-s="add"]', B).click() },
-          { label: "Look in the repo again", run: refresh },
-          "-",
-          { label: "Close Window", run: () => win.close() }
-        ]
-      };
-    }
-  };
-}
-
-/* ============================================================
-   12g3. Photos - every picture on the disk, and a viewer to page
-   through them one after another
-   ============================================================ */
-function photosApp(win, startPath){
-  const B = win.body;
-  B.innerHTML =
-    '<div class="vd-bar">' +
-      '<button class="tb-btn ph-back" title="Back to all photos">&#8592;</button>' +
-      '<span class="vd-title">Photos</span>' +
-      '<span class="ph-count"></span>' +
-      '<span style="flex:1"></span>' +
-      '<input class="vd-find" spellcheck="false" autocomplete="off" placeholder="Filter">' +
-      '<button class="tb-btn" data-p="show" title="Slideshow">&#9654; Slideshow</button>' +
-      '<button class="tb-btn" data-p="refresh" title="Look again">&#8635;</button>' +
-    '</div>' +
-    '<div class="ph-grid"></div>' +
-    '<div class="ph-view">' +
-      '<div class="ph-stage"><img alt=""><button class="ph-nav prev" title="Previous">&#8249;</button>' +
-      '<button class="ph-nav next" title="Next">&#8250;</button></div>' +
-      '<div class="vw-bar"><span class="vw-info ph-info"></span><span style="flex:1"></span>' +
-        '<button class="tb-btn" data-p="play">&#9654; Slideshow</button>' +
-        '<button class="tb-btn" data-p="wall">Set as wallpaper</button>' +
-        '<button class="tb-btn" data-p="files">Show in Files</button>' +
-        '<button class="tb-btn" data-p="paint">Edit in Paint</button>' +
-        '<button class="tb-btn" data-p="fit">Actual size</button>' +
-      '</div>' +
-    '</div>';
-
-  const grid = $(".ph-grid", B), find = $(".vd-find", B), img = $(".ph-stage img", B);
-  const stage = $(".ph-stage", B), info = $(".ph-info", B), countEl = $(".ph-count", B);
-  const titleEl = $(".vd-title", B);
-  const pb = k => $('[data-p="' + k + '"]', B);
-  let all = [], shown = [], at = -1, show = 0;
-
-  function scan(){
-    all = [];
-    walkFS((p, n) => { if (n.type === "file" && fileIsImage(p)) all.push(p); });
-    draw();
-  }
-  function draw(){
-    const q = find.value.trim().toLowerCase();
-    const current = at >= 0 ? shown[at] : null;
-    shown = q ? all.filter(p => baseName(p).toLowerCase().includes(q)) : all.slice();
-    at = current ? shown.indexOf(current) : -1;
-    countEl.textContent = all.length ? shown.length + (shown.length === all.length ? "" : " of " + all.length) : "";
-    grid.innerHTML = "";
-    if (!shown.length){
-      grid.appendChild(el("div", "vd-none", all.length ? "Nothing here matches that."
-        : "No pictures yet. Import some in Files, draw one in Paint, put images in the repo's pictures/ folder, " +
-          "or run  unbox image <words>  in the Terminal."));
-      return;
-    }
-    shown.forEach((p, i) => {
-      const n = node(p);
-      const tile = el("button", "ph-tile");
-      const pic = el("img");
-      pic.loading = "lazy";
-      pic.decoding = "async";
-      pic.alt = baseName(p);
-      pic.src = n.content;
-      pic.onerror = () => tile.classList.add("broken");
-      tile.append(pic, el("span", "ph-cap", baseName(p)));
-      tile.title = tilde(p);
-      tile.onclick = () => openAt(i);
-      tile.oncontextmenu = e => {
-        e.preventDefault(); e.stopPropagation();
-        showCtx(e.clientX, e.clientY, [
-          { icon: "🖼️", label: "Open", run: () => openAt(i) },
-          { icon: "🎨", label: "Edit in Paint", run: () => launch("paint", p) },
-          { icon: "📁", label: "Show in Files", run: () => openInFiles(p) },
-          "-",
-          { icon: "🖼️", label: "Set as wallpaper", run: () => setWallpaperFrom(p) }
-        ]);
-      };
-      grid.appendChild(tile);
-    });
-  }
-  function openAt(i){
-    if (!shown.length) return;
-    at = (i + shown.length) % shown.length;
-    const p = shown[at], n = node(p);
-    if (!n) return scan();
-    B.classList.add("viewing");
-    stage.classList.add("fit");
-    pb("fit").textContent = "Actual size";
-    img.classList.remove("in");
-    img.onload = () => {
-      img.classList.add("in");
-      info.textContent = baseName(p) + " · " + img.naturalWidth + "×" + img.naturalHeight +
-                         " · " + (at + 1) + " of " + shown.length;
-    };
-    img.onerror = () => { info.textContent = baseName(p) + " · could not be displayed"; };
-    img.src = n.content;
-    titleEl.textContent = baseName(p);
-    win.setTitle(baseName(p));
-    drawMenuBar();
-  }
-  function grid_(){
-    stopShow();
-    B.classList.remove("viewing");
-    titleEl.textContent = "Photos";
-    win.setTitle("Photos");
-    draw();
-    drawMenuBar();
-  }
-  function startShow(){
-    if (!shown.length) return;
-    if (at < 0) openAt(0);
-    clearInterval(show);
-    show = setInterval(() => openAt(at + 1), 3500);
-    B.classList.add("showing");
-    pb("play").innerHTML = "&#10074;&#10074; Pause";
-  }
-  function stopShow(){
-    clearInterval(show);
-    show = 0;
-    B.classList.remove("showing");
-    pb("play").innerHTML = "&#9654; Slideshow";
-  }
-  function play(path){
-    scan();
-    let i = shown.indexOf(path);
-    if (i < 0 && find.value){ find.value = ""; draw(); i = shown.indexOf(path); }
-    if (i >= 0) openAt(i);
-  }
-
-  $(".ph-back", B).onclick = grid_;
-  $(".ph-nav.prev", B).onclick = () => { stopShow(); openAt(at - 1); };
-  $(".ph-nav.next", B).onclick = () => { stopShow(); openAt(at + 1); };
-  pb("show").onclick = startShow;
-  pb("play").onclick = () => (show ? stopShow() : startShow());
-  pb("refresh").onclick = scan;
-  pb("wall").onclick = () => { if (at >= 0) setWallpaperFrom(shown[at]); };
-  pb("files").onclick = () => { if (at >= 0) openInFiles(shown[at]); };
-  pb("paint").onclick = () => { if (at >= 0) launch("paint", shown[at]); };
-  pb("fit").onclick = () => {
-    const fit = stage.classList.toggle("fit");
-    pb("fit").textContent = fit ? "Actual size" : "Fit";
-  };
-  find.oninput = draw;
-  /* arrows page, Escape goes back, space runs the slideshow - only while
-     this window is the one in front */
-  const onKey = e => {
-    if (activeWin !== win || !B.classList.contains("viewing")) return;
-    if (e.target.closest && e.target.closest("input,textarea")) return;
-    if (e.key === "ArrowRight"){ e.preventDefault(); stopShow(); openAt(at + 1); }
-    else if (e.key === "ArrowLeft"){ e.preventDefault(); stopShow(); openAt(at - 1); }
-    else if (e.key === "Escape"){ e.preventDefault(); grid_(); }
-    else if (e.key === " "){ e.preventDefault(); show ? stopShow() : startShow(); }
-  };
-  document.addEventListener("keydown", onKey);
-
-  scan();
-  if (startPath) play(startPath);
-
-  return {
-    play,
-    refresh: scan,
-    menus(){
-      const viewing = B.classList.contains("viewing");
-      return {
-        File: [
-          { label: "Look for pictures again", run: scan },
-          "-",
-          { label: "Close Window", run: () => win.close() }
-        ],
-        View: [
-          { label: "All photos", run: grid_, disabled: !viewing },
-          { label: "Next", run: () => openAt(at + 1), disabled: !viewing },
-          { label: "Previous", run: () => openAt(at - 1), disabled: !viewing },
-          { label: show ? "Stop slideshow" : "Slideshow", run: () => (show ? stopShow() : startShow()) }
-        ]
-      };
-    },
-    onClose(){ stopShow(); document.removeEventListener("keydown", onKey); return true; }
-  };
+  return { refresh: draw };
 }
 
 /* ============================================================
@@ -10768,122 +9677,16 @@ function playgroundApp(win, startPath){
    settings, so the library can show them on the tiles.
    ============================================================ */
 let gamesCatalogue = null;
-const BUILTIN_GAMES = [
-  { id: "mines", name: "Minesweeper", desc: "The classic, with three board sizes", icon: "💣", color: "#5f6670", builtin: true }
-];
-/* Games on chalkbored.win, written in here so they turn up without anything
-   uploaded to the repository. games/manifest.js can still add more. */
-const LINKED_GAMES = [
-  { name: "Learn Archery", url: "https://chalkbored.win/GAMES/Learn-Archery.html",
-    icon: "\uD83C\uDFF9", color: "#3f7d3a", desc: "Aim, draw and loose", size: "960x640" },
-  { name: "Car Maintenance", url: "https://chalkbored.win/Car%20maintenance/",
-    icon: "\uD83D\uDE97", color: "#34495e", desc: "A Unity game about looking after a car", size: "1100x680" },
-  { name: "Chalk Console", url: "https://chalkbored.win/console-player.html",
-    icon: "\uD83D\uDD79\uFE0F", color: "#6c3483", desc: "NES and SNES demakes, through EmulatorJS", size: "1000x680" }
-].map(e => gameFromEntry(e));
+/* Games written in here, needing nothing uploaded. Everything else comes
+   from games/manifest.js or from Games > Add a game. */
+const LINKED_GAMES = [];
 /* ============================================================
-   12k2. Flash Player, and games that live at an address
+   12k2. Games that live at an address
 
-   Flash runs through Ruffle, an emulator written in Rust and compiled to
-   WebAssembly. It is about 14 MB, so it comes from jsDelivr - pinned to one
-   version - the first time a .swf is opened, rather than weighing down
-   every start.
-
-   A game can also be a whole page somewhere else: a Unity build with its
-   folder of data, an emulator, a loader page. Those open in a window as they
-   are, with their own address, rather than being copied in.
+   A game can be a whole page somewhere else: a Unity build, an emulator,
+   Eaglercraft. Those open in a window as they are, with their own address,
+   rather than being copied in.
    ============================================================ */
-const RUFFLE_SRC = "https://cdn.jsdelivr.net/npm/@ruffle-rs/ruffle@0.6.0/ruffle.js";
-const isSwf = name => extOf(String(name || "").split(/[?#]/)[0]) === "swf";
-function loadRuffle(){
-  /* Ruffle would otherwise go looking for old Flash embeds all over the page */
-  window.RufflePlayer = window.RufflePlayer || {};
-  window.RufflePlayer.config = Object.assign({}, window.RufflePlayer.config, {
-    polyfills: false, autoplay: "on", unmuteOverlay: "hidden", letterbox: "on",
-    splashScreen: true, contextMenu: "on", showSwfDownload: false
-  });
-  return loadScriptOnce(RUFFLE_SRC,
-    "Ruffle, which plays Flash, would not load. It comes from cdn.jsdelivr.net, so check you are online.");
-}
-function flashApp(win, start){
-  const B = win.body;
-  B.innerHTML = '<div class="fl-stage"></div><div class="fl-msg"></div>';
-  const stage = $(".fl-stage", B), msg = $(".fl-msg", B);
-  let player = null, current = null;
-
-  const say = (text, bad) => {
-    msg.textContent = text || "";
-    msg.classList.toggle("bad", !!bad);
-    msg.hidden = !text;
-  };
-  function blank(){
-    say("Open a .swf from Files, or from the games/ folder of the repository, and it plays here.");
-  }
-  async function open(src){
-    current = src;
-    say("Starting Flash…");
-    try { await loadRuffle(); }
-    catch (err){ return say(err.message, true); }
-    if (current !== src) return;
-    if (player) try { player.remove(); } catch (e){}
-    player = window.RufflePlayer.newest().createPlayer();
-    player.style.width = "100%";
-    player.style.height = "100%";
-    stage.appendChild(player);
-    const name = src.path ? baseName(src.path) : (src.name || decodeURIComponent(String(src.url).split("/").pop()));
-    win.setTitle(name.replace(/\.swf$/i, ""));
-    try {
-      if (src.path){
-        const n = node(src.path);
-        if (!n) return say(tilde(src.path) + " is not there any more.", true);
-        const data = new Uint8Array(await (await fetch(n.content)).arrayBuffer());
-        await player.load({ data, swfFileName: baseName(src.path) });
-      } else {
-        await player.load({ url: src.url });
-      }
-      say("");
-    } catch (err){
-      /* the usual reason: the file is on another site that does not allow it to be read from here */
-      say("That file would not load. " + (src.url && !src.url.startsWith(location.origin) && /^https?:/i.test(src.url)
-        ? "It is on another site, and that site does not let other pages read its files. Put the .swf in " +
-          "the repository's games/ folder, or import it in Files."
-        : "It may not be a Flash file, or it may be damaged."), true);
-    }
-  }
-  if (start && (typeof start === "string" ? node(start) : start.path)) open({ path: typeof start === "string" ? start : start.path });
-  else if (start && start.url) open(start);
-  else blank();
-
-  return {
-    play: path => open({ path }),
-    menus(){
-      return {
-        File: [
-          { label: "Open a .swf from Files…", run: async () => {
-              const p = await pickFile({ title: "Play a Flash file", ok: "Play", start: HOME, hint: "Flash files",
-                                         accept: nm => isSwf(nm) });
-              if (p) open({ path: p });
-            } },
-          { label: "Reload", run: () => current && open(current), disabled: !current },
-          "-",
-          { label: "Close Window", run: () => win.close() }
-        ],
-        View: [
-          { label: "Full screen", disabled: !player, run: () => {
-              if (document.fullscreenElement) document.exitFullscreen();
-              else if (stage.requestFullscreen) stage.requestFullscreen().catch(() => {});
-            } }
-        ]
-      };
-    },
-    onClose(){ current = null; try { if (player) player.remove(); } catch (e){} return true; }
-  };
-}
-function openFlash(path){
-  for (const w of windows.values())
-    if (w.appId === "flash"){ focusWin(w); w.api.play(path); return w; }
-  return launch("flash", path);
-}
 /* A game that is a page somewhere else. It keeps its own address - which is
    what lets a Unity build find its data files and save its progress - and
    gets full screen, the mouse and a gamepad, but may not download anything
@@ -10922,8 +9725,10 @@ function pageGameRun(win, g){
    Flash file somewhere reachable ({ swf }) */
 function gameFromEntry(e){
   if (!e || typeof e !== "object") return null;
-  const target = e.url || e.swf;
+  let target = e.url || e.swf;
   if (!target || !e.name) return null;
+  /* a name like games/thing.html means the repository, wherever that is */
+  if (!/^[a-z]+:/i.test(target)) target = repoBase() + String(target).replace(/^\.?\//, "");
   const size = /^(\d{3,4})\s*x\s*(\d{3,4})$/i.exec(String(e.size || ""));
   return {
     id: "game:" + String(e.name).toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, ""),
@@ -10937,21 +9742,6 @@ function gameFromEntry(e){
     h: size ? Math.min(1000, Math.max(240, +size[2])) : 640
   };
 }
-/* a .swf sitting in the repository's games/ folder */
-function gameFromSwf(path){
-  const file = decodeURIComponent(baseName(path)).replace(/\.swf$/i, "");
-  return {
-    id: "game:swf-" + file.toLowerCase().replace(/[^a-z0-9]+/g, "-"),
-    kind: "swf",
-    url: path,
-    name: file.replace(/[-_]+/g, " ").slice(0, 40),
-    desc: "A Flash game",
-    icon: "⚡",
-    color: "#7a3fb0",
-    w: 820, h: 620
-  };
-}
-
 /* Games added from inside SEA OS: links kept in settings, and .html or .swf
    files kept in ~/Games - so they need nothing from the repository and come
    back after a reload like any other file. */
@@ -10967,11 +9757,7 @@ function myGames(){
     const p = MY_GAMES_DIR() + "/" + name, n = dir.children[name];
     if (!n || n.type !== "file") continue;
     let g = null;
-    if (isSwf(name)){
-      g = gameFromSwf(p);
-      g.id = "game:mine-swf-" + g.id.slice(9);
-      g.path = p;
-    } else if (isHtml(name)){
+    if (isHtml(name)){
       try { g = storeMeta(String(n.content), "fs:" + p, "game"); } catch (e){ g = null; }
       if (g && g.desc === "An app from the SEA Store") g.desc = "A game in ~/Games";
     }
@@ -10981,11 +9767,8 @@ function myGames(){
 }
 function registerGame(g){
   if (APPS[g.id] && !APPS[g.id].game) return;
-  APPS[g.id] = { name: g.name, desc: g.desc, icon: g.icon, w: g.w, h: g.h, game: true,
-                 cls: g.kind === "swf" ? "app-flash" : "app-ext",
-                 run: g.kind === "swf" ? win => flashApp(win, g.path ? { path: g.path } : { url: g.url, name: g.name })
-                    : g.kind === "page" ? win => pageGameRun(win, g)
-                    : win => storeAppRun(win, g) };
+  APPS[g.id] = { name: g.name, desc: g.desc, icon: g.icon, w: g.w, h: g.h, game: true, cls: "app-ext",
+                 run: g.kind === "page" ? win => pageGameRun(win, g) : win => storeAppRun(win, g) };
 }
 /* Links and Flash files named in games/manifest.js are read on every host,
    because GitHub's listing only knows about files. On Pages, a .swf dropped
@@ -10993,11 +9776,9 @@ function registerGame(g){
 async function gameExtras(){
   const out = [];
   for (const e of await loadFolderManifest("games", "BOXOS_GAMES")){
-    const g = typeof e === "string" ? (isSwf(e) ? gameFromSwf(e) : null) : gameFromEntry(e);
+    const g = typeof e === "string" ? null : gameFromEntry(e);
     if (g) out.push(g);
   }
-  const names = await repoList("games");
-  if (names) for (const n of names.filter(isSwf)) out.push(gameFromSwf("games/" + n));
   return out;
 }
 async function discoverGames(){
@@ -11094,7 +9875,7 @@ function gamesApp(win){
   }
   function draw(){
     const q = find.value.trim().toLowerCase();
-    const all = BUILTIN_GAMES.concat(gamesCatalogue || []);
+    const all = gamesCatalogue || [];
     const list = all.filter(g => !q || (g.name + " " + g.desc).toLowerCase().includes(q));
     body.innerHTML = "";
     const grid = el("div", "gm-grid");
@@ -11106,7 +9887,7 @@ function gamesApp(win){
     const how = el("div", "st-how");
     how.append(
       el("h3", "st-h", "Adding a game"),
-      el("p", null, "Add a game, at the top, takes a game on a website by its address, or an .html or .swf file - " +
+      el("p", null, "Add a game, at the top, takes a game on a website by its address, or an .html file - " +
                     "from Files or from this computer. They are kept in SEA OS itself, and nothing needs uploading."),
       el("p", null, "An .html game can also go in the games/ folder of the repository. Name it with these tags " +
                     "and it shows up here:"),
@@ -11143,8 +9924,8 @@ function gamesApp(win){
     return got;
   }
   async function addFromFiles(){
-    const p = await pickFile({ title: "Add a game", ok: "Add", start: HOME, hint: ".html and .swf files",
-                               accept: nm => isHtml(nm) || isSwf(nm) });
+    const p = await pickFile({ title: "Add a game", ok: "Add", start: HOME, hint: ".html files",
+                               accept: nm => isHtml(nm) });
     const n = p && node(p);
     if (!n) return;
     if (dirName(p) !== MY_GAMES_DIR()) keep(baseName(p), n.content, n.kind, n.mime);
@@ -11154,9 +9935,9 @@ function gamesApp(win){
   function addFromComputer(){
     const inp = $("#importer");
     inp.value = "";
-    inp.accept = ".html,.htm,.swf";
+    inp.accept = ".html,.htm";
     inp.onchange = () => {
-      const files = Array.from(inp.files || []).filter(f => isHtml(f.name) || isSwf(f.name));
+      const files = Array.from(inp.files || []).filter(f => isHtml(f.name));
       inp.onchange = null;
       inp.accept = "";
       if (!files.length) return;
@@ -11164,10 +9945,10 @@ function gamesApp(win){
       for (const f of files){
         const r = new FileReader();
         r.onload = async () => {
-          keep(f.name, r.result, isSwf(f.name) ? "binary" : "text", f.type || (isSwf(f.name) ? "application/x-shockwave-flash" : "text/html"));
+          keep(f.name, r.result, "text", f.type || "text/html");
           if (--left === 0){ await refresh(); notify("Added to Games", files.map(x => x.name).join(", "), "\uD83C\uDFAE"); }
         };
-        if (isSwf(f.name)) r.readAsDataURL(f); else r.readAsText(f);
+        r.readAsText(f);
       }
     };
     inp.click();
@@ -11187,7 +9968,7 @@ function gamesApp(win){
     const r = $('[data-m="add"]', B).getBoundingClientRect();
     showCtx(r.left, r.bottom + 4, [
       { icon: "\uD83C\uDF10", label: "A game on a website\u2026", run: addLink },
-      { icon: "\uD83D\uDCC1", label: "A file in Files\u2026", run: addFromFiles },
+      { icon: "\uD83D\uDCC1", label: "An .html file in Files\u2026", run: addFromFiles },
       { icon: "\uD83D\uDCE5", label: "From this computer\u2026", run: addFromComputer }
     ]);
   };
@@ -11890,13 +10671,26 @@ function drawMenuBar(){
 /* ============================================================
    14. Settings
    ============================================================ */
+/* which page of Settings was open last, kept between openings */
+let settingsPage = "look";
+const SETTINGS_PAGES = [
+  { id: "look",    name: "Appearance", icon: "\uD83C\uDFA8" },
+  { id: "desktop", name: "Desktop",    icon: "\uD83D\uDDA5\uFE0F" },
+  { id: "apps",    name: "Apps & web", icon: "\uD83E\uDDE9" },
+  { id: "system",  name: "System",     icon: "\u2699\uFE0F" },
+  { id: "dev",     name: "Developer",  icon: "\uD83D\uDEE0\uFE0F", dev: true }
+];
 function settingsApp(win){
   const B = win.body;
+  let pages = {};
 
-  /* small builders so the sections below stay readable */
-  function section(title){
+  /* small builders so the sections below stay readable. A section says which
+     page it belongs on and goes straight there. */
+  function section(title, page){
     const s = el("div", "set-sec");
     s.appendChild(el("h3", "set-h", title));
+    /* a page that is not being shown keeps its sections out of the way entirely */
+    if (pages[page]) pages[page].appendChild(s);
     return s;
   }
   function row(label){
@@ -11928,9 +10722,22 @@ function settingsApp(win){
 
   function render(){
     B.innerHTML = "";
+    const side = el("div", "set-side"), main = el("div", "set-main");
+    B.append(side, main);
+    pages = {};
+    const shown = SETTINGS_PAGES.filter(g => !g.dev || State.devMode);
+    if (!shown.some(g => g.id === settingsPage)) settingsPage = "look";
+    for (const g of shown){
+      pages[g.id] = el("div", "set-page");
+      const b = el("button", "set-tab" + (g.id === settingsPage ? " on" : ""));
+      b.append(el("span", "g", g.icon), el("span", null, g.name));
+      b.onclick = () => { settingsPage = g.id; render(); };
+      side.appendChild(b);
+    }
+    main.appendChild(pages[settingsPage]);
 
     /* --- appearance --- */
-    const a = section("Appearance");
+    const a = section("Appearance", "look");
     const themeRow = row("Theme");
     themeRow.appendChild(seg([["light", "Light"], ["dark", "Dark"]], State.theme, v => setTheme(v, $("#traytheme"))));
     a.appendChild(themeRow);
@@ -11976,10 +10783,9 @@ function settingsApp(win){
     a.appendChild(toggle("Wobbly windows", "The effect is not right yet - left in so you can try it", State.wobbly,
       v => { State.wobbly = v; saveSettings(); render(); },
       "broken"));
-    B.appendChild(a);
 
     /* --- desktop environment --- */
-    const de = section("Desktop environment");
+    const de = section("Desktop environment", "look");
     const deGrid = el("div", "de-grid");
     for (const id in SHELLS){
       const card = el("button", "de-card" + (State.shell === id ? " on" : ""));
@@ -12009,10 +10815,9 @@ function settingsApp(win){
     }
     de.appendChild(el("div", "store-note",
       "Hyprland tiles for you: one window fills the screen, two split into a master and a stack, and the rest share the right-hand side. Maximise a window to take it out of the layout. Help › Desktop shells has the rest."));
-    B.appendChild(de);
 
     /* --- wallpaper --- */
-    const wp = section("Wallpaper");
+    const wp = section("Wallpaper", "look");
     const walls = el("div", "walls");
     for (const p of WALL_COLORS){
       const d = el("div", "wall" + (!State.customWall && p.c === State.wallColor ? " on" : ""));
@@ -12073,10 +10878,9 @@ function settingsApp(win){
         v => { State.wallFit = v; applyWallpaper(); render(); }));
       wp.appendChild(fitRow);
     }
-    B.appendChild(wp);
 
     /* --- desktop icons + shortcuts --- */
-    const d = section("Desktop");
+    const d = section("Desktop", "desktop");
     d.appendChild(el("div", "set-h", "Default icons")).style.marginTop = "0";
     for (const b of BUILTIN_ICONS){
       d.appendChild(toggle(b.icon + "  " + b.label, b.kind === "trash" ? "Deleted files land here" : b.target, !!State.builtins[b.id],
@@ -12115,10 +10919,9 @@ function settingsApp(win){
     sizeRow.appendChild(seg([["small", "Small"], ["medium", "Medium"], ["large", "Large"]], State.iconSize,
       v => { State.iconSize = v; applyChrome(); render(); }));
     d.appendChild(sizeRow);
-    B.appendChild(d);
 
     /* --- widgets --- */
-    const wg = section("Widgets");
+    const wg = section("Widgets", "desktop");
     for (const id of WIDGETS){
       const place = State.weatherPlace;
       const note = id === "clock" ? "The time and date, large"
@@ -12139,10 +10942,9 @@ function settingsApp(win){
     wg.appendChild(el("div", "store-note",
       "Drag a widget to move it, and right-click one for its options. Weather comes from Open-Meteo; " +
       "the only thing sent is the place you choose."));
-    B.appendChild(wg);
 
     /* --- panel --- */
-    const p = section("Panel & clock");
+    const p = section("Panel & clock", "desktop");
     const posRow = row("Position");
     posRow.appendChild(seg([["bottom", "Bottom"], ["top", "Top"]], State.panelPos,
       v => { State.panelPos = v; applyChrome(); render(); }));
@@ -12151,10 +10953,9 @@ function settingsApp(win){
     fmtRow.appendChild(seg([[false, "12 hour"], [true, "24 hour"]], State.clock24,
       v => { State.clock24 = v; clockTick(); render(); }));
     p.appendChild(fmtRow);
-    B.appendChild(p);
 
     /* --- browser --- */
-    const br = section("Seahorse");
+    const br = section("Seahorse", "apps");
     const engRow = row("Search with");
     const sel = el("select", "wb-eng");
     sel.style.maxWidth = "180px";
@@ -12170,10 +10971,9 @@ function settingsApp(win){
     br.appendChild(el("div", "wb-none",
       "Local HTML files always render. Anything Seahorse downloads goes into Downloads, never onto this computer. " +
       (tideOn() ? "Sites open through Tide, below." : "Tide, below, opens the sites that refuse to open on their own.")));
-    B.appendChild(br);
 
     /* --- Tide --- */
-    const td = section("Tide");
+    const td = section("Tide", "dev");
     td.appendChild(el("div", "store-note",
       "Most sites refuse to open inside another page. Tide gets round that: a machine of your own opens " +
       "the connection, and Seahorse shows what comes back. Everything you visit goes through that machine, " +
@@ -12260,10 +11060,9 @@ function settingsApp(win){
     td.appendChild(el("div", "store-note",
       "The key only lets the machine open connections for you, and it is kept out of backup files. " +
       "Help \u203A Tide has the whole of it."));
-    B.appendChild(td);
 
     /* --- boot screen --- */
-    const bs = section("Boot screen");
+    const bs = section("Boot screen", "system");
     const bootMedia = mediaSource(State.bootMedia);
     const bootRow = row("Show");
     bootRow.appendChild(seg([["default", "SEA splash"], ["media", "My own"]],
@@ -12303,11 +11102,10 @@ function settingsApp(win){
     } else {
       bs.appendChild(el("div", "store-note", "The built-in SEA splash runs for about a second and a half."));
     }
-    B.appendChild(bs);
 
     /* --- what opens at startup --- */
-    const gm = section("Startup");
-    const games = BUILTIN_GAMES.concat(gamesCatalogue || myGames().concat(LINKED_GAMES));
+    const gm = section("Startup", "system");
+    const games = gamesCatalogue || myGames().concat(LINKED_GAMES);
     const modeRow = row("Open with");
     modeRow.appendChild(seg([["desktop", "The desktop"], ["game", "A game"], ["mp3", "MP3 Player"]],
       State.startMode || "desktop",
@@ -12366,10 +11164,45 @@ function settingsApp(win){
     } else {
       gm.appendChild(el("div", "store-note", "Files opens on startup, the way it always has."));
     }
-    B.appendChild(gm);
+
+    /* --- the Store --- */
+    const ap = section("Apps", "apps");
+    ap.appendChild(el("div", "store-note",
+      "An app is one .html file that runs in a window of its own. Install one from your files, or from the " +
+      "repository's apps/ folder. Installed apps go into the menu and the Dock."));
+    const apHost = el("div", "st-inset");
+    ap.appendChild(apHost);
+    storeSection(apHost);
+
+    /* --- developer --- */
+    if (State.devMode){
+      const dv = section("Developer", "dev");
+      dv.appendChild(el("div", "store-note",
+        "Tide is on this page, along with the workings. Nothing here is needed for ordinary use."));
+      const dvRow = row("Repository listings");
+      const dvClear = el("button", "btn", "Forget what GitHub said");
+      dvClear.onclick = () => {
+        try { localStorage.removeItem("boxos.repolist"); } catch (e){}
+        REPO_LISTS.clear();
+        notify("Listings forgotten", "The repository's folders will be asked about again.", "\\uD83D\\uDCE6");
+      };
+      dvRow.appendChild(dvClear);
+      dv.appendChild(dvRow);
+      const dvBits = el("dl", "about");
+      for (const [k, v] of [["Version", VERSION],
+                            ["Repository", repoName() || "none"],
+                            ["Files from", repoBase() || "beside index.html"],
+                            ["Disk", Disk.ok ? "the browser's file storage" : Disk.blocked ? "paused" : "localStorage only"],
+                            ["Tide", tideOn() ? tideHost() : "not set up"],
+                            ["Address", location.origin + location.pathname]]){
+        dvBits.appendChild(el("dt", null, k));
+        dvBits.appendChild(el("dd", null, v));
+      }
+      dv.appendChild(dvBits);
+    }
 
     /* --- storage --- */
-    const st = section("Storage");
+    const st = section("Storage", "system");
     st.appendChild(toggle("Save my files",
       Store.available
         ? "Keep files, settings and shortcuts in this browser. Turning this off deletes everything SEA OS has stored."
@@ -12378,11 +11211,34 @@ function settingsApp(win){
       v => setSaving(v),
       Store.available ? null : "unavailable"));
     st.appendChild(toggle("Use the repository's files",
-      "Music, videos, pictures, apps and games from the folders next to index.html. Off, SEA OS uses only " +
-      "what you have added to it, and asks GitHub nothing. Takes effect the next time SEA OS starts.",
+      "Music, videos, pictures, apps and games kept in a GitHub repository. Off, SEA OS uses only what you " +
+      "have added to it, and asks GitHub nothing. Takes effect the next time SEA OS starts.",
       State.useRepo !== false,
       v => { State.useRepo = v; saveSettings(); render(); notify(v ? "Using the repository" : "Not using the repository",
         "Takes effect the next time SEA OS starts.", "\uD83D\uDCE6"); }));
+    if (State.useRepo !== false){
+      const rRow = row("Repository");
+      const rIn = el("input", "modal-in");
+      rIn.value = State.repo || "";
+      rIn.placeholder = repoName() || "user/repository";
+      rIn.spellcheck = false;
+      rIn.style.cssText = "flex:1;min-width:170px;margin:0";
+      rIn.onchange = () => {
+        State.repo = rIn.value.trim();
+        REPO_LISTS.clear();
+        saveSettings();
+        render();
+      };
+      rRow.appendChild(rIn);
+      st.appendChild(rRow);
+      const where = repoName();
+      st.appendChild(el("div", "store-note", where
+        ? "Asking GitHub what is in " + where + ", so music/, videos/, pictures/, apps/ and games/ need no " +
+          "manifest files listing them. Answers are kept for a few hours" +
+          (repoBase() ? ", and the files themselves come from " + repoBase() + "." : ".")
+        : "Name a repository as user/repository - Guernica4u/CHALK-OS, say - and SEA OS asks GitHub what is in " +
+          "its folders. Without one it falls back to the manifest.js files beside index.html."));
+    }
 
     if (Store.on){
       const used = storageUsage() + (Disk.ok ? diskBytes() : 0);
@@ -12421,6 +11277,11 @@ function settingsApp(win){
         "Nothing is being written. Everything resets when you reload."));
     }
 
+    st.appendChild(toggle("Developer mode",
+      "Adds a Developer page: Tide, the repository's workings, and what SEA OS is running on.",
+      !!State.devMode,
+      v => { State.devMode = v; if (!v && settingsPage === "dev") settingsPage = "system"; saveSettings(); render(); }));
+
     const backupRow = row(null);
     backupRow.style.marginTop = "13px";
     const bk = el("button", "btn", "Back up to a file");
@@ -12451,13 +11312,12 @@ function settingsApp(win){
     };
     dangerRow.appendChild(reset);
     st.appendChild(dangerRow);
-    B.appendChild(st);
 
     /* --- about --- */
-    const ab = section("About this system");
+    const ab = section("About this system", "system");
     const dl = el("dl", "about");
     const pairs = [
-      ["System", "SEA OS 0.99 \u2014 a desktop in one HTML file"],
+      ["System", "SEA OS " + VERSION + " \u2014 a desktop in one HTML file"],
       ["Session", "\u2014"], ["Windows", "\u2014"], ["Disk", "\u2014"],
       ["Shortcuts", "\u2014"], ["Display", "\u2014"],
       ["Storage", "-"]
@@ -12475,7 +11335,6 @@ function settingsApp(win){
     };
     rr.appendChild(restart);
     ab.appendChild(rr);
-    B.appendChild(ab);
     brandTree(B);
     dds = Array.from(dl.querySelectorAll("dd"));
     tick();
@@ -13036,6 +11895,10 @@ async function firstRun(){
     State.helpDockPhase = "done";
     saveSettings();
   }
+  /* names that moved on, so old Dock pins and shortcuts point somewhere real */
+  State.dock = (State.dock || []).map(id => APP_ALIAS[id] || id).filter((id, i, a) => a.indexOf(id) === i && (APPS[id] || String(id).startsWith("game:")));
+  State.shortcuts = (State.shortcuts || []).map(sc => (sc.kind === "app" && APP_ALIAS[sc.target] ? Object.assign({}, sc, { target: APP_ALIAS[sc.target] }) : sc));
+  refreshSystemFiles();
   (State.installed || []).forEach(registerStoreApp);
   LINKED_GAMES.concat(myGames()).forEach(registerGame);
   applyBrand(); applyTheme(); applyAccent(); applyWallpaper(); applyChrome();

@@ -39,22 +39,28 @@ than hard rules.
 - **Hyprland** — tiling. One window fills the screen, two split into a master
   and a stack, and the rest share the right-hand side.
 
-### Video, music and pictures from the repo
+### Video, music and pictures from a repository
 
-Put files in `videos/`, `music/` and `pictures/` and they appear in CHALK OS under
-Videos, Music and Pictures — in the Videos, Media and Photos apps.
+Put files in `music/`, `videos/` or `pictures/` in a GitHub repository and they
+appear in Media and the Gallery. CHALK OS asks GitHub's API what is in those
+folders, so nothing has to be listed by hand, and that works from any address -
+not only the repository's own Pages site. Name the repository in **Settings →
+Storage** as `user/repository`; on a Pages site it works it out itself.
 
-They are **linked, not copied** — a node points at the path, so a 200 MB video
-costs nothing in browser storage and simply streams from the repo.
+Files are mounted as links rather than copied, so a 200 MB video costs nothing
+in storage and streams from where it sits. Read from somewhere other than the
+Pages site, the files come from that Pages site.
 
-On GitHub Pages the files are found automatically through GitHub's API. Anywhere
-else — including opening `index.html` off your disk — a browser cannot list a
-folder, so name them in `media/manifest.js`.
+GitHub allows 60 API calls an hour per network, so each folder listing is kept
+for six hours, and a stale listing is used rather than none when calls run out.
+`media/manifest.js` and `games/manifest.js` still exist as a fallback for when
+there is no repository, GitHub cannot be reached, or `index.html` is opened
+straight off a disk.
 
-## Apps: the CHALK Store
+## Apps: the CHALK Store, in Settings
 
-An app is one `.html` file. Put it in `apps/` and it shows up in the **CHALK
-Store**, ready to install into the menu and the Dock. `apps/sticky-notes.html`
+The Store is a page of **Settings → Apps** rather than an app of its own. An
+app is one `.html` file. Put it in `apps/` and it shows up there, ready to install into the menu and the Dock. `apps/sticky-notes.html`
 and `apps/focus-timer.html` are working examples.
 
 A few tags at the top name it:
@@ -80,9 +86,9 @@ app**. It runs Python too, through Pyodide, which downloads the first time.
 
 ## Games
 
-The **Games** app is a launcher for the games you put in `games/`, each one an
-`.html` file, plus the built-in Minesweeper. They run sandboxed like Store apps
-and keep a best score each.
+The **Games** app is a launcher. Games come from **Add a game** inside CHALK OS,
+from `games/manifest.js`, and from `.html` files in the repository's `games/`
+folder. Games run sandboxed like Store apps and keep a best score each.
 
 Add your own by dropping a file in `games/` with the same tags as an app, plus
 `<meta name="box-color" content="#3a7bd5">` for its tile. Scores go through
@@ -98,16 +104,36 @@ full screen. Browsers only grant full screen off a click, so the first click
 after startup finishes it. Esc leaves full screen; close the game for the
 desktop.
 
+### Unity, emulators and games on other sites
+
+Games can be pages that live somewhere else - a Unity build, an emulator,
+Eaglercraft. Add them to `games/manifest.js` by name and address:
+
+```js
+{ name: "Car Maintenance", url: "https://chalkbored.win/Car%20maintenance/",
+  icon: "🚗", color: "#34495e", desc: "A Unity game", size: "1100x680" }
+```
+
+They open in a window exactly as they are, keeping their own address - which
+is what lets a Unity game load its data files and save progress, and
+Eaglercraft keep its worlds.
+
 ## Chat
 
-`chat.html` is a Firebase-backed chat that runs as an app inside CHALK OS. It has
-to sit next to `index.html`; if it is missing, the Chat app says so instead of
-failing silently. Because it ships with the OS it runs as a first-party app,
-unlike HTML you import yourself, which stays sandboxed.
+Chat is under construction: the app opens on a notice instead of loading, while
+it is rebuilt. `chat.html` is still in the repository, and nothing that was said
+in it has gone anywhere.
 
 Its Firebase web config is in the file. That is normal — Firebase web API keys
 are public identifiers, not secrets; access is controlled by database rules and
 domain restrictions.
+
+## Settings
+
+Settings is a handful of pages: **Appearance**, **Desktop**, **Apps & web**,
+**System**, and **Developer** once that is switched on in System. The CHALK
+Store lives under Apps & web; Tide and the repository's workings live under
+Developer.
 
 ## Saving your work
 
@@ -116,8 +142,13 @@ Save my files**. Turning it off deletes everything CHALK OS has stored. There is
 also **Back up to a file**, which exports the whole machine as JSON and works
 whether or not saving is on.
 
-Large videos often will not fit in browser storage. CHALK OS tells you when that
-happens rather than quietly losing them.
+Files live in the browser's private file system (OPFS), which holds gigabytes,
+so imported songs and videos survive a reload. Only the list of what is where
+goes into `localStorage`, where it is small and saves instantly; a big file is
+written to disk once, when it arrives, and the list after it. Browsers without
+OPFS for pages - Firefox private windows, `index.html` opened from disk - fall
+back to keeping everything in `localStorage`, about 5 MB, and say which files
+did not fit.
 
 ## Seahorse, the browser
 
@@ -151,10 +182,24 @@ needs no key.
 
 ## Media and links
 
-**Media** plays your music and videos, and links. **Add media**, at the top
-right, offers three ways in: paste a link, play a file already in CHALK OS, or
-import one from the computer into `~/Music` or `~/Videos`. **Videos** has the
-same button.
+**Media** is the music player: your songs, and links from the web. A song's
+name, artist, album and cover come out of the file's own ID3 tags, and the
+cover turns while it plays. The **Gallery** - the picture button at the top of
+Media opens it - holds videos and pictures together, with a slideshow and
+where-you-stopped for videos.
+
+**Add media**, in both, offers three ways in: paste links, play a file already
+in CHALK OS, or import one from the computer into `~/Music`, `~/Videos` or
+`~/Pictures`.
+
+Getting things in is meant to be quick:
+
+* **Paste links** takes any number, one a line (Ctrl+Enter adds them).
+* **Ctrl+V** in any of the three players adds whatever link you copied.
+* **Drag and drop** files off your desktop, or a link from another tab, onto a
+  player or its Dock icon.
+* **Media keys** on the keyboard play, pause and skip, and Windows shows the song
+  and its cover in its own media pop-up.
 
 A link can be a direct link to an audio or video file, or a page on YouTube,
 Vimeo, Dailymotion, Twitch, Kick, Streamable, the Internet Archive, Bilibili,
@@ -164,16 +209,21 @@ too, by showing the page itself, which only works where the site allows it. YouT
 its own player inside Media, and Media's controls drive it. Links you open are
 kept under **From the web**.
 
-**Videos** remembers where you stopped a video - one of your files or a direct
-link - and picks up there next time, with a **Start over** button. Its tile
-shows how far through you are.
+The Gallery remembers where you stopped a video and picks up there next time,
+with a **Start over** button, and its tile shows how far through you are. Links
+all stay in Media, whether they are music or video.
 
 ## The name
 
-The desktop calls itself **CHALK OS**. **Settings → Appearance → Call it**
-switches it to **SEA OS** and back: the boot screen, the menu bar, the Terminal
-prompt, the Store and the help all follow. Everything else - the files, the
-settings, the apps you installed - stays exactly where it is.
+The desktop calls itself **CHALK OS**: a chalk-stick logo, a chalkboard boot
+screen where the logo draws itself, and **ChalkBrowser** for the web. New
+machines start on the **Paper** wallpaper.
+
+**Settings → Appearance → Call it** switches it back to **SEA OS** - the
+sailboat logo, the porthole boot screen and **Seahorse** - and back again.
+The menu bar, the Terminal prompt, the Store, the favicon and the help all
+follow. Everything else - your files, settings and installed apps - stays
+exactly where it is.
 
 ## MP3 Player
 
@@ -230,16 +280,6 @@ it plays is Spotify's decision, not ours: whole songs if you are signed in to
 Spotify in that browser, thirty-second tastes if you are not. `spotify.link`
 short links have to be opened once in a browser first, since the real address
 is what CHALK OS reads.
-
-## Locked Notes
-
-A note encrypted with a password of its own - AES-GCM, with the password
-stretched by PBKDF2 (310,000 rounds). What lands in the filesystem is
-ciphertext, so backups and any copy of CHALK OS someone else gets hold of give
-nothing away. The password is never stored: forget it and the note is gone.
-
-It is the right place for a key or a password. Notes are files ending
-`.locknote` in `~/Documents`.
 
 ## Screen saver
 
