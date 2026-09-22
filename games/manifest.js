@@ -23,4 +23,10 @@
 window.BOXOS_GAMES = [
   /* Learn Archery, Car Maintenance and Chalk Console are built into
      index.html now, so they show up even without this file. */
+
+  /* Listed as a page rather than left to be found, so it opens with a proper
+     address of its own: Eaglercraft keeps its worlds in the browser's
+     storage, which the locked-down frame used for found games does not allow. */
+  { name: "Eaglercraft", url: "games/eaglercraft.html", icon: "⛏️", color: "#5b8731",
+    desc: "Minecraft 1.8 in the browser - worlds are kept in this browser", size: "1100x700" }
 ];
