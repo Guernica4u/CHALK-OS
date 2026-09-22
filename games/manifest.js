@@ -30,3 +30,4 @@ window.BOXOS_GAMES = [
   { name: "Eaglercraft", url: "games/eaglercraft.html", icon: "⛏️", color: "#5b8731",
     desc: "Minecraft 1.8 in the browser - worlds are kept in this browser", size: "1100x700" }
 ];
+
