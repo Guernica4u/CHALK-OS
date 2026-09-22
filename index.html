@@ -9789,12 +9789,15 @@ function repoList(dir){
   p.then(v => { if (!v) REPO_LISTS.delete(dir); });   /* a failed look is tried again next time */
   return p;
 }
-async function discoverHtmlFolder(dir, globalName, prefix){
+async function discoverHtmlFolder(dir, globalName, prefix, skip){
   let paths = null;
   const names = await repoList(dir);
   if (names) paths = names.filter(isHtml).map(n => dir + "/" + n);
   /* a manifest may also name links and Flash files - only its pages are read here */
   if (!paths) paths = (await loadFolderManifest(dir, globalName)).filter(p => typeof p === "string" && isHtml(p));
+  /* Each page is fetched whole just to read its title, which is wasteful for
+     a big one - so anything named elsewhere with its own details is left out */
+  if (skip) paths = paths.filter(p => !skip.has(p));
   const found = await Promise.all(paths.map(async p => {
     try {
       const res = await fetch(p, { cache: "no-store" });
@@ -10998,10 +11001,16 @@ async function gameExtras(){
   return out;
 }
 async function discoverGames(){
-  const [found, extras] = await Promise.all([discoverHtmlFolder("games", "BOXOS_GAMES", "game"), gameExtras()]);
-  /* your own first, then the built-in links, then whatever the repository has */
+  /* A game named in games/manifest.js comes with its own details, and wins
+     over the same file found by looking in the folder - so a big page game
+     like Eaglercraft can be listed as a page, with its own storage, and is
+     never downloaded just to read its title. */
+  const extras = await gameExtras();
+  const named = new Set(extras.filter(g => g.kind === "page" && !/^[a-z]+:/i.test(g.url)).map(g => g.url.replace(/^\.\//, "")));
+  const found = await discoverHtmlFolder("games", "BOXOS_GAMES", "game", named);
+  /* your own first, then the built-in links, then what the manifest names, then whatever else is in games/ */
   const all = [];
-  for (const g of myGames().concat(LINKED_GAMES, found, extras)) if (g && !all.some(x => x.id === g.id)) all.push(g);
+  for (const g of myGames().concat(LINKED_GAMES, extras, found)) if (g && !all.some(x => x.id === g.id)) all.push(g);
   all.forEach(registerGame);
   gamesCatalogue = all;
   drawDock();
