@@ -981,9 +981,16 @@ body.shell-macos.sub-glass .seg{border-radius:999px}
 .st-inset{margin-top:10px;border:1px solid var(--border-soft);border-radius:10px;overflow:hidden;background:var(--surface)}
 .st-inset .st-bar{border-radius:0}
 .st-inset .st-body{max-height:420px;overflow:auto}
-.app-set .win-body{display:flex;overflow:hidden;padding:0}
+.app-set .win-body{display:flex;flex-direction:row;align-items:stretch;overflow:hidden;padding:0;container-type:inline-size}
+/* a narrow Settings window keeps the buttons, as icons */
+@container (max-width:520px){
+  .set-side{width:52px;padding:10px 6px}
+  .set-tab{justify-content:center;padding:9px 0}
+  .set-tab span:not(.g){display:none}
+}
+.set-tab .g{width:20px;text-align:center;flex:0 0 auto}
 .set-side{
-  width:168px;flex:0 0 auto;padding:8px;overflow:auto;background:var(--surface-2);
+  width:176px;flex:0 0 auto;padding:10px 8px;overflow:auto;background:var(--surface-2);display:flex;flex-direction:column;
   border-right:1px solid var(--border-soft);
 }
 .set-tab{
@@ -1112,6 +1119,149 @@ body.shell-macos.sub-glass .seg{border-radius:999px}
 /* ---------- trash ---------- */
 .app-trash .win-body{overflow:hidden}
 .tr-count{font-weight:600;padding-left:4px}
+
+/* ---------- MP3 Player ---------- */
+.app-mp3 .win-body{display:flex;flex-direction:column;background:var(--surface);overflow:hidden;position:relative}
+.m3-stage{flex:1;min-height:0;display:flex;align-items:center;justify-content:center;padding:18px 16px 4px}
+.m3-card{display:flex;flex-direction:column;align-items:center;gap:14px;width:100%;text-align:center}
+.m3-disc{
+  position:relative;width:min(64%,300px);aspect-ratio:1;border-radius:50%;flex:0 0 auto;
+  background:var(--surface-3);box-shadow:0 10px 30px rgba(0,0,0,.28),0 0 0 1px var(--border-soft) inset;
+  animation:m3spin 16s linear infinite;animation-play-state:paused;overflow:hidden;
+}
+.app-mp3 .win-body.playing .m3-disc{animation-play-state:running}
+.m3-art{position:absolute;inset:0;background-size:cover;background-position:center;border-radius:50%}
+.m3-art.letter{display:flex;align-items:center;justify-content:center;font-size:clamp(44px,18vh,84px);font-weight:600;color:var(--accent-fg);background:var(--accent)}
+.m3-hole{
+  position:absolute;left:50%;top:50%;width:17%;height:17%;margin:-8.5% 0 0 -8.5%;border-radius:50%;
+  background:var(--surface);box-shadow:0 0 0 1px var(--border-soft),0 0 0 7px rgba(0,0,0,.12);
+}
+.m3-text{width:100%;min-width:0}
+.m3-title{font-size:19px;font-weight:600;line-height:1.25;max-width:94%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.m3-sub{font-size:12.5px;color:var(--dim);max-width:94%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.m3-bar{padding:4px 18px 0;display:flex;flex-direction:column;gap:2px;width:100%;max-width:560px;margin:0 auto}
+/* with no cover the disc is a plain record label, so the spindle hole goes */
+.m3-art.letter ~ .m3-hole{display:none}
+.m3-seek{width:100%}
+.m3-times{display:flex;justify-content:space-between;font-size:11px;color:var(--dim);font-variant-numeric:tabular-nums}
+.m3-ctl{display:flex;align-items:center;justify-content:center;gap:12px;padding:6px 16px 2px}
+.m3-ctl button{
+  width:38px;height:38px;border-radius:50%;border:1px solid var(--border-soft);background:var(--surface-2);
+  color:var(--text);font-size:15px;display:flex;align-items:center;justify-content:center;cursor:pointer;
+}
+.m3-ctl button:hover{border-color:var(--accent)}
+.m3-ctl button.on{color:var(--accent);border-color:var(--accent)}
+.m3-ctl .m3-play{width:52px;height:52px;font-size:19px;background:var(--accent);border-color:var(--accent);color:var(--accent-fg)}
+.m3-vol{display:flex;align-items:center;gap:8px;padding:2px 18px 8px;color:var(--dim);font-size:12px;width:100%;max-width:560px;margin:0 auto}
+.m3-vol input{flex:1}
+.m3-next{
+  display:flex;align-items:center;gap:8px;width:100%;padding:11px 16px;border:0;border-top:1px solid var(--border-soft);
+  background:var(--surface-2);color:var(--text);font:inherit;font-size:12.5px;text-align:left;cursor:pointer;
+}
+.m3-next:hover{background:var(--surface-3)}
+.m3-next-l{color:var(--dim);flex:0 0 auto}
+.m3-next-t{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.m3-chev{color:var(--dim);transition:transform .25s ease}
+.app-mp3 .win-body.queued .m3-chev{transform:rotate(180deg)}
+.m3-queue{
+  position:absolute;left:0;right:0;bottom:0;height:72%;z-index:3;display:flex;flex-direction:column;
+  background:var(--surface);border-top:1px solid var(--border-soft);border-radius:12px 12px 0 0;
+  box-shadow:0 -14px 34px rgba(0,0,0,.22);transform:translateY(101%);transition:transform .32s cubic-bezier(.2,.8,.3,1);
+}
+.app-mp3 .win-body.queued .m3-queue{transform:none}
+.m3-q-head{display:flex;align-items:center;gap:8px;padding:10px 12px;border-bottom:1px solid var(--border-soft)}
+.m3-q-head .t{font-weight:600;font-size:13px;flex:0 0 auto}
+.m3-lists{flex:1;min-width:0;max-width:190px}
+.m3-q-list{flex:1;min-height:0;overflow:auto;padding:6px}
+.m3-row{
+  display:flex;align-items:center;gap:9px;width:100%;padding:8px 10px;border:0;border-radius:8px;
+  background:none;color:var(--text);font:inherit;font-size:12.5px;text-align:left;cursor:pointer;
+}
+.m3-row:hover{background:var(--surface-2)}
+.m3-row.on{background:var(--surface-3);color:var(--accent)}
+.m3-row .n{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.m3-row .d{color:var(--dim);font-size:11px;flex:0 0 auto}
+.m3-none{padding:26px 12px;text-align:center;color:var(--dim);line-height:1.6;font-size:12.5px}
+@keyframes m3spin{from{transform:rotate(0)}to{transform:rotate(360deg)}}
+@media (prefers-reduced-motion: reduce){
+  .m3-disc{animation:none}
+  .m3-queue{transition:none}
+}
+/* the way back to the whole of Media */
+.m3-swap{position:absolute;top:10px;left:10px;z-index:2}
+
+/* ---------- Game mode and Movie mode ---------- */
+body.focus-mode{background:#000}
+body.focus-mode > :not(#desktop):not(#focus-bar):not(#focus-hot),
+body.focus-mode #desktop > :not(#windows):not(#modals){display:none!important}
+body.focus-mode #windows{position:fixed;inset:0;z-index:50}
+body.focus-mode #windows > :not(.focus-target){display:none!important}
+body.focus-mode #modals{z-index:2147483646}
+.win.focus-target{
+  position:fixed!important;left:0!important;top:0!important;width:100vw!important;height:100vh!important;
+  border:0!important;border-radius:0!important;box-shadow:none!important;transform:none!important;animation:none!important;
+  backdrop-filter:none!important;-webkit-backdrop-filter:none!important;background:#000!important;
+}
+.win.focus-target .win-title,.win.focus-target .rz{display:none!important}
+.win.focus-target .win-body{background:#000!important}
+.win.focus-target.app-mp3 .win-body,
+.win.focus-target.app-music .win-body:not(.showing-video):not(.showing-yt){background:var(--surface)!important}
+/* Movie mode: the picture, and the controls laid over its foot */
+.focus-movie.app-vid .vd-bar,.focus-movie .m3-swap,.focus-movie .m3-next,.focus-movie .m3-queue{display:none!important}
+.focus-movie.app-vid .vd-ctl,
+.focus-movie.app-music .win-body.showing-video .mu-controls,
+.focus-movie.app-music .win-body.showing-yt .mu-controls{
+  position:absolute;left:0;right:0;bottom:0;z-index:2;border:0;padding:26px 16px 14px;color:#ddd;
+  background:linear-gradient(transparent,rgba(0,0,0,.82));transition:opacity .3s ease;
+}
+.focus-movie.app-music .win-body{position:relative}
+.focus-movie.app-music .mu-list,.focus-movie.app-music .mu-now .tb-btn{display:none!important}
+.focus-movie.app-music .win-body.showing-video .mu-now,.focus-movie.app-music .win-body.showing-yt .mu-now{display:none}
+.focus-movie.app-music .win-body.showing-video .mu-video{flex:1;min-height:0;max-height:none;height:auto}
+.focus-movie.app-music .win-body.showing-yt .mu-yt{flex:1;min-height:0;max-height:none;height:auto;aspect-ratio:auto}
+/* a song in Movie mode: its cover, big, in the middle */
+.focus-movie.app-music .mu-now{flex:1;flex-direction:column;justify-content:center;gap:22px;border:0;background:none;text-align:center}
+.focus-movie.app-music .mu-disc{width:min(46vh,46vw);height:min(46vh,46vw)}
+.focus-movie.app-music .mu-disc .mu-art{width:100%;height:100%;font-size:min(16vh,16vw)}
+.focus-movie.app-music .mu-meta{max-width:80vw}
+.focus-movie.app-music .mu-title{font-size:30px}
+.focus-movie.app-music .mu-sub{font-size:15px}
+body.focus-idle .focus-movie .vd-ctl,body.focus-idle .focus-movie .mu-controls,body.focus-idle .focus-movie .m3-ctl,
+body.focus-idle .focus-movie .m3-vol{opacity:0;pointer-events:none}
+.focus-movie .m3-ctl,.focus-movie .m3-vol{transition:opacity .3s ease}
+body.focus-idle,body.focus-idle *{cursor:none!important}
+#focus-hot{position:fixed;left:0;right:0;top:0;height:6px;z-index:2147483600}
+#focus-bar{
+  position:fixed;top:12px;left:50%;z-index:2147483601;display:flex;align-items:center;gap:10px;
+  padding:6px 6px 6px 16px;border-radius:999px;background:rgba(18,18,18,.9);color:#eee;font-size:12.5px;
+  box-shadow:0 10px 34px rgba(0,0,0,.45);transform:translate(-50%,-160%);transition:transform .26s cubic-bezier(.2,.8,.3,1);
+}
+#focus-bar.show{transform:translate(-50%,0)}
+#focus-bar small{color:#9a9a9a}
+#focus-bar button{
+  height:28px;padding:0 13px;border-radius:999px;border:1px solid #3a3a3a;background:#2a2a2a;color:#eee;font:inherit;cursor:pointer;
+}
+#focus-bar button:hover{border-color:var(--accent)}
+#focus-bar .fb-out{background:var(--accent);border-color:var(--accent);color:var(--accent-fg)}
+#focus-bar .fb-full{display:none}
+#focus-bar.windowed .fb-full{display:inline-block}
+
+/* Windows whose insides redraw all the time - games, web pages, video, a
+   turning cover - are solid rather than glass. Blurring what lies behind a
+   window has to be done again for every frame drawn inside it, and on most
+   graphics chips that is what made games slow to answer. */
+body.sub-glass .win.app-ext,body.sub-glass .win.app-web,body.sub-glass .win.app-vid,
+body.sub-glass .win.app-music,body.sub-glass .win.app-mp3,body.sub-glass .win.app-play{
+  backdrop-filter:none!important;-webkit-backdrop-filter:none!important;background:var(--surface)!important;
+}
+body.sub-glass .win.app-ext .win-body,body.sub-glass .win.app-web .win-body,body.sub-glass .win.app-vid .win-body,
+body.sub-glass .win.app-music .win-body,body.sub-glass .win.app-mp3 .win-body,body.sub-glass .win.app-play .win-body{
+  background:var(--surface)!important;
+}
+.app-ext .ext-frame{background:#000}
+/* long lists only lay out the rows that are on screen */
+.mu-row,.m3-row{content-visibility:auto;contain-intrinsic-size:auto 40px}
+.vd-tile{content-visibility:auto;contain-intrinsic-size:auto 170px}
 
 /* ---------- music ---------- */
 .app-music .win-body{overflow:hidden}
@@ -2186,6 +2336,7 @@ const State = {
   mp3List: "all",      /* the MP3 Player's playlist, shuffle and repeat */
   mp3Shuffle: false,
   mp3Repeat: "off",
+  mediaMode: "list",   /* Media's face: "list", or "mp3" for the MP3 Player */
   gameApp: "",
   widgetPos: {},
   weatherPlace: null,
@@ -2204,7 +2355,7 @@ let BOOT_TIME = Date.now();
    ============================================================ */
 const K = { on: "boxos.on", fs: "boxos.fs", set: "boxos.settings", sc: "boxos.shortcuts", trash: "boxos.trash" };
 const SETTING_KEYS = ["theme","accent","wallColor","customWall","wallFit","animations",
-                      "wobbly","panelPos","clock24","iconSize","engine","wallVideo","bootMedia","shell","dock","bookmarks","sounds","installed","widgets","widgetPos","weatherPlace","tempUnit","highScores","subthemes","menuFolded","helpDockPhase","webMedia","startMode","gameApp","screensaver","resume","brand","devMode","tideHost","useRepo","repo","myGames","mp3List","mp3Shuffle","mp3Repeat"];
+                      "wobbly","panelPos","clock24","iconSize","engine","wallVideo","bootMedia","shell","dock","bookmarks","sounds","installed","widgets","widgetPos","weatherPlace","tempUnit","highScores","subthemes","menuFolded","helpDockPhase","webMedia","startMode","gameApp","screensaver","resume","brand","devMode","tideHost","useRepo","repo","myGames","mp3List","mp3Shuffle","mp3Repeat","mediaMode"];
 /* Only a soft gauge for the usage bar. The real localStorage ceiling is not
    knowable from script and varies a lot - roughly 5 MB on a file:// page, but
    far more on some origins - so nothing here claims a hard number. */
@@ -3246,6 +3397,7 @@ function focusWin(w){
   /* after the click that did this has finished moving focus about */
   if (w.api && w.api.focusFrame) setTimeout(() => { if (activeWin === w) w.api.focusFrame(); }, 0);
   updateMenuBarApp();
+  syncWallVideo();
 }
 /* A click inside a window's iframe never reaches this document, so the
    window underneath would stay behind. Focus leaving for the frame is the
@@ -3275,6 +3427,7 @@ function genieBox(w){
   };
 }
 function minimizeWin(w){
+  setTimeout(syncWallVideo, 0);
   if (w.min) return;
   w.min = true;
   updateDeskBtn();
@@ -3334,6 +3487,7 @@ function restoreWin(w){
   setTimeout(clear, 260);
 }
 function toggleMax(w){
+  setTimeout(syncWallVideo, 0);
   const area = $("#windows");
   if (w.max){
     w.max = false;
@@ -3350,6 +3504,8 @@ function toggleMax(w){
 }
 function closeWin(w){
   if (w.api && typeof w.api.onClose === "function" && w.api.onClose() === false) return;
+  if (Focus.win === w) leaveFocus();
+  setTimeout(syncWallVideo, 250);
   const done = () => {
     Sfx.play("close");
     w.el.remove();
@@ -3415,7 +3571,7 @@ const APPS = {
   editor:   { name: "Text Editor", desc: "Write and edit text files",      icon: "\uD83D\uDCDD", w: 720, h: 540, cls: "app-editor", run: editorApp },
   playground: { name: "Playground", desc: "Web pages and Python, run as you type", icon: "🧪", w: 1000, h: 640, cls: "app-play", run: playgroundApp },
   videos:   { name: "Gallery",    desc: "Your videos and pictures, in one place", icon: "\uD83D\uDDBC\uFE0F", w: 880, h: 620, cls: "app-vid", run: galleryApp },
-  music:    { name: "Media",      desc: "Play video and audio",            icon: "\uD83C\uDFB5", w: 640, h: 560, cls: "app-music", run: musicApp },
+  music:    { name: "Media",      desc: "Play video and audio",            icon: "\uD83C\uDFB5", w: 640, h: 560, cls: "app-music", run: mediaApp },
   trash:    { name: "Trash",      desc: "Put deleted files back",         icon: "\uD83D\uDDD1\uFE0F", w: 660, h: 440, cls: "app-trash", run: trashApp, single: true },
   paint:    { name: "Paint",      desc: "Draw something and keep it",     icon: "\uD83C\uDFA8", w: 760, h: 560, cls: "app-paint", run: paintApp },
   games:    { name: "Games",      desc: "The games in the repo's games/ folder", icon: "\uD83C\uDFAE", w: 780, h: 580, cls: "app-games", run: gamesApp, single: true },
@@ -3426,6 +3582,9 @@ const APPS = {
 /* apps that were folded into others - a Dock pin or shortcut still works */
 const APP_ALIAS = { photos: "videos", viewer: "videos", mp3: "music", store: "settings", flash: "files", vault: "files", mines: "games", calc: "files" };
 function launch(appId, arg, forceNew){
+  /* the old names still open the right face or page */
+  if (appId === "mp3") State.mediaMode = "mp3";
+  if (appId === "store") settingsPage = "apps";
   appId = APP_ALIAS[appId] || appId;
   const app = APPS[appId];
   if (!app) return null;
@@ -4693,6 +4852,8 @@ function filesApp(win, startPath){
     if (!many && n.type === "file" && isVideo(name))
       items.push({ icon: "\uD83C\uDFAC", label: "Set as wallpaper", run: () => setWallpaperFrom(absPath(name, cwd)) },
                   { icon: "\u23FB", label: "Set as boot screen", run: () => setBootFrom(absPath(name, cwd)) });
+    if (!many && n.type === "file" && (isVideo(name) || isAudio(name) || n.kind === "image"))
+      items.push({ icon: "🎬", label: "Movie mode", run: () => movieMode(absPath(name, cwd)) });
     items.push("-");
     if (!many) items.push({ icon: "\uD83D\uDCCC", label: "Add to Desktop", run: () => addPathShortcut(absPath(name, cwd)) },
                           { icon: "\u270F\uFE0F", label: "Rename\u2026", run: doRename });
@@ -7444,6 +7605,387 @@ function coverBeside(path){
    12g. Media - plays local audio and video, YouTube links and
    direct links to media files, all from one list
    ============================================================ */
+function mp3App(win, startPath){
+  const B = win.body;
+  B.innerHTML =
+    '<button class="tb-btn m3-swap" data-m="media" title="Back to all of Media: links, videos and the list">☰ Media</button>' +
+    '<div class="m3-stage"><div class="m3-card">' +
+      '<div class="m3-disc"><div class="m3-art letter"></div><span class="m3-hole"></span></div>' +
+      '<div class="m3-text"><div class="m3-title">Nothing playing</div><div class="m3-sub">Pick something from Up next</div></div>' +
+    '</div></div>' +
+    '<div class="m3-bar">' +
+      '<input class="m3-seek" type="range" min="0" max="1000" value="0" title="Seek">' +
+      '<div class="m3-times"><span class="m3-at">0:00</span><span class="m3-of">0:00</span></div>' +
+    '</div>' +
+    '<div class="m3-ctl">' +
+      '<button data-m="shuffle" title="Shuffle">🔀</button>' +
+      '<button data-m="prev" title="Previous">&#9198;</button>' +
+      '<button class="m3-play" data-m="play" title="Play or pause">&#9654;</button>' +
+      '<button data-m="next" title="Next">&#9197;</button>' +
+      '<button data-m="repeat" title="Repeat">🔁</button>' +
+    '</div>' +
+    '<div class="m3-vol"><span>🔈</span><input class="m3-v" type="range" min="0" max="100" value="90" title="Volume"></div>' +
+    '<button class="m3-next" data-m="queue">' +
+      '<span class="m3-next-l">Playing next</span><span class="m3-next-t">—</span><span class="m3-chev">⌃</span>' +
+    '</button>' +
+    '<div class="m3-queue">' +
+      '<div class="m3-q-head"><span class="t">Up next</span>' +
+        '<select class="m3-lists wb-eng"></select>' +
+        '<span class="ed-sp"></span>' +
+        '<button class="tb-btn" data-m="add" title="Add a link, a file already in SEA OS, or a file from this computer">➕</button>' +
+        '<button class="tb-btn" data-m="shut" title="Close">✕</button>' +
+      '</div>' +
+      '<div class="m3-q-list"></div>' +
+    '</div>';
+
+  const audio = new Audio();
+  const card = $(".m3-card", B), art = $(".m3-art", B);
+  const titleEl = $(".m3-title", B), subEl = $(".m3-sub", B);
+  const seek = $(".m3-seek", B), atEl = $(".m3-at", B), ofEl = $(".m3-of", B), vol = $(".m3-v", B);
+  const listSel = $(".m3-lists", B), qList = $(".m3-q-list", B), nextT = $(".m3-next-t", B);
+  const mb = k => $('[data-m="' + k + '"]', B);
+  let lists = [], tracks = [], at = -1, order = [], seeking = false, slideTok = 0;
+
+  const fmt = s => (Number.isFinite(s) ? Math.floor(s / 60) + ":" + String(Math.floor(s % 60)).padStart(2, "0") : "0:00");
+  const isWeb = t => typeof t !== "string";
+  const nameOf = t => (isWeb(t) ? t.title : baseName(t).replace(/\.[^.]+$/, ""));
+  const whereOf = t => (isWeb(t) ? t.author || "a link" : tilde(dirName(t)));
+
+  /* ---- what there is to play, grouped by the folder it lives in ---- */
+  function build(){
+    const byDir = new Map();
+    walkFS((p, n, name) => {
+      if (n.type !== "file" || !isAudio(name)) return;
+      const d = dirName(p);
+      if (!byDir.has(d)) byDir.set(d, []);
+      byDir.get(d).push(p);
+    });
+    const every = [];
+    for (const arr of byDir.values()) every.push(...arr);
+    const web = (State.webMedia || []).filter(t => t.kind === "file" && isAudio(pathOfLink(t.url)));
+    lists = [{ id: "all", name: "Everything", tracks: every.concat(web) }];
+    for (const [d, arr] of byDir) lists.push({ id: d, name: baseName(d) || "/", tracks: arr });
+    if (web.length) lists.push({ id: "web", name: "From the web", tracks: web });
+    const want = lists.find(l => l.id === State.mp3List) || lists[0];
+    State.mp3List = want.id;
+    const current = at >= 0 ? tracks[at] : null;
+    tracks = want.tracks;
+    at = current == null ? -1 : tracks.indexOf(current);
+    drawLists();
+    reorder();
+    drawQueue();
+    drawNext();
+  }
+  function drawLists(){
+    listSel.innerHTML = "";
+    for (const l of lists){
+      const o = el("option", null, l.name + " (" + l.tracks.length + ")");
+      o.value = l.id;
+      listSel.appendChild(o);
+    }
+    listSel.value = State.mp3List;
+  }
+  /* shuffle keeps its own running order so Previous still goes back */
+  function reorder(){
+    order = tracks.map((t, i) => i);
+    if (State.mp3Shuffle){
+      for (let i = order.length - 1; i > 0; i--){
+        const j = Math.floor(Math.random() * (i + 1));
+        [order[i], order[j]] = [order[j], order[i]];
+      }
+      if (at >= 0){
+        const k = order.indexOf(at);
+        if (k > 0){ order.splice(k, 1); order.unshift(at); }
+      }
+    }
+  }
+  function stepIndex(dir){
+    if (!tracks.length) return -1;
+    if (at < 0) return order[0];
+    const k = order.indexOf(at);
+    if (k < 0) return order[0];
+    if (State.mp3Repeat === "one") return at;
+    const n = k + dir;
+    if (n < 0) return order[order.length - 1];
+    if (n >= order.length) return State.mp3Repeat === "all" ? order[0] : -1;
+    return order[n];
+  }
+  function drawNext(){
+    const i = stepIndex(1);
+    nextT.textContent = i >= 0 && tracks[i] && i !== at ? nameOf(tracks[i])
+      : State.mp3Repeat === "one" && at >= 0 ? nameOf(tracks[at]) + " again"
+      : tracks.length ? "Nothing - this is the last one" : "Nothing yet";
+  }
+  function drawQueue(){
+    qList.innerHTML = "";
+    if (!tracks.length){
+      qList.appendChild(el("div", "m3-none",
+        "No music in this playlist yet. Press ➕ to add a song, or put .mp3 files in the repo's music/ folder."));
+      return;
+    }
+    order.forEach(i => {
+      const t = tracks[i];
+      const b = el("button", "m3-row" + (i === at ? " on" : ""));
+      b.append(el("span", "g", i === at && !audio.paused ? "▶" : isWeb(t) ? "🔗" : "🎵"),
+               el("span", "n", nameOf(t)), el("span", "d", whereOf(t)));
+      b.onclick = () => play(i);
+      qList.appendChild(b);
+    });
+  }
+
+  /* ---- the sliding change of track ---- */
+  function slide(dir, fill){
+    if (!State.animations || !card.animate) return fill();
+    const tok = ++slideTok;
+    const out = card.animate(
+      [{ transform: "none", opacity: 1 }, { transform: "translateX(" + (-dir * 70) + "px)", opacity: 0 }],
+      { duration: 190, easing: "ease-in", fill: "forwards" });
+    let swapped = false;
+    const swap = () => {
+      /* a hidden window stops animating, so the swap also runs on a timer */
+      if (swapped || tok !== slideTok) return;
+      swapped = true;
+      fill();
+      out.cancel();
+      card.animate(
+        [{ transform: "translateX(" + (dir * 70) + "px)", opacity: 0 }, { transform: "none", opacity: 1 }],
+        { duration: 280, easing: "cubic-bezier(.2,.8,.3,1)" });
+    };
+    out.onfinish = swap;
+    setTimeout(swap, 230);
+  }
+  async function dressUp(t){
+    /* the words first, then the cover when it has been dug out of the file */
+    let title = nameOf(t), sub = whereOf(t), cover = isWeb(t) ? t.thumb || "" : "";
+    titleEl.textContent = title;
+    subEl.textContent = sub;
+    setArt(cover, title);
+    win.setTitle(title);
+    keys({ title, artist: isWeb(t) ? sub : "", art: cover });
+    if (isWeb(t)) return;
+    const tag = await id3Of(t);
+    if (tracks[at] !== t) return;
+    if (tag && tag.title) titleEl.textContent = tag.title;
+    if (tag && (tag.artist || tag.album))
+      subEl.textContent = [tag.artist, tag.album].filter(Boolean).join(" \u2014 ");
+    const art = (tag && tag.art) || coverBeside(t);
+    setArt(art, titleEl.textContent);
+    keys({ title: titleEl.textContent, artist: (tag && tag.artist) || "", album: (tag && tag.album) || "", art });
+  }
+  /* the keyboard's media keys, and what Windows shows in its pop-up */
+  const keys = info => claimMediaKeys(win, info, {
+    play: () => audio.play().catch(() => {}),
+    pause: () => audio.pause(),
+    next: () => step(1),
+    prev: () => step(-1),
+    seek: t => { if (audio.duration) audio.currentTime = t; },
+    playing: () => !audio.paused
+  });
+  function setArt(url, title){
+    if (url){
+      art.classList.remove("letter");
+      art.textContent = "";
+      art.style.backgroundImage = 'url("' + String(url).replace(/"/g, "%22") + '")';
+    } else {
+      art.classList.add("letter");
+      art.style.backgroundImage = "";
+      art.textContent = (title || "?").trim().charAt(0).toUpperCase() || "?";
+    }
+  }
+  function play(i, dir){
+    if (i < 0 || i >= tracks.length) return;
+    const back = dir != null ? dir : (i < at ? -1 : 1);
+    at = i;
+    const t = tracks[i];
+    const src = isWeb(t) ? t.url : (node(t) ? node(t).content : "");
+    if (!src) return build();
+    audio.src = src;
+    audio.play().catch(() => {});
+    slide(back, () => dressUp(t));
+    drawQueue();
+    drawNext();
+  }
+  function toggle(){
+    if (at < 0) return play(order.length ? order[0] : 0);
+    audio.paused ? audio.play().catch(() => {}) : audio.pause();
+  }
+  function step(dir){
+    if (!tracks.length) return;
+    /* going back in the first seconds means the start of this song */
+    if (dir < 0 && audio.currentTime > 4){ audio.currentTime = 0; return; }
+    const i = stepIndex(dir);
+    if (i < 0) return;
+    play(i, dir);
+  }
+  function openQueue(on){
+    B.classList.toggle("queued", on == null ? !B.classList.contains("queued") : !!on);
+  }
+
+  /* ---- adding music, the same three ways Media offers ---- */
+  /* only links straight to a song can play here; the rest stay in Media's list */
+  function takeLinks(items){
+    const songs = items.filter(it => it.kind === "file" && isAudio(pathOfLink(it.url)));
+    if (!songs.length){
+      if (items.length) osAlert("Not a song", "The MP3 Player plays audio files - links straight to a song. " +
+        "Those links are in Media's list instead, where " + (siteOf(items[0]) || "they") + " can play.");
+      return;
+    }
+    State.mp3List = "all";
+    build();
+    const i = tracks.findIndex(x => isWeb(x) && x.url === songs[0].url);
+    if (i >= 0) play(i);
+  }
+  const addLink = async () => takeLinks(await askMediaLinks(false));
+  async function addFromFiles(){
+    const p = await pickFile({ title: "Add a song", ok: "Play", start: HOME + "/Music", hint: "Audio",
+                               accept: nm => isAudio(nm) });
+    if (p) openPath(p);
+  }
+  async function addFromComputer(){
+    const p = await importMediaFromComputer(false);
+    if (p) openPath(p);
+  }
+  function openPath(p){
+    if (!isAudio(baseName(p))) return osAlert("Not a song", baseName(p) + " is not an audio file.");
+    State.mp3List = dirName(p);
+    build();
+    const i = tracks.indexOf(p);
+    if (i >= 0) play(i); else { State.mp3List = "all"; build(); play(tracks.indexOf(p)); }
+  }
+
+  mb("media").onclick = () => mediaSwap(win, "list");
+  mb("play").onclick = toggle;
+  mb("next").onclick = () => step(1);
+  mb("prev").onclick = () => step(-1);
+  mb("queue").onclick = () => openQueue();
+  mb("shut").onclick = () => openQueue(false);
+  mb("add").onclick = () => showAddMedia(mb("add"), { link: addLink, files: addFromFiles, computer: addFromComputer });
+  mb("shuffle").onclick = () => {
+    State.mp3Shuffle = !State.mp3Shuffle;
+    saveSettings();
+    mb("shuffle").classList.toggle("on", State.mp3Shuffle);
+    reorder();
+    drawQueue();
+    drawNext();
+  };
+  mb("repeat").onclick = () => {
+    State.mp3Repeat = State.mp3Repeat === "off" ? "all" : State.mp3Repeat === "all" ? "one" : "off";
+    saveSettings();
+    mb("repeat").classList.toggle("on", State.mp3Repeat !== "off");
+    mb("repeat").textContent = State.mp3Repeat === "one" ? "🔂" : "🔁";
+    mb("repeat").title = State.mp3Repeat === "one" ? "Repeat this song"
+                       : State.mp3Repeat === "all" ? "Repeat the playlist" : "Repeat";
+    drawNext();
+  };
+  listSel.onchange = () => { State.mp3List = listSel.value; saveSettings(); build(); };
+  seek.oninput = () => { seeking = true; };
+  seek.onchange = () => {
+    seeking = false;
+    if (audio.duration) audio.currentTime = audio.duration * (seek.value / 1000);
+  };
+  vol.oninput = () => { audio.volume = vol.value / 100; };
+  audio.volume = 0.9;
+  audio.onplay = audio.onpause = () => {
+    mediaKeysPlaying(win, !audio.paused);
+    B.classList.toggle("playing", !audio.paused);
+    mb("play").innerHTML = audio.paused ? "&#9654;" : "&#10074;&#10074;";
+    drawQueue();
+    nowPlaying(win, at >= 0 ? titleEl.textContent : "", !audio.paused);
+  };
+  audio.ontimeupdate = () => {
+    if (!seeking && audio.duration) seek.value = String(Math.round(audio.currentTime / audio.duration * 1000));
+    atEl.textContent = fmt(audio.currentTime);
+    ofEl.textContent = fmt(audio.duration);
+  };
+  audio.onended = () => {
+    if (State.mp3Repeat === "one"){ audio.currentTime = 0; audio.play().catch(() => {}); return; }
+    const i = stepIndex(1);
+    if (i >= 0) play(i, 1); else { B.classList.remove("playing"); drawNext(); }
+  };
+  audio.onerror = () => { if (at >= 0) subEl.textContent = "That file would not play."; };
+  B.addEventListener("keydown", e => {
+    if (e.target.tagName === "INPUT" || e.target.tagName === "SELECT") return;
+    if (e.key === " "){ e.preventDefault(); toggle(); }
+    else if (e.key === "ArrowRight"){ e.preventDefault(); step(1); }
+    else if (e.key === "ArrowLeft"){ e.preventDefault(); step(-1); }
+  });
+  B.tabIndex = 0;
+
+  mb("shuffle").classList.toggle("on", !!State.mp3Shuffle);
+  mb("repeat").classList.toggle("on", State.mp3Repeat !== "off");
+  if (State.mp3Repeat === "one") mb("repeat").textContent = "🔂";
+  build();
+  if (startPath) openPath(startPath);
+
+  return {
+    play: openPath,
+    addLinks: async urls => takeLinks(await addMediaLinks(urls, false)),
+    refresh: build,
+    pause: () => audio.pause(),
+    toggle,
+    next: () => step(1),
+    menus(){
+      return {
+        File: [
+          { label: "Add media…", run: () => mb("add").click() },
+          { label: "Paste a link…", run: addLink },
+          { label: "Open from Files…", run: addFromFiles },
+          { label: "Import from this computer…", run: addFromComputer },
+          "-",
+          { label: "Close Window", run: () => win.close() }
+        ],
+        View: [
+          { label: B.classList.contains("queued") ? "Hide Up next" : "Show Up next", run: () => openQueue() },
+          { label: "All of Media", run: () => mediaSwap(win, "list") },
+          { label: "Rescan music", run: build },
+          "-",
+          { label: State.mp3Shuffle ? "Stop shuffling" : "Shuffle", run: () => mb("shuffle").click() },
+          { label: "Repeat: " + (State.mp3Repeat === "one" ? "this song" : State.mp3Repeat === "all" ? "playlist" : "off"),
+            run: () => mb("repeat").click() }
+        ]
+      };
+    },
+    onClose(){
+      if (NowPlaying.win === win) nowPlaying(null);
+      releaseMediaKeys(win);
+      audio.pause();
+      audio.src = "";
+      return true;
+    }
+  };
+}
+
+/* Media has two faces: the whole player, with links, videos and the list, and
+   the MP3 Player - one song at a time, cover turning. The button at the top
+   of either turns it into the other, in the same window, and it opens next
+   time the way you left it. */
+function mediaApp(win, arg){
+  const mp3 = State.mediaMode === "mp3" && !(typeof arg === "string" && isVideo(baseName(arg)));
+  win.el.classList.toggle("app-mp3", mp3);
+  win.el.classList.toggle("app-music", !mp3);
+  return mp3 ? mp3App(win, arg) : musicApp(win, arg);
+}
+function mediaSwap(win, to){
+  State.mediaMode = to;
+  saveSettings();
+  try { if (win.api && win.api.onClose) win.api.onClose(); } catch (e){}
+  /* a fresh body, so nothing the other face listened for is left behind */
+  const body = el("div", "win-body");
+  win.body.replaceWith(body);
+  win.body = body;
+  win.api = mediaApp(win) || {};
+  if (!win.max){
+    const want = to === "mp3" ? { w: 400, h: 640 } : { w: APPS.music.w, h: APPS.music.h };
+    const area = $("#windows");
+    win.el.style.width = Math.min(want.w, area.clientWidth - 20) + "px";
+    win.el.style.height = Math.min(want.h, area.clientHeight - 20) + "px";
+    win.el.style.left = clamp(win.el.offsetLeft, 8, Math.max(8, area.clientWidth - win.el.offsetWidth - 8)) + "px";
+    win.el.style.top = clamp(win.el.offsetTop, 0, Math.max(0, area.clientHeight - win.el.offsetHeight - 8)) + "px";
+  }
+  win.setTitle(to === "mp3" ? "MP3 Player" : "Media");
+  brandTree(win.el);
+  if (activeWin === win) updateMenuBarApp();
+}
 function musicApp(win, startPath, only){
   const B = win.body;
   B.innerHTML =
@@ -7454,6 +7996,7 @@ function musicApp(win, startPath, only){
       '<div class="mu-meta"><div class="mu-title">Nothing playing</div><div class="mu-sub">Pick a track below</div></div>' +
       '<button class="tb-btn mu-open" data-m="open" title="Open this on YouTube">Open on YouTube</button>' +
       '<button class="tb-btn" data-m="gallery" title="Videos and pictures">\uD83D\uDDBC\uFE0F</button>' +
+      '<button class="tb-btn" data-m="mp3" title="MP3 Player: one song at a time, cover turning">\uD83D\uDCBF</button>' +
       '<button class="tb-btn mu-link" data-m="link" title="Add a link, a file already in SEA OS, or a file from this computer">➕ Add media</button>' +
     '</div>' +
     '<div class="mu-controls">' +
@@ -7525,11 +8068,15 @@ function musicApp(win, startPath, only){
       b.append(el("span", "g", icon), el("span", "mu-n", titleOf(t)),
                el("span", "mu-d", isWeb(t) ? (t.author || hostOfUrl(t.url)) : tilde(dirName(t))));
       b.onclick = () => playIndex(i);
-      if (isWeb(t)) b.oncontextmenu = e => {
+      b.oncontextmenu = e => {
         e.preventDefault();
         e.stopPropagation();
-        showCtx(e.clientX, e.clientY, [
+        const items = [
           { icon: "▶", label: "Play", run: () => playIndex(i) },
+          { icon: "🎬", label: "Movie mode", run: () => { playIndex(i); enterFocus(win, "movie"); } },
+          "-"
+        ];
+        if (isWeb(t)) items.push(
           { icon: "↗️", label: siteOf(t) ? "Open on " + siteOf(t) : "Open the link", run: () => window.open(t.url, "_blank", "noopener") },
           "-",
           { icon: "✖", label: "Remove from the list", run: () => {
@@ -7537,8 +8084,9 @@ function musicApp(win, startPath, only){
               State.webMedia = (State.webMedia || []).filter(x => x.url !== t.url);
               saveSettings();
               scan();
-            } }
-        ]);
+            } });
+        else items.push({ icon: "📁", label: "Show in Files", run: () => openInFiles(t) });
+        showCtx(e.clientX, e.clientY, items);
       };
       listEl.appendChild(b);
     });
@@ -7750,6 +8298,7 @@ function musicApp(win, startPath, only){
   $('[data-m="prev"]', B).onclick = () => step(-1);
   $('[data-m="link"]', B).onclick = addMedia;
   $('[data-m="gallery"]', B).onclick = () => launch("videos");
+  $('[data-m="mp3"]', B).onclick = () => mediaSwap(win, "mp3");
   for (const m of [audio, video]){
     m.onplay = m.onpause = () => {
       if (m !== media || mode !== "file") return;
@@ -7791,6 +8340,11 @@ function musicApp(win, startPath, only){
     play,
     addLinks: async urls => takeLinks(await addMediaLinks(urls, only === "video")),
     refresh: scan,
+    pause(){
+      if (mode === "yt"){ if (yt && yt.pauseVideo) yt.pauseVideo(); }
+      else if (mode === "embed") stopAll();     /* a site's own player cannot be told to wait */
+      else media.pause();
+    },
     menus(){
       return {
         File: [
@@ -7802,6 +8356,7 @@ function musicApp(win, startPath, only){
           { label: "Close Window", run: () => win.close() }
         ],
         View: [
+          { label: "MP3 Player", run: () => mediaSwap(win, "mp3") },
           { label: "Rescan library", run: scan },
           { label: "Next", run: () => step(1) },
           { label: "Previous", run: () => step(-1) }
@@ -7972,6 +8527,7 @@ function galleryApp(win, startPath){
         e.preventDefault(); e.stopPropagation();
         showCtx(e.clientX, e.clientY, [
           { icon: "▶", label: "Play", run: () => openAt(i) },
+          { icon: "🎬", label: "Movie mode", run: () => { openAt(i); enterFocus(win, "movie"); } },
           { icon: "📁", label: "Show in Files", run: () => openInFiles(p) },
           "-",
           { icon: "🖼️", label: "Set as wallpaper", run: () => setWallpaperFrom(p) },
@@ -8000,6 +8556,7 @@ function galleryApp(win, startPath){
       e.preventDefault(); e.stopPropagation();
       showCtx(e.clientX, e.clientY, [
         { icon: "\uD83D\uDDBC\uFE0F", label: "Open", run: () => openAt(i) },
+        { icon: "🎬", label: "Movie mode", run: () => { openAt(i); enterFocus(win, "movie"); } },
         { icon: "\uD83C\uDFA8", label: "Edit in Paint", run: () => launch("paint", p) },
         { icon: "\uD83D\uDCC1", label: "Show in Files", run: () => openInFiles(p) },
         "-",
@@ -8032,6 +8589,7 @@ function galleryApp(win, startPath){
       e.preventDefault(); e.stopPropagation();
       showCtx(e.clientX, e.clientY, [
         { icon: "▶", label: "Play", run: () => openAt(i) },
+        { icon: "🎬", label: "Movie mode", run: () => { openAt(i); enterFocus(win, "movie"); } },
         { icon: "↗️", label: siteOf(t) ? "Open on " + siteOf(t) : "Open the link", run: () => window.open(t.url, "_blank", "noopener") },
         "-",
         { icon: "✖", label: "Remove from Videos and Media", run: () => {
@@ -8278,6 +8836,7 @@ function galleryApp(win, startPath){
     play,
     addLinks: async urls => takeLinks(await addMediaLinks(urls, true)),
     refresh: scan,
+    pause(){ slideshow(false); video.pause(); },
     menus(){
       return {
         File: [
@@ -8407,7 +8966,7 @@ const HELP_TOPICS = [
   ]},
   { id: "saving", icon: "💾", title: "Saving, and what is lost", body: [
     ["p", "By default SEA OS keeps nothing. Reload the page and you get a fresh machine."],
-    ["p", "Settings › System › Save my files turns on browser storage. Your files, settings and shortcuts then survive a reload, in this browser on this computer only."],
+    ["p", "Settings › Storage › Save my files turns on browser storage. Your files, settings and shortcuts then survive a reload, in this browser on this computer only."],
     ["h", "The repository"],
     ["p", "SEA OS can take music, videos, pictures, apps and games from a GitHub repository. It asks GitHub what is in those folders, so anything you put there shows up on its own - no manifest.js listing files by hand. Settings › Storage names the repository, as user/repository, and works that out for itself when SEA OS is served from that repository's own Pages site."],
     ["l", ["GitHub allows sixty questions an hour from one network, so each answer is kept for a few hours, and an old answer is used rather than none when they run out.",
@@ -8422,18 +8981,18 @@ const HELP_TOPICS = [
            "Terminal: backup writes everything to a file you can keep, and restore reads it back."]]
   ]},
   { id: "look", icon: "🎨", title: "Making it yours", body: [
-    ["l", ["Settings is a handful of pages: Appearance, Desktop, Apps & web, System, and Developer when you switch that on in System. Developer holds Tide and the workings.",
+    ["l", ["Settings keeps a button for every page down its left side: Appearance, Wallpaper, Desktop, Widgets, Panel & clock, Seahorse, the SEA Store, Startup, Storage and About - and Developer, once Developer mode is on in Storage. A narrow Settings window keeps the buttons as icons.",
            "Settings › Appearance › Call it switches the whole desktop between CHALK OS and SEA OS. CHALK OS has the chalk logo, the chalkboard boot screen and ChalkBrowser; SEA OS brings back the sailboat, the porthole and Seahorse. The menu bar, the Terminal, the Store and this help follow along, and your files and settings stay as they are.",
-           "Settings › Appearance for light and dark, the accent colour and the wallpaper.",
+           "Settings › Appearance for light and dark and the accent colour; Settings › Wallpaper for the picture behind it all.",
            "A wallpaper can be a video. It loops behind everything.",
-           "Settings › Boot screen takes a video or a picture of your own.",
+           "Settings › Startup takes a boot screen of your own - a video or a picture - and chooses what opens first.",
            "Settings › Appearance › Screen saver shows the porthole and a big clock after a few minutes of nothing. It waits while anything is playing, and any key or mouse move brings the desktop back.",
            "Right-click any picture or video in Files to set either from there.",
            "Settings › Desktop chooses the shell, the desktop icons and what sits in the Dock.",
            "Drop an .mp4 into the videos folder of the repository and it appears in Videos without any importing."]]
   ]},
   { id: "tide", icon: "\uD83C\uDF0A", title: "Tide", body: [
-    ["p", "Tide lives in Settings › Developer, which appears once Developer mode is on in Settings › System."],
+    ["p", "Tide lives in Settings › Developer, which appears once Developer mode is on in Settings › Storage."],
     ["p", "Almost every site refuses to be shown inside another page, which is why Seahorse can only read a handful of them on its own. Tide is the way round it: a small server on a machine you own opens the connection, and what comes back is rewritten so the site behaves normally - scripts, logins and all."],
     ["h", "Setting it up"],
     ["l", ["The server runs on a machine of your own. Once it is up it prints a key.",
@@ -8488,6 +9047,14 @@ const HELP_TOPICS = [
   ]},
   { id: "media", icon: "\uD83C\uDFB5", title: "Media", body: [
     ["p", "Media is the music player: your songs, and links from the web. Videos and pictures live in the Gallery, which the picture button at the top opens."],
+    ["h", "The MP3 Player"],
+    ["l", ["The disc button at the top of Media turns it into the MP3 Player: one song at a time, the cover turning like a record, and what plays next along the bottom.",
+           "Click that bar for the tracklist, with a playlist for everything, one for each folder and one for links, plus shuffle and repeat.",
+           "\u2630 Media, at its top left, turns it back. Media opens next time the way you left it."]],
+    ["h", "Movie mode"],
+    ["l", ["Right-click anything in Media or the Gallery, or a video, song or picture in Files, and choose Movie mode.",
+           "Everything else stops - other players pause, and the rest of the desktop is put away - and that one thing fills the whole screen.",
+           "The controls and the pointer fade when the mouse is still. Esc, or Leave at the top, brings the desktop back."]],
     ["h", "Songs"],
     ["l", ["A song's name, artist, album and cover are read out of the file itself, so a song called 01.mp3 still shows properly.",
            "The cover turns while it plays. With no cover in the file, a picture named cover or folder beside it is used, and failing that the first letter of its name.",
@@ -8535,7 +9102,7 @@ const HELP_TOPICS = [
   { id: "media", icon: "🎵", title: "Media and links", body: [
     ["p", "Media plays the music and video in your files, and links from the web."],
     ["h", "Adding something"],
-    ["l", ["Searching uses the engine chosen in Settings › Apps & web. Only with Tide set up can that engine open properly; without it, Seahorse answers from DuckDuckGo and Wikipedia, which are the two that can be read directly.",
+    ["l", ["Searching uses the engine chosen in Settings › Seahorse. Only with Tide set up can that engine open properly; without it, Seahorse answers from DuckDuckGo and Wikipedia, which are the two that can be read directly.",
            "Press Add media at the top right and pick one of three ways in: paste links, play a file already in SEA OS, or bring a file over from this computer.",
            "Paste links takes as many as you like, one a line. Enter starts a new line; Ctrl+Enter adds them all.",
            "Ctrl+V anywhere in Media, Videos or the MP3 Player adds whatever link - or links - you copied.",
@@ -8565,12 +9132,13 @@ const HELP_TOPICS = [
     ["p", "Games is a launcher. Click one to play; each opens in its own window. What is listed comes from the games you add yourself, from games/manifest.js, and from the .html games in the repository's games/ folder."],
     ["l", ["Best scores are kept for every game and show on its tile. Turn saving on to keep them after a reload.",
            "Right-click a game to keep it in the Dock, put it on the desktop, or reset its best score.",
+           "Right-click a game - in Games or in the Dock - and choose Game mode: that game fills the whole screen and nothing else runs. The rest of the desktop is put away rather than drawn, and anything playing stops.",
+           "In Game mode Esc belongs to the game, so hold Esc to leave full screen. Leave, in the bar that drops down from the top edge, brings the desktop back.",
            "Games are left out of the menu list to keep it short, but typing a game's name there still finds it.",
            "A game may lock the mouse pointer so moving the mouse aims instead of moving the cursor. Press Esc to get the pointer back."]],
-    ["h", "Game mode"],
-    ["l", ["Settings › Game mode boots SEA OS straight into one game, maximised and full screen.",
-           "Full screen needs a click in some browsers, so the first click after startup finishes the job.",
-           "Press Esc to leave full screen, and close the game to get the desktop back."]],
+    ["h", "Starting in a game"],
+    ["l", ["Settings › Startup can boot SEA OS straight into one game, in Game mode.",
+           "Browsers only give full screen after a click, so until then the bar at the top offers it."]],
     ["h", "Adding your own"],
     ["p", "Add a game, at the top of Games, is the quick way: a game on a website by its address, or an .html or .swf file from Files or from this computer. Files go into ~/Games, links are kept in your settings, and nothing needs uploading anywhere. Right-click one you added to take it out again."],
     ["p", "A game can also be one HTML file in the games/ folder of the repository. Name it with the same tags as a Store app, plus one for the colour of its tile:"],
@@ -8716,6 +9284,7 @@ function postTheme(b){
 }
 let bridgeThemeSent = "";
 setInterval(() => {
+  if (!Bridged.size || focusQuiet()) return;
   for (const b of Bridged) if (b.frame && !b.frame.isConnected) Bridged.delete(b);
   const now = State.theme + State.accent;
   if (now === bridgeThemeSent) return;
@@ -8987,9 +9556,9 @@ function storeAppRun(win, a){
     frame.addEventListener("load", () => { if (activeWin === win) try { frame.contentWindow.focus(); } catch (x){} });
   })();
   return {
+    focusFrame(){ try { if (entry.frame) entry.frame.contentWindow.focus(); } catch (x){} },
     menus(){
       return {
-    focusFrame(){ try { if (entry.frame) entry.frame.contentWindow.focus(); } catch (x){} },
         File: [
           { label: "Reload " + a.name, run: () => { Bridged.delete(entry); win.api = storeAppRun(win, a); } },
           { label: "Show its files", run: () => { const d = HOME + "/Documents/" + safeName(a.name); ensureDir(d); openInFiles(d); } },
@@ -9797,6 +10366,142 @@ async function discoverGames(){
   drawDock();
   return all;
 }
+/* ============================================================
+   Game mode and Movie mode. Right-click a game, or something to
+   watch, and that one thing takes the whole screen while everything
+   else stops: other players are paused, the other windows, the
+   desktop and the wallpaper are taken out of the page altogether, and
+   the desktop's own clocks stop ticking until you come back.
+   ============================================================ */
+const Focus = { win: null, kind: "", bar: null, hot: null, hideT: 0, idleT: 0 };
+/* true while nothing of the desktop is on show, so there is nothing to keep up to date */
+function focusQuiet(){ return !!Focus.win || document.hidden; }
+function hushEverything(keep){
+  for (const w of windows.values()){
+    if (w === keep || !w.api || typeof w.api.pause !== "function") continue;
+    try { w.api.pause(); } catch (e){}
+  }
+  for (const m of $$("video, audio"))
+    if (!m.paused && !(keep && keep.el.contains(m))) m.pause();
+}
+function enterFocus(w, kind){
+  if (!w || !windows.has(w.id)) return;
+  if (Focus.win && Focus.win !== w) leaveFocus();
+  hideCtx();
+  if (menuOpen) closeMenu();
+  if (w.min) restoreWin(w);
+  focusWin(w);
+  hushEverything(w);
+  Focus.win = w;
+  Focus.kind = kind;
+  w.el.classList.add("focus-target", "focus-" + kind);
+  document.body.classList.add("focus-mode");
+  syncWallVideo();
+  if (!Focus.bar) buildFocusBar();
+  const what = w.el.querySelector(".win-title .t");
+  $(".fb-what", Focus.bar).textContent = (kind === "game" ? "\uD83C\uDFAE Game mode" : "\uD83C\uDFAC Movie mode") +
+    (what && what.textContent ? " \u00b7 " + what.textContent : "");
+  askFullscreen();
+  showFocusBar(2600);
+  setTimeout(() => { if (Focus.win === w && w.api && w.api.focusFrame) w.api.focusFrame(); }, 60);
+  focusIdle();
+}
+function leaveFocus(){
+  const w = Focus.win;
+  if (!w) return;
+  Focus.win = null;
+  clearTimeout(Focus.hideT);
+  clearTimeout(Focus.idleT);
+  w.el.classList.remove("focus-target", "focus-game", "focus-movie");
+  document.body.classList.remove("focus-mode", "focus-idle");
+  if (Focus.bar){ Focus.bar.remove(); Focus.hot.remove(); Focus.bar = Focus.hot = null; }
+  try { if (navigator.keyboard && navigator.keyboard.unlock) navigator.keyboard.unlock(); } catch (e){}
+  if (document.fullscreenElement && document.exitFullscreen) document.exitFullscreen().catch(() => {});
+  syncWallVideo();
+  if (windows.has(w.id)) focusWin(w);
+}
+function askFullscreen(){
+  const root = document.documentElement;
+  if (document.fullscreenElement || !root.requestFullscreen) return afterFullscreen();
+  try {
+    const p = root.requestFullscreen({ navigationUI: "hide" });
+    if (p && p.then) p.then(afterFullscreen, afterFullscreen); else afterFullscreen();
+  } catch (e){ afterFullscreen(); }
+}
+function afterFullscreen(){
+  if (!Focus.win || !Focus.bar) return;
+  const full = !!document.fullscreenElement;
+  const lock = Focus.kind === "game" && navigator.keyboard && navigator.keyboard.lock;
+  /* in a game Esc belongs to the game, so leaving full screen means holding it */
+  if (full && lock) navigator.keyboard.lock(["Escape"]).catch(() => {});
+  Focus.bar.classList.toggle("windowed", !full);
+  $(".fb-hint", Focus.bar).textContent = !full ? "" : lock ? "Hold Esc to leave" : "Esc leaves";
+  if (!full) showFocusBar(0);
+}
+document.addEventListener("fullscreenchange", () => {
+  if (!Focus.win) return;
+  /* a film is over when full screen is; a game only steps back, so Esc in it is not fatal */
+  if (!document.fullscreenElement && Focus.kind === "movie") return leaveFocus();
+  afterFullscreen();
+});
+function buildFocusBar(){
+  const hot = el("div");
+  hot.id = "focus-hot";
+  const bar = el("div");
+  bar.id = "focus-bar";
+  const full = el("button", "fb-full", "\u26F6 Full screen");
+  const out = el("button", "fb-out", "Leave");
+  bar.append(el("span", "fb-what"), el("small", "fb-hint"), full, out);
+  full.onclick = askFullscreen;
+  out.onclick = leaveFocus;
+  /* the game's page swallows the mouse, so a strip along the top edge brings the bar back */
+  hot.onpointerenter = () => showFocusBar(0);
+  bar.onpointerenter = () => clearTimeout(Focus.hideT);
+  bar.onpointerleave = () => showFocusBar(900);
+  document.body.append(hot, bar);
+  Focus.bar = bar;
+  Focus.hot = hot;
+}
+function showFocusBar(ms){
+  clearTimeout(Focus.hideT);
+  if (!Focus.bar) return;
+  Focus.bar.classList.add("show");
+  if (ms && document.fullscreenElement)
+    Focus.hideT = setTimeout(() => { if (Focus.bar) Focus.bar.classList.remove("show"); }, ms);
+}
+/* in a film the controls and the pointer get out of the way when the mouse is still */
+function focusIdle(){
+  document.body.classList.remove("focus-idle");
+  clearTimeout(Focus.idleT);
+  if (Focus.win && Focus.kind === "movie")
+    Focus.idleT = setTimeout(() => document.body.classList.add("focus-idle"), 2600);
+}
+addEventListener("pointermove", () => { if (Focus.win && Focus.kind === "movie") focusIdle(); }, { passive: true });
+addEventListener("pointerdown", () => { if (Focus.win && Focus.kind === "movie") focusIdle(); }, { passive: true });
+function gameMode(id){
+  let w = null;
+  for (const o of windows.values()) if (o.appId === id) w = o;
+  if (!w) w = launch(id);
+  if (w) enterFocus(w, "game");
+  return w;
+}
+function movieMode(path){
+  const w = isAudio(baseName(path)) ? openAudio(path) : openImage(path);
+  if (w) enterFocus(w, "movie");
+  return w;
+}
+/* A moving wallpaper nobody can see is still decoded, frame by frame, on the
+   same thread the games run on. It waits while something covers it. */
+function syncWallVideo(){
+  const v = $("#wallvideo");
+  if (!v || !v.classList.contains("on")) return;
+  const covered = Focus.win || document.hidden ||
+    Array.from(windows.values()).some(w => w.max && !w.min);
+  if (covered){ if (!v.paused) v.pause(); }
+  else if (v.paused) v.play().catch(() => {});
+}
+document.addEventListener("visibilitychange", syncWallVideo);
+
 /* ---- game mode: boot straight into one game, as big as it will go ---- */
 function goFullscreen(){
   const root = document.documentElement;
@@ -9816,12 +10521,11 @@ async function startGameMode(){
   if (!id) return false;
   if (!APPS[id]) await discoverGames();
   if (!APPS[id]){
-    notify("Game mode", "The game it opens is not there any more. Pick another in Settings \u203A Game mode.", "\uD83C\uDFAE");
+    notify("Game mode", "The game it opens is not there any more. Pick another in Settings \u203A Startup.", "\uD83C\uDFAE");
     return false;
   }
-  const w = launch(id);
-  if (w && !w.max) toggleMax(w);
-  goFullscreen();
+  /* full screen needs a click first, so until then the bar offers it */
+  gameMode(id);
   return true;
 }
 function refreshGamesViews(){
@@ -9855,6 +10559,7 @@ function gamesApp(win){
       const pinned = State.dock.includes(g.id);
       showCtx(e.clientX, e.clientY, [
         { icon: "▶", label: "Play " + g.name, run: () => launch(g.id) },
+        { icon: "🎮", label: "Game mode", run: () => gameMode(g.id) },
         pinned
           ? { icon: "✖", label: "Remove from Dock", run: () => { State.dock = State.dock.filter(x => x !== g.id); saveSettings(); drawDock(); } }
           : { icon: "📌", label: "Keep in Dock", run: () => { State.dock = State.dock.concat(g.id); saveSettings(); drawDock(); } },
@@ -10261,7 +10966,7 @@ const SAVER_PORT = ["#boot .sea-port", "#boot .chalk-art"].map(q => { const p = 
 const Saver = { el: null, idleAt: Date.now(), tick: 0, drift: 0, from: null };
 
 function saverBlocked(){
-  if ($("#boot") || document.fullscreenElement || document.visibilityState !== "visible") return true;
+  if (Focus.win || $("#boot") || document.fullscreenElement || document.visibilityState !== "visible") return true;
   const a = document.activeElement;
   if (a && a.tagName === "IFRAME") return true;
   if (NowPlaying.playing) return true;
@@ -10520,6 +11225,7 @@ function drawDock(){
         { icon: "\u25B6", label: open.length ? "Show " + a.name : "Open " + a.name,
           run: () => open.length ? focusWin(open[open.length - 1]) : launch(id) },
         { icon: "\u2795", label: "New window", run: () => launch(id, null, true) },
+        ...(a.game ? [{ icon: "🎮", label: "Game mode", run: () => gameMode(id) }] : []),
         "-",
         isPinned
           ? { icon: "\u2716", label: "Remove from Dock", run: () => { State.dock = State.dock.filter(x => x !== id); saveSettings(); drawDock(); } }
@@ -10674,11 +11380,17 @@ function drawMenuBar(){
 /* which page of Settings was open last, kept between openings */
 let settingsPage = "look";
 const SETTINGS_PAGES = [
-  { id: "look",    name: "Appearance", icon: "\uD83C\uDFA8" },
-  { id: "desktop", name: "Desktop",    icon: "\uD83D\uDDA5\uFE0F" },
-  { id: "apps",    name: "Apps & web", icon: "\uD83E\uDDE9" },
-  { id: "system",  name: "System",     icon: "\u2699\uFE0F" },
-  { id: "dev",     name: "Developer",  icon: "\uD83D\uDEE0\uFE0F", dev: true }
+  { id: "look",    name: "Appearance",    icon: "🎨" },
+  { id: "wall",    name: "Wallpaper",     icon: "🖼️" },
+  { id: "desktop", name: "Desktop",       icon: "🖥️" },
+  { id: "widgets", name: "Widgets",       icon: "🧭" },
+  { id: "panel",   name: "Panel & clock", icon: "🕒" },
+  { id: "browser", name: "Seahorse",      icon: "🌐" },
+  { id: "apps",    name: "SEA Store",     icon: "🧩" },
+  { id: "startup", name: "Startup",       icon: "⏻" },
+  { id: "storage", name: "Storage",       icon: "💾" },
+  { id: "about",   name: "About",         icon: "ℹ️" },
+  { id: "dev",     name: "Developer",     icon: "🛠️", dev: true }
 ];
 function settingsApp(win){
   const B = win.body;
@@ -10817,7 +11529,7 @@ function settingsApp(win){
       "Hyprland tiles for you: one window fills the screen, two split into a master and a stack, and the rest share the right-hand side. Maximise a window to take it out of the layout. Help › Desktop shells has the rest."));
 
     /* --- wallpaper --- */
-    const wp = section("Wallpaper", "look");
+    const wp = section("Wallpaper", "wall");
     const walls = el("div", "walls");
     for (const p of WALL_COLORS){
       const d = el("div", "wall" + (!State.customWall && p.c === State.wallColor ? " on" : ""));
@@ -10921,7 +11633,7 @@ function settingsApp(win){
     d.appendChild(sizeRow);
 
     /* --- widgets --- */
-    const wg = section("Widgets", "desktop");
+    const wg = section("Widgets", "widgets");
     for (const id of WIDGETS){
       const place = State.weatherPlace;
       const note = id === "clock" ? "The time and date, large"
@@ -10944,7 +11656,7 @@ function settingsApp(win){
       "the only thing sent is the place you choose."));
 
     /* --- panel --- */
-    const p = section("Panel & clock", "desktop");
+    const p = section("Panel & clock", "panel");
     const posRow = row("Position");
     posRow.appendChild(seg([["bottom", "Bottom"], ["top", "Top"]], State.panelPos,
       v => { State.panelPos = v; applyChrome(); render(); }));
@@ -10955,7 +11667,7 @@ function settingsApp(win){
     p.appendChild(fmtRow);
 
     /* --- browser --- */
-    const br = section("Seahorse", "apps");
+    const br = section("Seahorse", "browser");
     const engRow = row("Search with");
     const sel = el("select", "wb-eng");
     sel.style.maxWidth = "180px";
@@ -11062,7 +11774,7 @@ function settingsApp(win){
       "Help \u203A Tide has the whole of it."));
 
     /* --- boot screen --- */
-    const bs = section("Boot screen", "system");
+    const bs = section("Boot screen", "startup");
     const bootMedia = mediaSource(State.bootMedia);
     const bootRow = row("Show");
     bootRow.appendChild(seg([["default", "SEA splash"], ["media", "My own"]],
@@ -11104,7 +11816,7 @@ function settingsApp(win){
     }
 
     /* --- what opens at startup --- */
-    const gm = section("Startup", "system");
+    const gm = section("Startup", "startup");
     const games = gamesCatalogue || myGames().concat(LINKED_GAMES);
     const modeRow = row("Open with");
     modeRow.appendChild(seg([["desktop", "The desktop"], ["game", "A game"], ["mp3", "MP3 Player"]],
@@ -11202,7 +11914,7 @@ function settingsApp(win){
     }
 
     /* --- storage --- */
-    const st = section("Storage", "system");
+    const st = section("Storage", "storage");
     st.appendChild(toggle("Save my files",
       Store.available
         ? "Keep files, settings and shortcuts in this browser. Turning this off deletes everything SEA OS has stored."
@@ -11280,7 +11992,7 @@ function settingsApp(win){
     st.appendChild(toggle("Developer mode",
       "Adds a Developer page: Tide, the repository's workings, and what SEA OS is running on.",
       !!State.devMode,
-      v => { State.devMode = v; if (!v && settingsPage === "dev") settingsPage = "system"; saveSettings(); render(); }));
+      v => { State.devMode = v; if (!v && settingsPage === "dev") settingsPage = "storage"; saveSettings(); render(); }));
 
     const backupRow = row(null);
     backupRow.style.marginTop = "13px";
@@ -11314,7 +12026,7 @@ function settingsApp(win){
     st.appendChild(dangerRow);
 
     /* --- about --- */
-    const ab = section("About this system", "system");
+    const ab = section("About this system", "about");
     const dl = el("dl", "about");
     const pairs = [
       ["System", "SEA OS " + VERSION + " \u2014 a desktop in one HTML file"],
@@ -11518,6 +12230,10 @@ document.addEventListener("pointerdown", e => {
   if (!e.target.closest(".dicon")) $$(".dicon").forEach(d => d.classList.remove("sel"));
 });
 document.addEventListener("keydown", e => {
+  if (Focus.win){
+    if (e.key === "Escape" && (Focus.kind === "movie" || !document.fullscreenElement)) leaveFocus();
+    return;
+  }
   if (e.key === "Escape"){ hideCtx(); if (menuOpen) closeMenu(); if (npOpen) closeNp(); }
 
   const typing = /^(INPUT|TEXTAREA|SELECT)$/.test(e.target.tagName || "") || e.target.isContentEditable;
@@ -11554,6 +12270,9 @@ document.addEventListener("keydown", e => {
   }
   /* a bare Super press opens the menu, the way Mint does */
   if (e.key === "Meta" && !typing && !menuOpen){ e.preventDefault(); openMenu(); }
+  /* focus had wandered off the game's page - a click on its title bar, say; send it back */
+  if (!typing && e.target === document.body && !e.ctrlKey && !e.altKey && !e.metaKey &&
+      activeWin && activeWin.api && activeWin.api.focusFrame) activeWin.api.focusFrame();
 });
 addEventListener("contextmenu", e => {
   if (e.target.closest(".win") || e.target.closest("#panel") ||
@@ -11841,6 +12560,7 @@ function drawWidgets(replace){
   }
 }
 setInterval(() => {
+  if (focusQuiet()) return;
   const box = State.widgets.clock && $('#widgets [data-w="clock"]');
   if (box) renderWidget(box, "clock");
 }, 1000);
@@ -11911,7 +12631,7 @@ async function firstRun(){
   });
   /* a game kept in the Dock or on the desktop needs its catalogue before it can open */
   if ((State.dock || []).concat(State.shortcuts.map(x => x.target)).some(id => String(id).startsWith("game:"))) discoverGames();
-  setInterval(clockTick, 1000);
+  setInterval(() => { if (!focusQuiet()) clockTick(); }, 1000);
 
   const b = $("#boot"), bar = $("#bootbar");
   let done = false;
