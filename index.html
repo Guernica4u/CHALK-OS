@@ -3567,7 +3567,7 @@ const APPS = {
   files:    { name: "Files",     desc: "Browse and edit your files",   icon: "\uD83D\uDCC1", w: 880, h: 560, cls: "app-files", run: filesApp },
   browser:  { name: "Seahorse",  desc: "Read the web, and your own pages", icon: SEAHORSE_SVG, w: 900, h: 600, cls: "app-web", run: browserApp },
   terminal: { name: "Terminal",  desc: "A small shell",                icon: "\u2328\uFE0F", w: 700, h: 430, cls: "app-term",  run: terminalApp },
-  chat:     { name: "Chat",       desc: "Talk to people, over Firebase",   icon: "\uD83D\uDCAC", w: 430, h: 640, cls: "app-chat",  run: chatApp },
+  chat:     { name: "Chat",       desc: "Rooms and channels, live",   icon: "\uD83D\uDCAC", w: 780, h: 560, cls: "app-chat",  run: chatApp },
   editor:   { name: "Text Editor", desc: "Write and edit text files",      icon: "\uD83D\uDCDD", w: 720, h: 540, cls: "app-editor", run: editorApp },
   playground: { name: "Playground", desc: "Web pages and Python, run as you type", icon: "🧪", w: 1000, h: 640, cls: "app-play", run: playgroundApp },
   videos:   { name: "Gallery",    desc: "Your videos and pictures, in one place", icon: "\uD83D\uDDBC\uFE0F", w: 880, h: 620, cls: "app-vid", run: galleryApp },
@@ -8381,24 +8381,98 @@ function musicApp(win, startPath, only){
 
    This one is first-party: it ships with SEA OS rather than being
    something you imported, so it gets same-origin privileges and can
-   talk to Firebase normally. Files you import stay in an opaque-origin
+   talk to its Supabase server normally. Files you import stay in an opaque-origin
    sandbox as before.
    ============================================================ */
 function chatApp(win){
   const B = win.body;
-  B.innerHTML = "";
-  const box = el("div", "chat-missing");
-  box.append(
-    el("div", "chat-missing-g", "\uD83D\uDEA7"),
-    el("h2", null, "Chat is under construction"),
-    el("p", null, "It is being rebuilt, and is switched off in the meantime. Nothing you said before has gone " +
-                  "anywhere - it is still in the same place, waiting."),
-    el("p", null, "Everything else in SEA OS works as usual."));
-  B.appendChild(box);
-  return {
-    menus(){
-      return { File: [{ label: "Close Window", run: () => win.close() }] };
+  B.innerHTML = '<div class="chat-wrap"><div class="chat-loading">Opening Chat\u2026</div></div>';
+  const wrap = $(".chat-wrap", B);
+  let frame = null, settled = false, themeSent = "";
+
+  function missing(why){
+    if (settled) return;
+    settled = true;
+    wrap.innerHTML = "";
+    const p = el("div", "chat-missing");
+    p.append(
+      el("div", "chat-missing-g", "\uD83D\uDCAC"),
+      el("h2", null, "Chat could not open"),
+      el("p", null, why || "Chat lives in chat.html, next to index.html. Put it there and open Chat again."));
+    const again = el("button", "btn primary", "Try again");
+    again.onclick = () => { win.close(); launch("chat"); };
+    p.appendChild(again);
+    wrap.appendChild(p);
+  }
+  /* the chat wears the desktop's colours, and changes when they do */
+  function sendTheme(){
+    if (!frame || !frame.contentWindow) return;
+    const cs = getComputedStyle(document.documentElement);
+    const v = n => cs.getPropertyValue(n).trim();
+    const dark = State.theme === "dark";
+    try {
+      frame.contentWindow.postMessage({ boxtheme: {
+        bg: v("--bg"), panel: v("--surface"), panel2: v("--surface-2"), panel3: v("--surface-3"),
+        border: v("--border-soft"), accent: v("--accent"), accentInk: v("--accent-fg"),
+        text: v("--text"), muted: v("--dim"), mine: v("--accent") + (dark ? "33" : "22"),
+        danger: "#c9534b", mode: State.theme, brand: State.brand === "sea" ? "sea" : "chalk"
+      } }, "*");
+    } catch (e){}
+  }
+  const themeWatch = setInterval(() => {
+    if (focusQuiet()) return;
+    const now = State.theme + State.accent + State.brand;
+    if (themeSent !== now){ themeSent = now; sendTheme(); }
+  }, 600);
+
+  function mount(src){
+    wrap.innerHTML = "";
+    frame = el("iframe", "chat-frame");
+    frame.title = "Chat";
+    /* first-party: it ships with CHALK OS, so it runs as itself and can reach
+       its chat server. Pages you import yourself stay sandboxed. */
+    frame.setAttribute("sandbox", "allow-scripts allow-same-origin allow-forms allow-popups allow-modals");
+    frame.addEventListener("load", () => {
+      settled = true;
+      themeSent = "";
+      sendTheme();
+      chatSeen();
+    });
+    frame.src = src;
+    wrap.appendChild(frame);
+    setTimeout(() => { if (!settled) missing("chat.html did not finish loading. Check the internet connection and try again."); }, 12000);
+  }
+
+  /* Beside index.html first; from the repository when CHALK OS is served
+     from somewhere that has no copy of its own. */
+  (async () => {
+    const tries = ["chat.html"];
+    if (repoBase()) tries.push(repoBase() + "chat.html");
+    for (const src of tries){
+      try {
+        const res = await fetch(src, { method: "HEAD", cache: "no-store" });
+        if (res.ok) return mount(src);
+      } catch (e){
+        /* opened straight off a disk, where asking first is not allowed - just try it */
+        if (location.protocol === "file:") return mount(src);
+      }
     }
+    missing();
+  })();
+
+  return {
+    focusFrame(){ try { if (frame) frame.contentWindow.focus(); } catch (e){} },
+    menus(){
+      return {
+        File: [
+          { label: "Reload Chat", run: () => { if (frame){ settled = false; frame.src = frame.src; } } },
+          { label: "Open in a browser tab", run: () => window.open(frame ? frame.src : "chat.html", "_blank", "noopener") },
+          "-",
+          { label: "Close Window", run: () => win.close() }
+        ]
+      };
+    },
+    onClose(){ clearInterval(themeWatch); return true; }
   };
 }
 
@@ -9127,6 +9201,15 @@ const HELP_TOPICS = [
            "Now playing follows Media, with play, pause and next.",
            "Weather comes from Open-Meteo, and the only thing sent is the place you choose.",
            "Widgets are hidden in the Hyprland shell, where windows cover the whole desktop."]]
+  ]},
+  { id: "chat", icon: "\uD83D\uDCAC", title: "Chat", body: [
+    ["p", "Chat is live rooms and channels, shared with everyone else using it. It wears the desktop's colours and follows light and dark and your accent."],
+    ["l", ["Pick a name and a password to register - no email, nothing to verify. Log in with the same pair anywhere.",
+           "Rooms are down the left, with their channels under them. The Lobby is open to everyone; a locked room asks for its password once.",
+           "+ Room makes one of your own. Anyone with its password can join, and you can add room moderators to help run it.",
+           "Hover a message of yours to delete it. Room moderators can delete anyone's in their room.",
+           "While Chat is not in front, new messages show as a notification and a count on its Dock icon.",
+           "In a narrow window the rooms fold away behind the \u2630 button at the top left."]]
   ]},
   { id: "games", icon: "🎮", title: "Games", body: [
     ["p", "Games is a launcher. Click one to play; each opens in its own window. What is listed comes from the games you add yourself, from games/manifest.js, and from the .html games in the repository's games/ folder."],
