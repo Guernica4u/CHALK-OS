@@ -45,7 +45,8 @@ Put files in `music/`, `videos/` or `pictures/` in a GitHub repository and they
 appear in Media and the Gallery. CHALK OS asks GitHub's API what is in those
 folders, so nothing has to be listed by hand, and that works from any address -
 not only the repository's own Pages site. Name the repository in **Settings →
-Storage** as `user/repository`; on a Pages site it works it out itself.
+Storage** as `user/repository`; on a Pages site it works it out itself, and
+anywhere else it defaults to CHALK OS's own, `Guernica4u/CHALK-OS`.
 
 Files are mounted as links rather than copied, so a 200 MB video costs nothing
 in storage and streams from where it sits. Read from somewhere other than the
@@ -99,10 +100,20 @@ Games may lock the mouse pointer - `requestPointerLock()` works inside a game,
 a Store app and the Playground preview - so moving the mouse aims instead of
 moving the cursor. Esc gives the pointer back.
 
-**Game mode**, in Settings, boots CHALK OS straight into one game, maximised and
-full screen. Browsers only grant full screen off a click, so the first click
-after startup finishes it. Esc leaves full screen; close the game for the
-desktop.
+**Game mode**: right-click a game, in Games or in the Dock, and choose Game
+mode. That game fills the whole screen and nothing else runs - anything playing
+stops, and the other windows, the desktop and the wallpaper are put away rather
+than drawn. Esc belongs to the game there, so hold Esc to leave full screen;
+**Leave**, in the bar that drops from the top edge, brings the desktop back.
+**Settings → Startup** can boot straight into a game in Game mode.
+
+**Movie mode** is the same for something to watch or listen to: right-click it
+in Media, the Gallery or Files. The controls and the pointer fade while the
+mouse is still, and Esc leaves.
+
+Game windows are solid rather than Liquid Glass. Blurring what lies behind a
+window is redone for every frame drawn inside it, which is what made games slow
+to answer keys and clicks.
 
 ### Unity, emulators and games on other sites
 
@@ -120,20 +131,30 @@ Eaglercraft keep its worlds.
 
 ## Chat
 
-Chat is under construction: the app opens on a notice instead of loading, while
-it is rebuilt. `chat.html` is still in the repository, and nothing that was said
-in it has gone anywhere.
+**Chat** is live rooms and channels, from `chat.html` beside `index.html` (or
+the repository's copy, when CHALK OS is served from somewhere without one). Sign
+up with a name and a password - no email. It takes the desktop's colours, light
+or dark and your accent, and new messages arrive as notifications and a count on
+the Dock while it is not in front. Opened on its own, `chat.html` works as a
+standalone page in the same look.
 
-Its Firebase web config is in the file. That is normal — Firebase web API keys
-are public identifiers, not secrets; access is controlled by database rules and
-domain restrictions.
+It runs on Supabase. The project URL and publishable key at the top of
+`chat.html` are meant to be public; what anyone can do is decided by the
+database's row-level security rules.
 
 ## Settings
 
-Settings is a handful of pages: **Appearance**, **Desktop**, **Apps & web**,
-**System**, and **Developer** once that is switched on in System. The CHALK
-Store lives under Apps & web; Tide and the repository's workings live under
-Developer.
+Settings keeps a button for every page down its left side: **Appearance**,
+**Wallpaper**, **Desktop**, **Widgets**, **Panel & clock**, **ChalkBrowser**,
+the **CHALK Store**, **Startup**, **Storage** and **About** - and
+**Developer**, once Developer mode is switched on in Storage, which holds Tide
+and the repository's workings. A narrow Settings window keeps the buttons as
+icons.
+
+**Developer → Performance meter** puts a strip in the corner: frames a second,
+the slowest frame, how long keys and clicks wait, and how busy the page is. It
+watches a game's own page too when that game is in front, and stays up in Game
+mode.
 
 ## Saving your work
 
@@ -150,10 +171,24 @@ OPFS for pages - Firefox private windows, `index.html` opened from disk - fall
 back to keeping everything in `localStorage`, about 5 MB, and say which files
 did not fit.
 
+**Settings → Storage → Keep files in** makes that choice yours: **File storage**
+(the default) or **localStorage**, which keeps everything in one plain place at
+the cost of the 5 MB limit. Switching moves what you have, and lets go of the
+old copy only once the new one is written.
+
 ## Seahorse, the browser
 
 Out of the box it reads Wikipedia, Stack Overflow, GitHub READMEs, Wiktionary,
 Hacker News and DuckDuckGo answers — directly, with no middleman.
+
+**Tabs** work the way you expect: Ctrl+T, Ctrl+W, Ctrl+Tab and Ctrl+1–9, drag
+to reorder, middle-click to close, right-click for duplicate and close-others,
+and Ctrl+Shift+T to bring one back. A new window opens with last time's tabs.
+
+**Bookmarks**: the ☆ in the address bar (or Ctrl+D) keeps a page, and a
+bookmarks bar sits underneath (Ctrl+Shift+B). **History** is kept in this
+browser, with a searchable page (Ctrl+H) and suggestions as you type in the
+address bar. Settings → ChalkBrowser turns history off or clears it.
 
 Anything else only opens if the site allows other pages to read it, and almost
 none do: a page in a browser cannot fetch other websites for itself, and GitHub
@@ -192,6 +227,13 @@ where-you-stopped for videos.
 in CHALK OS, or import one from the computer into `~/Music`, `~/Videos` or
 `~/Pictures`.
 
+**Playlists of links.** Pills above Media's list pick what it shows: Everything,
+your Links, or one of your playlists. **+ Playlist** makes one out of nothing
+but links - name it and paste them in. Right-click any link to add it to a
+playlist or start one with it; inside a playlist, right-click to move a link up
+or down or take it out. A link is kept once and can sit in any number of
+playlists, so deleting a playlist never loses a link.
+
 Getting things in is meant to be quick:
 
 * **Paste links** takes any number, one a line (Ctrl+Enter adds them).
@@ -227,7 +269,14 @@ exactly where it is.
 
 ## MP3 Player
 
-A player for one song at a time: the cover turns like a record, the title
+A **visualizer** draws the music: bars behind the song in Media, a ring round
+the cover in the MP3 Player. It works for your own songs and the repository's;
+a song from a site that will not let other pages listen still plays, just
+without it. View → Hide the visualizer turns it off.
+
+The disc button at the top of **Media** turns it into the MP3 Player, and
+**☰ Media** turns it back; it opens next time the way you left it. A player
+for one song at a time: the cover turns like a record, the title
 slides across when the song changes, and a bar along the bottom says what is
 playing next. Click that bar for the whole tracklist, where a menu picks the
 playlist - everything you have, one per folder, and one for links - with
@@ -255,14 +304,13 @@ land in `~/Downloads` inside CHALK OS, never on the real computer.
 It needs two things next to `index.html` on whatever hosts CHALK OS:
 
 * `sw.js` - the service worker
-* `tide/` - Scramjet 2.0.67-alpha.2 (`scram/`), scramjet-controller 0.0.14
-  (`controller/`) and libcurl-transport 2.0.5 (`libcurl/`), about 2.9 MB,
-  vendored from npm
+* `tide/` - Scramjet 1.1.0, bare-mux 2.1.9 and libcurl-transport 1.5.2 (about
+  2.8 MB, vendored from npm; the same versions Mercury's own scramjet-app pins)
 
-Those versions matter. The controller refuses to start unless Scramjet is
-exactly the version it was built against, and Scramjet 2 takes a transport
-directly, so bare-mux is gone. Scramjet 2 is still an alpha: if it misbehaves,
-reverting the change that brought it in puts Scramjet 1.1.0 back.
+Those versions matter. libcurl-transport 2.x iterates the request headers,
+while bare-mux 2.1.9 hands a transport a plain object, so every request fails
+with "headers is not iterable". 1.5.2 passes the headers through untouched and
+is the version Scramjet 1.1.0 is tested against.
 
 Both have to be on an `https://` address; a page opened from a file on disk
 cannot install a service worker.

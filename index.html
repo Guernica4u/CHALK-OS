@@ -896,14 +896,74 @@ body.shell-macos.sub-glass .seg{border-radius:999px}
   font-size:12.5px;white-space:nowrap;flex:0 1 auto;
 }
 .wb-tab:hover{background:var(--surface-2)}
-.wb-tab.on{background:var(--surface-2);color:var(--fg);border-color:var(--border-soft)}
+.wb-tab.on{background:var(--surface-2);color:var(--text);border-color:var(--border-soft)}
+.wb-tab .g{flex:0 0 auto;width:16px;text-align:center;font-size:12px}
 .wb-tab .lbl{overflow:hidden;text-overflow:ellipsis;flex:1}
 .wb-tab .x{
   flex:0 0 auto;width:16px;height:16px;line-height:14px;text-align:center;border-radius:50%;
   opacity:0;font-size:13px;color:var(--dim);
 }
 .wb-tab:hover .x,.wb-tab.on .x{opacity:.75}
-.wb-tab .x:hover{background:var(--surface-3);color:var(--fg);opacity:1}
+.wb-tab .x:hover{background:var(--surface-3);color:var(--text);opacity:1}
+.wb-addrwrap{flex:1;min-width:80px;position:relative;display:flex}
+.wb-addrwrap .wb-addr{flex:1;padding-right:32px}
+.wb-star{
+  position:absolute;right:3px;top:50%;transform:translateY(-50%);width:26px;height:22px;border:0;border-radius:5px;
+  background:none;color:var(--dim);font-size:15px;line-height:1;cursor:pointer;
+}
+.wb-star:hover:not(:disabled){background:var(--surface-2);color:var(--text)}
+.wb-star.on{color:#e0a92a}
+.wb-star:disabled{opacity:.3;cursor:default}
+.wb-sugg{
+  display:none;position:absolute;left:0;right:0;top:calc(100% + 4px);z-index:30;padding:4px;
+  background:var(--surface);border:1px solid var(--border);border-radius:9px;box-shadow:var(--shadow);max-height:330px;overflow:auto;
+}
+.wb-sugg.on{display:block}
+.wb-sg{display:flex;align-items:center;gap:9px;padding:6px 9px;border-radius:6px;cursor:default;font-size:12.5px}
+.wb-sg .g{width:18px;text-align:center;flex:0 0 auto}
+.wb-sg .n{flex:0 1 auto;min-width:0;max-width:60%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.wb-sg .d{flex:1;min-width:0;color:var(--dim);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:11.5px}
+.wb-sg:hover{background:var(--surface-2)}
+.wb-sg.on{background:var(--accent);color:var(--accent-fg)}
+.wb-sg.on .d{color:var(--accent-fg);opacity:.8}
+.wb-bmbar{
+  flex:0 0 auto;display:flex;align-items:center;gap:2px;min-height:29px;padding:3px 7px;
+  background:var(--surface-2);border-bottom:1px solid var(--border-soft);overflow-x:auto;scrollbar-width:none;
+}
+.wb-bmbar::-webkit-scrollbar{display:none}
+.wb-bm{
+  flex:0 0 auto;display:flex;align-items:center;gap:6px;max-width:170px;height:23px;padding:0 9px;border:0;border-radius:6px;
+  background:none;color:var(--text);font:inherit;font-size:12px;cursor:pointer;
+}
+.wb-bm:hover{background:var(--surface-3)}
+.wb-bm .n{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.wb-bm-none{font-size:11.5px;color:var(--dim);padding:0 4px}
+.wb-sect h2{display:flex;align-items:center}
+.wb-more{margin-left:auto;border:0;background:none;color:var(--accent);font:inherit;font-size:11px;letter-spacing:0;text-transform:none;cursor:pointer}
+.wb-more:hover{text-decoration:underline}
+.wb-mgr-head{max-width:660px;margin:0 auto 16px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.wb-mgr-head h1{font-size:20px;font-weight:600;margin:0;flex:1;min-width:140px}
+.wb-mgr-find{
+  height:30px;width:220px;max-width:100%;padding:0 13px;border:1px solid var(--border);border-radius:15px;
+  background:var(--surface-2);color:var(--text);outline:none;
+}
+.wb-mgr-find:focus{border-color:var(--accent)}
+.wb-mgr-tip{flex-basis:100%;font-size:11.5px;color:var(--dim)}
+.wb-mgr-list{max-width:660px;margin:0 auto}
+.wb-mgr-day{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);margin:18px 0 6px 10px}
+.wb-mgr-row{display:flex;align-items:center;gap:10px;padding:7px 10px;border-radius:8px;cursor:pointer}
+.wb-mgr-row:hover{background:var(--surface-2)}
+.wb-mgr-row .g{width:20px;text-align:center;flex:0 0 auto}
+.wb-mgr-when{width:64px;flex:0 0 auto;font-size:11.5px;color:var(--dim);font-variant-numeric:tabular-nums}
+.wb-mgr-txt{flex:1;min-width:0}
+.wb-mgr-txt .n{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.wb-mgr-txt .d{font-size:11.5px;color:var(--dim);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.wb-mgr-x{
+  flex:0 0 auto;width:24px;height:24px;border:0;border-radius:50%;background:none;color:var(--dim);
+  font-size:15px;cursor:pointer;opacity:0;
+}
+.wb-mgr-row:hover .wb-mgr-x{opacity:1}
+.wb-mgr-x:hover{background:var(--surface-3);color:var(--text)}
 .wb-newtab{
   flex:0 0 auto;align-self:center;width:24px;height:24px;margin-left:3px;border:0;border-radius:6px;
   background:transparent;color:var(--dim);font-size:16px;line-height:1;cursor:pointer;
@@ -1187,12 +1247,27 @@ body.shell-macos.sub-glass .seg{border-radius:999px}
   .m3-disc{animation:none}
   .m3-queue{transition:none}
 }
+/* the visualizer's ring, a little bigger than the cover it goes round */
+.m3-discwrap{position:relative;width:min(50%,42vh,260px);aspect-ratio:1;flex:0 0 auto;margin:4% 0 3%}
+.m3-discwrap .m3-disc{width:100%}
+.m3-vis{position:absolute;left:-18%;top:-18%;width:136%;height:136%;pointer-events:none}
 /* the way back to the whole of Media */
 .m3-swap{position:absolute;top:10px;left:10px;z-index:2}
 
+/* ---------- the performance meter ---------- */
+#perf-hud{
+  position:fixed;right:10px;bottom:10px;z-index:2147483602;display:flex;gap:10px;padding:5px 11px;border-radius:999px;
+  background:rgba(18,18,18,.86);color:#bbb;font:11px/1.4 ui-monospace,SFMono-Regular,Consolas,monospace;
+  pointer-events:none;box-shadow:0 6px 20px rgba(0,0,0,.35);
+}
+#perf-hud b{font-weight:700}
+#perf-hud .ph-good b{color:#8fd16a}
+#perf-hud .ph-meh b{color:#e6c35c}
+#perf-hud .ph-bad b{color:#ef6a5e}
+
 /* ---------- Game mode and Movie mode ---------- */
 body.focus-mode{background:#000}
-body.focus-mode > :not(#desktop):not(#focus-bar):not(#focus-hot),
+body.focus-mode > :not(#desktop):not(#focus-bar):not(#focus-hot):not(#perf-hud),
 body.focus-mode #desktop > :not(#windows):not(#modals){display:none!important}
 body.focus-mode #windows{position:fixed;inset:0;z-index:50}
 body.focus-mode #windows > :not(.focus-target){display:none!important}
@@ -1264,6 +1339,27 @@ body.sub-glass .win.app-music .win-body,body.sub-glass .win.app-mp3 .win-body,bo
 .vd-tile{content-visibility:auto;contain-intrinsic-size:auto 170px}
 
 /* ---------- music ---------- */
+.mu-now{position:relative;overflow:hidden}
+.mu-vis{position:absolute;left:0;bottom:0;width:100%;height:100%;pointer-events:none;opacity:.3}
+.mu-now > :not(.mu-vis){position:relative;z-index:1}
+.focus-movie.app-music .mu-vis{top:auto;height:42%;opacity:.45}
+.mu-lists{
+  flex:0 0 auto;display:flex;gap:6px;padding:8px 10px;overflow-x:auto;border-bottom:1px solid var(--border-soft);
+  scrollbar-width:none;
+}
+.mu-lists::-webkit-scrollbar{display:none}
+.mu-pill{
+  flex:0 0 auto;display:inline-flex;align-items:center;gap:6px;height:26px;padding:0 11px;border-radius:999px;
+  border:1px solid var(--border-soft);background:var(--surface-2);color:var(--text);font:inherit;font-size:12px;cursor:pointer;
+  max-width:190px;
+}
+.mu-pill > span:first-child{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.mu-pill .c{font-size:11px;color:var(--dim)}
+.mu-pill:hover{border-color:var(--accent)}
+.mu-pill.on{background:var(--accent);border-color:var(--accent);color:var(--accent-fg)}
+.mu-pill.on .c{color:var(--accent-fg);opacity:.8}
+.mu-pill.add{background:none;border-style:dashed;color:var(--dim)}
+.focus-movie.app-music .mu-lists{display:none}
 .app-music .win-body{overflow:hidden}
 .mu-now{
   flex:0 0 auto;display:flex;align-items:center;gap:14px;padding:16px 18px;
@@ -2337,6 +2433,16 @@ const State = {
   mp3Shuffle: false,
   mp3Repeat: "off",
   mediaMode: "list",   /* Media's face: "list", or "mp3" for the MP3 Player */
+  mediaView: "all",    /* what Media lists: "all", "links", or one of your playlists */
+  linkLists: [],       /* playlists made of saved links: { id, name, urls } */
+  storage: "disk",     /* "disk": big files in the browser's file storage; "local": all in localStorage */
+  perfHud: false,      /* the performance meter in the corner */
+  visualizer: true,    /* bars under Media, a ring round the MP3 Player's cover */
+  bmBar: true,         /* ChalkBrowser's bookmarks bar */
+  keepHistory: true,   /* ChalkBrowser remembers where you have been */
+  webHistory: [],      /* { t, title, at }, newest first */
+  webRestore: true,    /* ChalkBrowser opens with last time's tabs */
+  webTabs: [],         /* those tabs */
   gameApp: "",
   widgetPos: {},
   weatherPlace: null,
@@ -2355,7 +2461,7 @@ let BOOT_TIME = Date.now();
    ============================================================ */
 const K = { on: "boxos.on", fs: "boxos.fs", set: "boxos.settings", sc: "boxos.shortcuts", trash: "boxos.trash" };
 const SETTING_KEYS = ["theme","accent","wallColor","customWall","wallFit","animations",
-                      "wobbly","panelPos","clock24","iconSize","engine","wallVideo","bootMedia","shell","dock","bookmarks","sounds","installed","widgets","widgetPos","weatherPlace","tempUnit","highScores","subthemes","menuFolded","helpDockPhase","webMedia","startMode","gameApp","screensaver","resume","brand","devMode","tideHost","useRepo","repo","myGames","mp3List","mp3Shuffle","mp3Repeat","mediaMode"];
+                      "wobbly","panelPos","clock24","iconSize","engine","wallVideo","bootMedia","shell","dock","bookmarks","sounds","installed","widgets","widgetPos","weatherPlace","tempUnit","highScores","subthemes","menuFolded","helpDockPhase","webMedia","startMode","gameApp","screensaver","resume","brand","devMode","tideHost","useRepo","repo","myGames","mp3List","mp3Shuffle","mp3Repeat","mediaMode","mediaView","linkLists","storage","perfHud","visualizer","bmBar","keepHistory","webHistory","webRestore","webTabs"];
 /* Only a soft gauge for the usage bar. The real localStorage ceiling is not
    knowable from script and varies a lot - roughly 5 MB on a file:// page, but
    far more on some origins - so nothing here claims a hard number. */
@@ -2572,6 +2678,37 @@ async function diskWipe(){
     await root.removeEntry(DISK_DIR, { recursive: true });
     Disk.dir = await root.getDirectoryHandle(DISK_DIR, { create: true });
   } catch (e){}
+}
+/* Settings > Storage > Keep files in: move everything to the other place, and
+   only let go of the old copy once the new one is written. */
+async function switchStorage(to){
+  const now = State.storage === "local" ? "local" : "disk";
+  if (now === to) return;
+  if (to === "local"){
+    let big = 0;
+    walkFS((p, n) => { if (n.type === "file" && n.kind !== "text" && n.kind !== "link") big += nodeSize(n) || 0; });
+    const ok = await osConfirm("Keep files in localStorage",
+      "localStorage is simple and plain, but it holds only 5 to 10 MB for everything." +
+      (big > 3.5e6 ? "\n\nYour files come to " + fmtBytes(big) + ", so the biggest ones will only last until you reload." : "") +
+      "\n\nMove everything there?", "Move");
+    if (!ok) return;
+    await Disk.chain;                 /* let anything half-written finish */
+    State.storage = "local";
+    saveSettings();
+    Disk.ok = false;
+    if (Store.on && saveFSInline()) await diskWipe();
+    notify("Files in localStorage", "Everything SEA OS keeps is now in localStorage.", "\uD83D\uDCBE");
+  } else {
+    State.storage = "disk";
+    saveSettings();
+    if (!(await diskOpen())){
+      State.storage = "local";
+      saveSettings();
+      return osAlert("File storage is not available", "This browser will not give SEA OS its own file storage, so files stay in localStorage.");
+    }
+    if (Store.on) saveFS();
+    notify("Files in file storage", "Big files now go in the browser's own file storage, which holds gigabytes.", "\uD83D\uDCBE");
+  }
 }
 /* what is on disk now, for Settings */
 function diskBytes(){
@@ -4981,15 +5118,15 @@ function filesApp(win, startPath){
 
    Seahorse can only read sites that agree to be read, and almost none do.
    Tide is the way round that: a small server on a machine you own opens the
-   connections, and Scramjet rewrites everything that comes back so the site
-   works normally, scripts, logins and all.
+   connections, and Scramjet - a service worker living beside this page -
+   rewrites everything that comes back so the site works normally, scripts,
+   logins and all.
 
    Three pieces, all from Mercury Workshop, sitting in tide/ next to
-   index.html: Scramjet 2 itself (scram/), its controller (controller/),
-   which runs the tide from this page with a small service worker beside it
-   handing requests over, and libcurl (the transport that speaks to the
-   server). The server address is an ordinary setting; the key is kept apart
-   from settings, so a backup file never carries it.
+   index.html: Scramjet itself, bare-mux (which carries requests to the
+   transport) and libcurl (the transport that speaks to the server). The
+   server address is an ordinary setting; the key is kept apart from
+   settings, so a backup file never carries it.
    ============================================================ */
 const TIDE_TOKEN_KEY = "boxos.tide";
 const Tide = { token: "", ready: null, ctl: null };
@@ -5032,9 +5169,9 @@ function tideTest(){
   });
 }
 /* Whether this browser can pass a stream from one page to another. Where it
-   cannot - Firefox, as of now - each answer has to be downloaded whole
-   before it is handed to the service worker. Pages are fine; video is not,
-   because a video is fetched as an open-ended stream that never finishes. */
+   cannot - Firefox, as of now - bare-mux has to download each answer whole
+   before handing it over. Pages are fine; video is not, because a video is
+   fetched as an open-ended stream that never finishes. */
 let tideStreams = null;
 function tideCanStream(){
   if (tideStreams !== null) return tideStreams;
@@ -5057,18 +5194,23 @@ function loadScriptOnce(src, why){
   }));
   return SCRIPTS.get(src);
 }
-/* navigator.serviceWorker.ready only settles for a worker that covers the
-   page asking, so wait on the registration itself */
-function tideWorker(reg){
-  if (reg.active) return Promise.resolve(reg.active);
-  const w = reg.installing || reg.waiting;
-  return new Promise((ok, fail) => {
-    const timer = setTimeout(() => fail(new Error("Tide's service worker did not start.")), 15000);
-    w.addEventListener("statechange", () => {
-      if (w.state === "activated"){ clearTimeout(timer); ok(reg.active || w); }
-      else if (w.state === "redundant"){ clearTimeout(timer); fail(new Error("Tide's service worker did not start.")); }
+/* Scramjet keeps its settings in a database called $scramjet and only fills
+   in its tables at the moment it creates it. A half-made one - opened by the
+   service worker before the page ever set it up - is already at the version
+   Scramjet asks for, so it never gets repaired. Throw it away and try once
+   more. */
+async function tideInitController(ctl){
+  try { await ctl.init(); }
+  catch (err){
+    const msg = String((err && err.message) || err);
+    if (!/object stores? was not found|NotFoundError/i.test(msg)) throw err;
+    for (const reg of await navigator.serviceWorker.getRegistrations()) await reg.unregister();
+    await new Promise(done => {
+      const req = indexedDB.deleteDatabase("$scramjet");
+      req.onsuccess = req.onerror = req.onblocked = done;
     });
-  });
+    await ctl.init();
+  }
 }
 function tideStart(){
   if (Tide.ready) return Tide.ready;
@@ -5078,137 +5220,40 @@ function tideStart(){
     if (!Tide.token) throw new Error("No key for Tide yet. Settings › Tide has the box for it.");
     if (!navigator.serviceWorker || !window.isSecureContext)
       throw new Error("Tide needs an https:// address. It cannot run from a file on disk.");
-    const reg = await navigator.serviceWorker.register(base + "sw.js", { scope: base, updateViaCache: "none" });
-    const sw = await tideWorker(reg);
-    await loadScriptOnce(base + "tide/scram/scramjet.js");
-    await loadScriptOnce(base + "tide/controller/controller.api.js");
-    await loadScriptOnce(base + "tide/libcurl/libcurl-client.js");
-    if (!window.$scramjet || !window.$scramjetController || !window.LibcurlTransport)
+    await loadScriptOnce(base + "tide/scram/scramjet.all.js");
+    await loadScriptOnce(base + "tide/baremux/index.js");
+    if (!window.$scramjetLoadController || !window.BareMux)
       throw new Error("The files in tide/ did not load properly.");
-    const ctl = new $scramjetController.Controller({
-      serviceworker: sw,
-      transport: new LibcurlTransport.LibcurlClient({ wisp: tideWisp() }),
-      config: {
-        prefix: base + "tide/go/",
-        scramjetPath: base + "tide/scram/scramjet.js",
-        injectPath: base + "tide/controller/controller.inject.js",
-        wasmPath: base + "tide/scram/scramjet.wasm"
+    const { ScramjetController } = $scramjetLoadController();
+    const ctl = new ScramjetController({
+      prefix: base + "tide/go/",
+      files: {
+        wasm: base + "tide/scram/scramjet.wasm.wasm",
+        all:  base + "tide/scram/scramjet.all.js",
+        sync: base + "tide/scram/scramjet.sync.js"
+      },
+      /* Scramjet's own defaults, spelled out: the config is merged one level
+         deep, so passing only the flag we care about would switch off the rest */
+      flags: {
+        serviceworkers: false, syncxhr: false, strictRewrites: true, rewriterLogs: false,
+        captureErrors: true, cleanErrors: false, scramitize: false, sourcemaps: true,
+        destructureRewrites: false, allowInvalidJs: true, allowFailedIntercepts: true,
+        /* a file is caught here and put into Downloads rather than onto the real computer */
+        interceptDownloads: true
       }
     });
-    await ctl.wait();
+    await tideInitController(ctl);
+    ctl.addEventListener("download", e => tideDownload(e.download));
+    /* order matters: the page builds the database, then the worker reads it */
+    await navigator.serviceWorker.register(base + "sw.js", { scope: base });
+    await navigator.serviceWorker.ready;
+    const conn = new BareMux.BareMuxConnection(base + "tide/baremux/worker.js");
+    await conn.setTransport(base + "tide/libcurl/index.mjs", [{ websocket: tideWisp() }]);
     Tide.ctl = ctl;
     return ctl;
   })();
   Tide.ready.catch(() => { Tide.ready = null; });
   return Tide.ready;
-}
-/* Everything a frame opened through Tide needs beyond Scramjet's own work:
-   files it hands over go into Downloads, a browser that cannot pass streams
-   gets each answer whole, and the frame's real address is reported back. */
-function tideFilename(disposition){
-  const star = /filename\*\s*=\s*(?:UTF-8'[^']*')?([^;]+)/i.exec(disposition);
-  if (star){ try { return decodeURIComponent(star[1].trim().replace(/^"|"$/g, "")); } catch (e){} }
-  const plain = /filename\s*=\s*("([^"]*)"|[^;]+)/i.exec(disposition);
-  return plain ? (plain[2] !== undefined ? plain[2] : plain[1]).trim() : "";
-}
-function tideFrame(ctl, onUrl){
-  const sf = ctl.createFrame();
-  const { Tap, BareResponse } = $scramjet;
-  Tap.tap(sf.hooks.fetch.preresponse, (ctx, props) => {
-    const r = props.response;
-    const disposition = r.headers.get("content-disposition") || "";
-    const dest = ctx.parsed.destination || ctx.request.rawDestination;
-    if (!/^\s*attachment/i.test(disposition) || (dest !== "document" && dest !== "iframe") || !r.body) return;
-    tideDownload({
-      filename: tideFilename(disposition),
-      url: String(ctx.parsed.url),
-      type: r.headers.get("content-type") || "",
-      length: Number(r.headers.get("content-length")) || 0,
-      body: r.body
-    });
-    /* nothing to show: the frame stays on the page it was on */
-    props.response = BareResponse.fromNativeResponse(new Response(null, { status: 204 }));
-  });
-  if (!tideCanStream()) Tap.tap(sf.hooks.fetch.response, async (ctx, props) => {
-    const body = props.response.body;
-    if (body instanceof ReadableStream) props.response.body = await new Response(body).arrayBuffer();
-  });
-  if (onUrl){
-    let last = "";
-    const check = () => {
-      let href;
-      try { href = sf.element.contentWindow.location.href; } catch (e){ return; }
-      if (!href || !href.startsWith(sf.context.prefix.href)) return;
-      let url;
-      try { url = $scramjet.unrewriteUrl(href, sf.context); } catch (e){ return; }
-      if (url && url !== last){ last = url; onUrl(url); }
-    };
-    sf.element.addEventListener("load", check);
-    /* history.pushState and #hash changes do not fire load, so look now and then;
-       a frame that has been taken off the page is finished with for good */
-    let seen = false;
-    const timer = setInterval(() => {
-      if (sf.element.isConnected){ seen = true; check(); }
-      else if (seen) clearInterval(timer);
-    }, 1000);
-  }
-  tideKeepInFrame(sf);
-  return sf;
-}
-/* A page opened in a new tab or window would have nothing running the tide
-   behind it, and just shows an error. So links, buttons and forms that ask
-   for a new tab - and Ctrl-, Shift- or middle-clicks - open in this frame. */
-function tideKeepInFrame(sf){
-  const patch = () => {
-    let win, doc;
-    try { win = sf.element.contentWindow; doc = win.document; } catch (e){ return; }
-    if (!win || !doc || win.__tideKeep) return;
-    if (!String(win.location.href).startsWith(sf.context.prefix.href)) return;
-    win.__tideKeep = true;
-    /* the real address a link points at, however it is written */
-    const realUrl = raw => {
-      let url = null;
-      try {
-        const abs = new URL(String(raw), win.location.href).href;
-        url = abs.startsWith(sf.context.prefix.href)
-          ? $scramjet.unrewriteUrl(abs, sf.context)
-          : new URL(String(raw), $scramjet.unrewriteUrl(win.location.href, sf.context)).href;
-      } catch (e){ return null; }
-      return /^https?:/i.test(url) ? url : null;
-    };
-    const opensElsewhere = target => !!target && !/^_(self|parent|top)$/i.test(target);
-    win.open = function (url){
-      const real = url === undefined || url === null || String(url) === "" ? null : realUrl(url);
-      if (real) sf.go(real);
-      return null;
-    };
-    const onClick = e => {
-      const a = e.target && e.target.closest && e.target.closest("a[href], area[href]");
-      if (!a) return;
-      const extra = e.type === "auxclick" ? e.button === 1 : (e.ctrlKey || e.metaKey || e.shiftKey);
-      if (!extra && !opensElsewhere(a.getAttribute("target"))) return;
-      const real = realUrl(a.getAttribute("href"));
-      if (!real) return;
-      e.preventDefault();
-      e.stopImmediatePropagation();
-      sf.go(real);
-    };
-    doc.addEventListener("click", onClick, true);
-    doc.addEventListener("auxclick", onClick, true);
-    doc.addEventListener("submit", e => {
-      const form = e.target;
-      const by = e.submitter;
-      if (by && opensElsewhere(by.getAttribute("formtarget"))) by.setAttribute("formtarget", "_self");
-      if (form && opensElsewhere(form.getAttribute("target"))) form.setAttribute("target", "_self");
-    }, true);
-  };
-  sf.element.addEventListener("load", patch);
-  /* a frame that has been taken off the page is finished with for good */
-  let seen = false;
-  const timer = setInterval(() => {
-    if (sf.element.isConnected){ seen = true; patch(); }
-    else if (seen) clearInterval(timer);
-  }, 500);
 }
 /* A file a proxied page hands over. It is read here and saved into Downloads,
    the same as anything else Seahorse fetches, and never onto the real machine. */
@@ -5445,22 +5490,64 @@ async function saveDownload(blob, url, given){
     return null;
   }
 }
+/* ---- what every ChalkBrowser window shares: bookmarks and history ---- */
+const tkey = t => JSON.stringify(t);
+function isBookmarked(t){
+  if (!t) return false;
+  const k = tkey(t);
+  return (State.bookmarks || []).some(b => tkey(b.t) === k);
+}
+function refreshBrowserViews(){
+  for (const w of windows.values()) if (w.appId === "browser" && w.api && w.api.refreshChrome) w.api.refreshChrome();
+}
+let webSaveTimer = 0;
+function saveWebSoon(){ clearTimeout(webSaveTimer); webSaveTimer = setTimeout(saveSettings, 800); }
+/* one entry a page, moved to the top when you go back to it */
+function rememberVisit(t){
+  if (State.keepHistory === false || !t || t.kind === "bookmarks" || t.kind === "history") return;
+  const k = tkey(t);
+  const old = (State.webHistory || []).find(h => tkey(h.t) === k);
+  const list = (State.webHistory || []).filter(h => h !== old);
+  list.unshift({ t, title: old ? old.title : "", at: Date.now() });
+  State.webHistory = list.slice(0, 300);
+  saveWebSoon();
+}
+async function renameBookmark(b){
+  const n = await osPrompt("Rename bookmark", "", b.label);
+  if (!n || !String(n).trim()) return;
+  b.label = String(n).trim().slice(0, 80);
+  saveSettings();
+  refreshBrowserViews();
+}
+function targetIcon(t){
+  if (!t) return "\u2302";
+  return { web: "\uD83C\uDF10", wiki: "\uD83D\uDCD6", wikt: "\uD83D\uDCDA", search: "\uD83D\uDD0D", local: "\uD83D\uDCC4",
+           so: "\uD83D\uDCAC", sopost: "\uD83D\uDCAC", gh: "\uD83D\uDC19", ghrepo: "\uD83D\uDC19", hn: "\uD83D\uDCF0",
+           bookmarks: "\u2B50", history: "\uD83D\uDD58" }[t.kind] || "\uD83C\uDF10";
+}
 function browserApp(win, startTarget){
   const B = win.body;
   B.innerHTML =
-    '<div class="wb-tabs"><button class="wb-newtab" title="New tab">+</button></div>' +
+    '<div class="wb-tabs"><button class="wb-newtab" title="New tab (Ctrl+T)">+</button></div>' +
     '<div class="wb-tb">' +
       '<button class="tb-btn" data-b="back" title="Back">&#8592;</button>' +
       '<button class="tb-btn" data-b="fwd" title="Forward">&#8594;</button>' +
       '<button class="tb-btn" data-b="reload" title="Reload">&#8635;</button>' +
       '<button class="tb-btn" data-b="home" title="Start page">&#8962;</button>' +
-      '<input class="wb-addr" spellcheck="false" autocomplete="off" placeholder="Search, or type an address">' +
+      '<div class="wb-addrwrap">' +
+        '<input class="wb-addr" spellcheck="false" autocomplete="off" placeholder="Search, or type an address">' +
+        '<button class="wb-star" data-b="star" title="Bookmark this page (Ctrl+D)">&#9734;</button>' +
+        '<div class="wb-sugg"></div>' +
+      '</div>' +
       '<button class="tb-btn" data-b="ext" title="Open in a real browser tab">&#8599;</button>' +
+      '<button class="tb-btn" data-b="more" title="Bookmarks, history and more">&#9776;</button>' +
     '</div>' +
+    '<div class="wb-bmbar"></div>' +
     '<div class="wb-stages"></div>';
 
   const addr   = $(".wb-addr", B), stages = $(".wb-stages", B), tabbar = $(".wb-tabs", B);
   const bb     = k => $('[data-b="' + k + '"]', B);
+  const bmbar  = $(".wb-bmbar", B), sugg = $(".wb-sugg", B);
   let hist = [], hi = -1, current = null, frame = null, reqId = 0, stage = null;
 
   /* ---- tabs ----------------------------------------------------------
@@ -5478,26 +5565,77 @@ function browserApp(win, startTarget){
   }
   function setTitle(s){
     win.setTitle(s);
-    if (active){ active.title = s; drawTabs(); }
+    if (active){ active.title = brand(s); drawTabs(); }
+    /* the page's own name, once it is known, is what history shows */
+    const h = State.webHistory && State.webHistory[0];
+    if (h && current && s && s !== "Seahorse" && s !== brand("Seahorse") && tkey(h.t) === tkey(current)){
+      h.title = s;
+      saveWebSoon();
+    }
   }
   function drawTabs(){
     Array.from(tabbar.querySelectorAll(".wb-tab")).forEach(n => n.remove());
     const plus = $(".wb-newtab", tabbar);
     tabs.forEach(t => {
+      const target = t === active ? current : t.current;
       const chip = el("div", "wb-tab" + (t === active ? " on" : ""));
-      chip.append(el("span", "lbl", t.title || "New tab"));
+      chip._tab = t;
+      chip.title = t.title || "New tab";
+      chip.append(el("span", "g", targetIcon(target)), el("span", "lbl", t.title || "New tab"));
       const x = el("span", "x", "\u00D7");
-      x.title = "Close tab";
+      x.title = "Close tab (Ctrl+W)";
+      x.onpointerdown = e => e.stopPropagation();
       x.onclick = e => { e.stopPropagation(); closeTab(t); };
       chip.appendChild(x);
-      chip.onmousedown = e => {
+      chip.onpointerdown = e => {
         if (e.button === 1){ e.preventDefault(); return closeTab(t); }
-        if (e.button === 0) selectTab(t);
+        if (e.button !== 0) return;
+        selectTab(t);
+        dragTab(t, e);
       };
+      chip.oncontextmenu = e => tabMenu(e, t);
       tabbar.insertBefore(chip, plus);
     });
-    tabbar.style.display = tabs.length > 1 ? "" : "none";
   }
+  /* drag a tab along the bar to put it somewhere else */
+  function dragTab(t, e){
+    const sx = e.clientX;
+    let moved = false;
+    const mv = ev => {
+      if (!moved && Math.abs(ev.clientX - sx) < 6) return;
+      moved = true;
+      const others = Array.from(tabbar.querySelectorAll(".wb-tab")).filter(c => c._tab !== t);
+      const to = others.filter(c => { const r = c.getBoundingClientRect(); return r.left + r.width / 2 < ev.clientX; }).length;
+      const from = tabs.indexOf(t);
+      if (from >= 0 && to !== from){ tabs.splice(from, 1); tabs.splice(to, 0, t); drawTabs(); }
+    };
+    const up = () => {
+      removeEventListener("pointermove", mv);
+      removeEventListener("pointerup", up);
+      if (moved) saveSession();
+    };
+    addEventListener("pointermove", mv);
+    addEventListener("pointerup", up);
+  }
+  function tabMenu(e, t){
+    e.preventDefault();
+    e.stopPropagation();
+    const i = tabs.indexOf(t), target = t === active ? current : t.current;
+    showCtx(e.clientX, e.clientY, [
+      { icon: "\u2795", label: "New tab", run: () => newTab(null, i + 1) },
+      { icon: "\u21BB", label: "Reload", run: () => { selectTab(t); reload(); } },
+      { icon: "\u29C9", label: "Duplicate", disabled: !target, run: () => newTab(target, i + 1) },
+      { icon: "\u2B50", label: isBookmarked(target) ? "Bookmarked" : "Bookmark",
+        disabled: !target || internal(target) || isBookmarked(target), run: () => { selectTab(t); bookmarkThis(); } },
+      "-",
+      { icon: "\u2716", label: "Close tab", run: () => closeTab(t) },
+      { label: "Close other tabs", disabled: tabs.length < 2, run: () => tabs.filter(x => x !== t).forEach(x => closeTab(x)) },
+      { label: "Close tabs to the right", disabled: i >= tabs.length - 1, run: () => tabs.slice(i + 1).forEach(x => closeTab(x)) },
+      "-",
+      { icon: "\u21A9\uFE0F", label: "Reopen closed tab", disabled: !closed.length, run: reopenTab }
+    ]);
+  }
+  tabbar.ondblclick = e => { if (e.target === tabbar) newTab(); };
   function selectTab(t){
     if (t === active) return;
     stash();
@@ -5511,14 +5649,22 @@ function browserApp(win, startTarget){
     syncNav();
     drawTabs();
     drawMenuBar();
+    /* a tab brought back from last time loads when you first look at it */
+    if (t.lazy){ t.lazy = false; render(current); }
   }
-  function newTab(target){
+  const closed = [];                 /* what Reopen closed tab brings back, newest last */
+  function makeTab(){
+    const t = { hist: [], hi: -1, current: null, frame: null, sf: null, title: "New tab",
+                stage: el("div", "wb-stage off"), scroll: 0 };
+    stages.appendChild(t.stage);
+    return t;
+  }
+  function newTab(target, at){
     stash();
     if (active) active.stage.classList.add("off");
-    const t = { hist: [], hi: -1, current: null, frame: null, sf: null, title: "New tab",
-                stage: el("div", "wb-stage"), scroll: 0 };
-    stages.appendChild(t.stage);
-    tabs.push(t);
+    const t = makeTab();
+    t.stage.classList.remove("off");
+    if (at != null && at >= 0 && at <= tabs.length) tabs.splice(at, 0, t); else tabs.push(t);
     active = t;
     hist = t.hist; hi = t.hi; current = t.current; frame = null; stage = t.stage;
     drawTabs();
@@ -5526,14 +5672,35 @@ function browserApp(win, startTarget){
     drawMenuBar();
     return t;
   }
+  /* last time's tabs, put back without loading all of them at once */
+  function restoreTabs(list){
+    for (const target of list){
+      const t = makeTab();
+      t.current = target; t.hist = [target]; t.hi = 0; t.lazy = true; t.title = targetLabel(target);
+      tabs.push(t);
+    }
+    selectTab(tabs[0]);
+  }
   function closeTab(t){
     const i = tabs.indexOf(t);
     if (i < 0) return;
+    const was = t === active ? current : t.current;
+    if (was && !internal(was)) closed.push(was);
     if (tabs.length === 1) return win.close();
     t.stage.remove();
     tabs.splice(i, 1);
     if (t === active){ active = null; selectTab(tabs[Math.min(i, tabs.length - 1)]); }
     else drawTabs();
+    saveSession();
+  }
+  function reopenTab(){
+    const t = closed.pop();
+    if (t) newTab(t);
+  }
+  /* the tabs to open next time */
+  function saveSession(){
+    State.webTabs = tabs.map(x => (x === active ? current : x.current)).filter(t => t && !internal(t)).slice(0, 15);
+    saveWebSoon();
   }
   $(".wb-newtab", tabbar).onclick = () => newTab();
 
@@ -5541,6 +5708,8 @@ function browserApp(win, startTarget){
   function resolve(input){
     const s = String(input).trim();
     if (!s) return null;
+    if (/^(chalk|sea|seahorse):\/*bookmarks$/i.test(s)) return { kind: "bookmarks" };
+    if (/^(chalk|sea|seahorse):\/*history$/i.test(s)) return { kind: "history" };
     if (s.startsWith("box:")) return { kind: "local", path: absPath(s.slice(4), HOME) };
     if (s.startsWith("wiki:")) return { kind: "wiki", title: s.slice(5).trim() };
     if (/^(hn|news|hackernews)$/i.test(s)) return { kind: "hn" };
@@ -5577,6 +5746,11 @@ function browserApp(win, startTarget){
     bb("back").disabled = hi <= 0;
     bb("fwd").disabled  = hi >= hist.length - 1;
     bb("ext").disabled  = !current || !(current.kind === "web" || current.kind === "wiki" || current.kind === "search");
+    const star = bb("star"), can = !!current && !internal(current), on = can && isBookmarked(current);
+    star.disabled = !can;
+    star.innerHTML = on ? "&#9733;" : "&#9734;";
+    star.classList.toggle("on", on);
+    star.title = on ? "Remove the bookmark (Ctrl+D)" : "Bookmark this page (Ctrl+D)";
   }
   function externalUrl(t){
     if (!t) return null;
@@ -5646,6 +5820,10 @@ function browserApp(win, startTarget){
     current = t;
     const my = ++reqId;
     syncNav();
+    saveSession();
+    if (t.kind === "bookmarks") return drawBookmarksPage();
+    if (t.kind === "history") return drawHistoryPage();
+    rememberVisit(t);
 
     if (t.kind === "local"){
       setAddr("box:" + t.path);
@@ -5761,18 +5939,19 @@ function browserApp(win, startTarget){
     }
     if (my !== reqId) return;
     let sf = active && active.sf;
-    if (!sf || !stage.contains(sf.element)){
+    if (!sf || !stage.contains(sf.frame)){
       stage.innerHTML = "";
       frame = null;
-      sf = tideFrame(ctl, url => {
-        if (!active || active.sf !== sf) return;
-        setAddr(url);
-        if (current) current.url = url;
-        try { setTitle(new URL(url).hostname.replace(/^www\./, "")); } catch (x){}
-      });
-      sf.element.title = "Tide";
-      stage.appendChild(sf.element);
+      sf = ctl.createFrame();
+      sf.frame.title = "Tide";
+      stage.appendChild(sf.frame);
       if (active) active.sf = sf;
+      sf.addEventListener("urlchange", e => {
+        if (!e.url || !active || active.sf !== sf) return;
+        setAddr(e.url);
+        if (current) current.url = e.url;
+        try { setTitle(new URL(e.url).hostname.replace(/^www\./, "")); } catch (x){}
+      });
     }
     sf.go(t.url);
   }
@@ -6129,6 +6308,33 @@ function browserApp(win, startTarget){
     hero.appendChild(form);
     p.appendChild(hero);
 
+    const tiles = (title, list, more) => {
+      const sect = el("div", "wb-sect");
+      const h = el("h2", null, title);
+      if (more){
+        const a = el("button", "wb-more", more[0]);
+        a.onclick = more[1];
+        h.appendChild(a);
+      }
+      sect.appendChild(h);
+      const grid = el("div", "wb-links");
+      for (const [t, label] of list){
+        const b = el("button", "wb-link");
+        b.append(el("span", null, targetIcon(t)), el("span", null, label));
+        b.title = targetLabel(t);
+        b.onclick = e => (e.ctrlKey || e.metaKey) ? newTab(t) : go(t);
+        grid.appendChild(b);
+      }
+      sect.appendChild(grid);
+      p.appendChild(sect);
+    };
+    const bms = State.bookmarks || [];
+    if (bms.length) tiles("Bookmarks", bms.slice(0, 12).map(b => [b.t, b.label]),
+                          ["All bookmarks", () => go({ kind: "bookmarks" })]);
+    const recent = (State.webHistory || []).slice(0, 6);
+    if (recent.length) tiles("Recently visited", recent.map(h => [h.t, h.title || targetLabel(h.t)]),
+                             ["All history", () => go({ kind: "history" })]);
+
     const pages = [];
     walkFS((path, n, name) => { if (n.type === "file" && isHtml(name)) pages.push(path); });
     const s1 = el("div", "wb-sect");
@@ -6184,41 +6390,225 @@ function browserApp(win, startTarget){
     if (t.kind === "gh") return t.q + " (GitHub)";
     if (t.kind === "ghrepo") return t.repo;
     if (t.kind === "hn") return "Hacker News";
+    if (t.kind === "bookmarks") return "Bookmarks";
+    if (t.kind === "history") return "History";
     if (t.kind === "web") return t.url;
     return "Page";
   }
+  const internal = t => !!t && (t.kind === "bookmarks" || t.kind === "history");
+  /* the page's own name when it has told us one, otherwise its address */
+  function niceTitle(){
+    const t = active && active.title;
+    return t && t !== "New tab" && t !== "Seahorse" && t !== brand("Seahorse") ? t : targetLabel(current);
+  }
   function bookmarkThis(){
-    if (!current) return notify("Nothing to save", "The start page cannot be bookmarked.", "\u2139\uFE0F");
-    const label = targetLabel(current);
-    State.bookmarks = State.bookmarks || [];
-    if (State.bookmarks.some(b => JSON.stringify(b.t) === JSON.stringify(current)))
-      return notify("Already saved", label + " is already bookmarked.", "\u2139\uFE0F");
-    State.bookmarks.push({ id: uid("bm"), label, t: current });
+    if (!current || internal(current) || isBookmarked(current)) return;
+    const label = niceTitle();
+    State.bookmarks = (State.bookmarks || []).concat({ id: uid("bm"), label, t: current });
     saveSettings();
+    refreshBrowserViews();
     notify("Bookmarked", label, "\u2B50");
   }
+  function toggleStar(){
+    if (!current || internal(current)) return;
+    if (!isBookmarked(current)) return bookmarkThis();
+    const k = tkey(current);
+    State.bookmarks = (State.bookmarks || []).filter(b => tkey(b.t) !== k);
+    saveSettings();
+    refreshBrowserViews();
+  }
+  function deleteBookmark(b){
+    State.bookmarks = (State.bookmarks || []).filter(x => x !== b);
+    saveSettings();
+    refreshBrowserViews();
+  }
+  function moveBookmark(b, d){
+    const a = (State.bookmarks || []).slice(), i = a.indexOf(b);
+    if (i < 0 || i + d < 0 || i + d >= a.length) return;
+    a.splice(i + d, 0, a.splice(i, 1)[0]);
+    State.bookmarks = a;
+    saveSettings();
+    refreshBrowserViews();
+  }
+  function bookmarkCtx(e, b){
+    e.preventDefault();
+    e.stopPropagation();
+    const list = State.bookmarks || [], i = list.indexOf(b);
+    showCtx(e.clientX, e.clientY, [
+      { icon: "\u25B6", label: "Open", run: () => go(b.t) },
+      { icon: "\u2795", label: "Open in a new tab", run: () => newTab(b.t) },
+      "-",
+      { icon: "\u270F\uFE0F", label: "Rename\u2026", run: () => renameBookmark(b) },
+      { icon: "\u2190", label: "Move left", disabled: i <= 0, run: () => moveBookmark(b, -1) },
+      { icon: "\u2192", label: "Move right", disabled: i >= list.length - 1, run: () => moveBookmark(b, 1) },
+      "-",
+      { icon: "\u2716", label: "Delete bookmark", run: () => deleteBookmark(b) }
+    ]);
+  }
+  function drawBmBar(){
+    bmbar.innerHTML = "";
+    const show = State.bmBar !== false;
+    bmbar.style.display = show ? "" : "none";
+    if (!show) return;
+    const list = State.bookmarks || [];
+    if (!list.length){
+      bmbar.appendChild(el("span", "wb-bm-none", "Bookmarks you save with \u2606 show up here."));
+      return;
+    }
+    for (const b of list){
+      const c = el("button", "wb-bm");
+      c.append(el("span", "g", targetIcon(b.t)), el("span", "n", b.label));
+      c.title = b.label + "\n" + targetLabel(b.t);
+      c.onclick = e => (e.ctrlKey || e.metaKey) ? newTab(b.t) : go(b.t);
+      c.onauxclick = e => { if (e.button === 1){ e.preventDefault(); newTab(b.t); } };
+      c.oncontextmenu = e => bookmarkCtx(e, b);
+      bmbar.appendChild(c);
+    }
+  }
+  function toggleBar(){
+    State.bmBar = State.bmBar === false;
+    saveSettings();
+    refreshBrowserViews();
+  }
+
+  /* ---- the Bookmarks and History pages ---- */
+  function mgrPage(title, icon){
+    const p = page();
+    p.classList.add("wb-mgr");
+    const head = el("div", "wb-mgr-head");
+    head.append(el("h1", null, icon + " " + title));
+    const find = el("input", "wb-mgr-find");
+    find.placeholder = "Search " + title.toLowerCase();
+    find.spellcheck = false;
+    head.appendChild(find);
+    const list = el("div", "wb-mgr-list");
+    p.append(head, list);
+    return { p, head, find, list };
+  }
+  function mgrRow(t, title, sub, when, onX, xTitle){
+    const r = el("div", "wb-mgr-row");
+    if (when != null) r.appendChild(el("span", "wb-mgr-when", when));
+    r.appendChild(el("span", "g", targetIcon(t)));
+    const txt = el("div", "wb-mgr-txt");
+    txt.append(el("div", "n", title), el("div", "d", sub));
+    r.appendChild(txt);
+    r.onclick = e => (e.ctrlKey || e.metaKey) ? newTab(t) : go(t);
+    r.onauxclick = e => { if (e.button === 1){ e.preventDefault(); newTab(t); } };
+    if (onX){
+      const x = el("button", "wb-mgr-x", "\u00D7");
+      x.title = xTitle;
+      x.onclick = e => { e.stopPropagation(); onX(); };
+      r.appendChild(x);
+    }
+    return r;
+  }
+  function drawBookmarksPage(){
+    setAddr("chalk:bookmarks");
+    setTitle("Bookmarks");
+    const m = mgrPage("Bookmarks", "\u2B50");
+    const draw = () => {
+      m.list.innerHTML = "";
+      const all = State.bookmarks || [], q = m.find.value.trim().toLowerCase();
+      const shown = all.filter(b => !q || (b.label + " " + targetLabel(b.t)).toLowerCase().includes(q));
+      if (!shown.length){
+        m.list.appendChild(el("div", "wb-none", all.length ? "Nothing matches that."
+          : "No bookmarks yet. Press \u2606 at the end of the address bar, or Ctrl+D, to keep the page you are on."));
+        return;
+      }
+      for (const b of shown){
+        const r = mgrRow(b.t, b.label, targetLabel(b.t), null, () => deleteBookmark(b), "Delete bookmark");
+        r.oncontextmenu = e => bookmarkCtx(e, b);
+        m.list.appendChild(r);
+      }
+    };
+    m.find.oninput = draw;
+    m.head.appendChild(el("span", "wb-mgr-tip", "Right-click one to rename or move it"));
+    draw();
+    setTimeout(() => m.find.focus(), 30);
+  }
+  function drawHistoryPage(){
+    setAddr("chalk:history");
+    setTitle("History");
+    const m = mgrPage("History", "\uD83D\uDD58");
+    const clear = el("button", "btn", "Clear history");
+    clear.onclick = async () => {
+      if (!(await osConfirm("Clear history", "Forget every page ChalkBrowser has kept a note of?", "Clear", true))) return;
+      State.webHistory = [];
+      saveSettings();
+      refreshBrowserViews();
+    };
+    m.head.appendChild(clear);
+    const draw = () => {
+      m.list.innerHTML = "";
+      const all = State.webHistory || [], q = m.find.value.trim().toLowerCase();
+      if (State.keepHistory === false)
+        m.list.appendChild(el("div", "wb-none", "History is switched off in Settings, so nothing new is being kept."));
+      const shown = all.filter(h => !q || ((h.title || "") + " " + targetLabel(h.t)).toLowerCase().includes(q));
+      if (!shown.length){
+        m.list.appendChild(el("div", "wb-none", all.length ? "Nothing matches that." : "Nowhere yet."));
+        return;
+      }
+      const today = new Date().toDateString(), yday = new Date(Date.now() - 864e5).toDateString();
+      let day = "";
+      for (const h of shown.slice(0, 300)){
+        const d = new Date(h.at), ds = d.toDateString();
+        if (ds !== day){
+          day = ds;
+          m.list.appendChild(el("div", "wb-mgr-day", ds === today ? "Today" : ds === yday ? "Yesterday"
+            : d.toLocaleDateString([], { weekday: "long", month: "long", day: "numeric" })));
+        }
+        m.list.appendChild(mgrRow(h.t, h.title || targetLabel(h.t), targetLabel(h.t),
+          d.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
+          () => { State.webHistory = (State.webHistory || []).filter(x => x !== h); saveWebSoon(); draw(); },
+          "Forget this one"));
+      }
+    };
+    m.find.oninput = draw;
+    draw();
+    setTimeout(() => m.find.focus(), 30);
+  }
+
+  /* ---- the menu bar's lists ---- */
   function bookmarkMenu(){
-    const items = [{ label: "Bookmark this page", run: bookmarkThis, disabled: !current }];
+    const items = [{ label: "Bookmark this page", run: bookmarkThis, disabled: !current || internal(current) || isBookmarked(current) }];
     const list = State.bookmarks || [];
     if (list.length){
       items.push("-");
-      for (const b of list.slice(-12).reverse())
+      for (const b of list.slice(0, 12))
         items.push({ label: b.label.length > 42 ? b.label.slice(0, 42) + "\u2026" : b.label, run: () => go(b.t) });
-      items.push("-", { label: "Clear bookmarks", run: () => { State.bookmarks = []; saveSettings(); } });
     }
+    items.push("-",
+      { label: "Show all bookmarks", run: () => newTab({ kind: "bookmarks" }) },
+      { label: (State.bmBar !== false ? "Hide" : "Show") + " the bookmarks bar", run: toggleBar });
     return items;
   }
   function historyMenu(){
-    if (!hist.length) return [{ label: "Nothing visited yet", disabled: true, run(){} }];
-    return hist.slice(-14).reverse().map((t, i) => ({
-      label: (hist.length - 1 - i === hi ? "\u2022 " : "   ") + targetLabel(t),
-      run: () => { hi = hist.length - 1 - i; render(hist[hi]); }
-    }));
+    const list = (State.webHistory || []).slice(0, 12);
+    const items = list.length
+      ? list.map(h => { const l = h.title || targetLabel(h.t); return { label: l.length > 46 ? l.slice(0, 46) + "\u2026" : l, run: () => go(h.t) }; })
+      : [{ label: "Nowhere yet", disabled: true, run(){} }];
+    items.push("-", { label: "Show all history", run: () => newTab({ kind: "history" }) });
+    return items;
+  }
+  function moreMenu(){
+    const r = bb("more").getBoundingClientRect();
+    showCtx(r.right - 210, r.bottom + 4, [
+      { icon: "\u2795", label: "New tab", run: () => newTab() },
+      { icon: "\u21A9\uFE0F", label: "Reopen closed tab", disabled: !closed.length, run: reopenTab },
+      "-",
+      { icon: "\u2B50", label: "Bookmarks", run: () => newTab({ kind: "bookmarks" }) },
+      { icon: "\uD83D\uDD58", label: "History", run: () => newTab({ kind: "history" }) },
+      { icon: "\u2630", label: (State.bmBar !== false ? "Hide" : "Show") + " the bookmarks bar", run: toggleBar },
+      "-",
+      { icon: "\uD83D\uDCE5", label: "Downloads", run: () => { ensureDir(HOME + "/Downloads"); openInFiles(HOME + "/Downloads"); } },
+      { icon: "\u2699\uFE0F", label: "Browser settings", run: () => { settingsPage = "browser"; const w = launch("settings"); if (w && w.api && w.api.refresh) w.api.refresh(); refreshSettings(); } }
+    ]);
   }
   function seahorseMenus(){
     return {
       File: [
         { label: "New Tab", run: () => newTab() },
+        { label: "Reopen Closed Tab", run: reopenTab, disabled: !closed.length },
         { label: "Close Tab", run: () => closeTab(active), disabled: tabs.length < 2 },
         "-",
         { label: brand("New Seahorse window"), run: () => launch("browser") },
@@ -6228,7 +6618,7 @@ function browserApp(win, startTarget){
             if (p) go("box:" + p);
           } },
         "-",
-        { label: "Bookmark this page", run: bookmarkThis, disabled: !current },
+        { label: "Bookmark this page", run: bookmarkThis, disabled: !current || internal(current) || isBookmarked(current) },
         { label: "Save page text to Files", disabled: !current, run: savePageText },
         { label: "Show Downloads", run: () => { ensureDir(HOME + "/Downloads"); openInFiles(HOME + "/Downloads"); } },
         "-",
@@ -6293,18 +6683,89 @@ function browserApp(win, startTarget){
 
   bb("back").onclick   = () => { if (hi > 0){ hi--; render(hist[hi]); } };
   bb("fwd").onclick    = () => { if (hi < hist.length - 1){ hi++; render(hist[hi]); } };
-  bb("reload").onclick = () => {
+  function reload(){
     if (current && current.kind === "web") PageCache.map.delete(current.url);
     if (current) render(current); else drawHome();
-  };
+  }
+  bb("reload").onclick = reload;
+  bb("star").onclick = toggleStar;
+  bb("more").onclick = moreMenu;
   bb("home").onclick   = drawHome;
   bb("ext").onclick    = () => { const u = externalUrl(current); if (u) window.open(u, "_blank", "noopener"); };
-  addr.onkeydown = e => { if (e.key === "Enter" || e.key === "Return") go(addr.value); };
+  /* as you type: what Enter will do, then bookmarks and places you have been */
+  let sgItems = [], sgAt = 0;
+  function hideSugg(){ sugg.classList.remove("on"); sgItems = []; }
+  function suggest(){
+    const raw = addr.value.trim(), q = raw.toLowerCase();
+    const first = raw && resolve(raw);
+    if (!first){ hideSugg(); return; }
+    const eng = ENGINES[State.engine] || ENGINES.ddg;
+    sgItems = [{ t: first, n: first.kind === "search" ? raw : targetLabel(first),
+                 d: first.kind === "search" ? "Search with " + eng.name : "Go there", icon: first.kind === "search" ? "\uD83D\uDD0D" : "\u2197\uFE0F" }];
+    const seen = new Set([tkey(first)]);
+    const add = (t, title, icon) => {
+      const k = tkey(t);
+      if (seen.has(k) || sgItems.length >= 8) return;
+      if (!((title || "") + " " + targetLabel(t)).toLowerCase().includes(q)) return;
+      seen.add(k);
+      sgItems.push({ t, n: title || targetLabel(t), d: targetLabel(t), icon });
+    };
+    for (const b of State.bookmarks || []) add(b.t, b.label, "\u2B50");
+    for (const h of State.webHistory || []) add(h.t, h.title, "\uD83D\uDD58");
+    sgAt = 0;
+    if (sgItems.length < 2){ hideSugg(); return; }
+    drawSugg();
+  }
+  function drawSugg(){
+    sugg.innerHTML = "";
+    sgItems.forEach((it, i) => {
+      const r = el("div", "wb-sg" + (i === sgAt ? " on" : ""));
+      r.append(el("span", "g", it.icon), el("span", "n", it.n), el("span", "d", it.d === it.n ? "" : it.d));
+      r.onmousedown = e => { e.preventDefault(); pickSugg(i); };
+      sugg.appendChild(r);
+    });
+    sugg.classList.add("on");
+  }
+  function pickSugg(i){
+    const it = sgItems[i];
+    hideSugg();
+    if (!it) return;
+    addr.blur();
+    go(it.t);
+  }
+  addr.oninput = suggest;
+  addr.onblur = () => setTimeout(hideSugg, 120);
+  addr.onkeydown = e => {
+    const open = sugg.classList.contains("on");
+    if (open && (e.key === "ArrowDown" || e.key === "ArrowUp")){
+      e.preventDefault();
+      sgAt = (sgAt + (e.key === "ArrowDown" ? 1 : -1) + sgItems.length) % sgItems.length;
+      drawSugg();
+      return;
+    }
+    if (e.key === "Escape" && open){ e.preventDefault(); e.stopPropagation(); hideSugg(); return; }
+    if (e.key === "Enter" || e.key === "Return"){
+      if (open && sgAt > 0) return pickSugg(sgAt);
+      hideSugg();
+      go(addr.value);
+    }
+  };
   addr.onfocus = () => addr.select();
 
-  newTab(startTarget);
+  drawBmBar();
+  const others = Array.from(windows.values()).some(w => w !== win && w.appId === "browser");
+  const last = !startTarget && !others && State.webRestore !== false ? (State.webTabs || []).filter(Boolean) : [];
+  if (last.length) restoreTabs(last); else newTab(startTarget);
   return {
     go, newTab, menus: seahorseMenus,
+    refreshChrome(){ drawBmBar(); syncNav(); drawTabs(); if (internal(current)) render(current); },
+    focusAddr(){ addr.focus(); addr.select(); },
+    toggleStar, reopen: reopenTab, reload, toggleBar,
+    showHistory: () => newTab({ kind: "history" }),
+    showBookmarks: () => newTab({ kind: "bookmarks" }),
+    selectIndex(n){ const t = n >= 9 ? tabs[tabs.length - 1] : tabs[n - 1]; if (t) selectTab(t); },
+    back(){ if (hi > 0){ hi--; render(hist[hi]); } },
+    fwd(){ if (hi < hist.length - 1){ hi++; render(hist[hi]); } },
     closeTab: () => closeTab(active),
     cycleTab(step){ const i = tabs.indexOf(active);
                     if (tabs.length > 1) selectTab(tabs[(i + step + tabs.length) % tabs.length]); },
@@ -7701,7 +8162,9 @@ function mp3App(win, startPath){
   B.innerHTML =
     '<button class="tb-btn m3-swap" data-m="media" title="Back to all of Media: links, videos and the list">☰ Media</button>' +
     '<div class="m3-stage"><div class="m3-card">' +
-      '<div class="m3-disc"><div class="m3-art letter"></div><span class="m3-hole"></span></div>' +
+      '<div class="m3-discwrap"><canvas class="m3-vis"></canvas>' +
+        '<div class="m3-disc"><div class="m3-art letter"></div><span class="m3-hole"></span></div>' +
+      '</div>' +
       '<div class="m3-text"><div class="m3-title">Nothing playing</div><div class="m3-sub">Pick something from Up next</div></div>' +
     '</div></div>' +
     '<div class="m3-bar">' +
@@ -7731,6 +8194,7 @@ function mp3App(win, startPath){
 
   const audio = new Audio();
   const card = $(".m3-card", B), art = $(".m3-art", B);
+  const vis = visualizer(win, $(".m3-vis", B), "ring");
   const titleEl = $(".m3-title", B), subEl = $(".m3-sub", B);
   const seek = $(".m3-seek", B), atEl = $(".m3-at", B), ofEl = $(".m3-of", B), vol = $(".m3-v", B);
   const listSel = $(".m3-lists", B), qList = $(".m3-q-list", B), nextT = $(".m3-next-t", B);
@@ -7890,6 +8354,7 @@ function mp3App(win, startPath){
     const t = tracks[i];
     const src = isWeb(t) ? t.url : (node(t) ? node(t).content : "");
     if (!src) return build();
+    visCors(audio, src);
     audio.src = src;
     audio.play().catch(() => {});
     slide(back, () => dressUp(t));
@@ -7977,6 +8442,7 @@ function mp3App(win, startPath){
   vol.oninput = () => { audio.volume = vol.value / 100; };
   audio.volume = 0.9;
   audio.onplay = audio.onpause = () => {
+    if (!audio.paused) vis.follow(audio);
     mediaKeysPlaying(win, !audio.paused);
     B.classList.toggle("playing", !audio.paused);
     mb("play").innerHTML = audio.paused ? "&#9654;" : "&#10074;&#10074;";
@@ -8013,6 +8479,7 @@ function mp3App(win, startPath){
     addLinks: async urls => takeLinks(await addMediaLinks(urls, false)),
     refresh: build,
     pause: () => audio.pause(),
+    visKick(){ if (!audio.paused) vis.follow(audio); },
     toggle,
     next: () => step(1),
     menus(){
@@ -8028,6 +8495,7 @@ function mp3App(win, startPath){
         View: [
           { label: B.classList.contains("queued") ? "Hide Up next" : "Show Up next", run: () => openQueue() },
           { label: "All of Media", run: () => mediaSwap(win, "list") },
+          { label: (State.visualizer !== false ? "Hide" : "Show") + " the visualizer", run: toggleVisualizer },
           { label: "Rescan music", run: build },
           "-",
           { label: State.mp3Shuffle ? "Stop shuffling" : "Shuffle", run: () => mb("shuffle").click() },
@@ -8039,11 +8507,184 @@ function mp3App(win, startPath){
     onClose(){
       if (NowPlaying.win === win) nowPlaying(null);
       releaseMediaKeys(win);
+      vis.stop();
       audio.pause();
       audio.src = "";
       return true;
     }
   };
+}
+
+/* Playlists of saved links. A link lives once, in the list of everything
+   you have added; a playlist is a name and the order of the links in it, so
+   one link can sit in as many playlists as you like. */
+function linkList(id){ return (State.linkLists || []).find(l => l.id === id) || null; }
+function mediaViewNow(){
+  const v = State.mediaView || "all";
+  return v === "all" || v === "links" || linkList(v) ? v : "all";
+}
+function refreshMediaViews(){
+  saveSettings();
+  for (const w of windows.values()) if (w.appId === "music" && w.api && w.api.refresh) w.api.refresh();
+}
+/* a link that is forgotten leaves every playlist too */
+function forgetWebMedia(url){
+  State.webMedia = (State.webMedia || []).filter(x => x.url !== url);
+  State.linkLists = (State.linkLists || []).map(l => Object.assign({}, l, { urls: l.urls.filter(u => u !== url) }));
+}
+async function newLinkList(urls){
+  const name = await osPrompt("New playlist", "What should it be called?", "");
+  if (!name || !String(name).trim()) return null;
+  const l = { id: uid("pl"), name: String(name).trim().slice(0, 40), urls: [] };
+  State.linkLists = (State.linkLists || []).concat(l);
+  State.mediaView = l.id;
+  if (urls && urls.length) l.urls = urls.slice();
+  else {
+    /* made out of nothing: paste its links now, or add them later from any link's menu */
+    const items = await askMediaLinks(false);
+    for (const it of items) if (!l.urls.includes(it.url)) l.urls.push(it.url);
+  }
+  refreshMediaViews();
+  return l;
+}
+async function renameLinkList(l){
+  const name = await osPrompt("Rename playlist", "A new name for " + l.name + ".", l.name);
+  if (!name || !String(name).trim()) return;
+  l.name = String(name).trim().slice(0, 40);
+  refreshMediaViews();
+}
+async function deleteLinkList(l){
+  if (!(await osConfirm("Delete " + l.name, "The playlist goes; its links stay saved in Links.", "Delete", true))) return;
+  State.linkLists = (State.linkLists || []).filter(x => x.id !== l.id);
+  if (State.mediaView === l.id) State.mediaView = "links";
+  refreshMediaViews();
+}
+function addToLinkList(l, url){
+  if (!l.urls.includes(url)) l.urls.push(url);
+  refreshMediaViews();
+}
+
+/* ============================================================
+   The visualizer: the music, drawn - bars behind what is playing in
+   Media, and a ring round the turning cover in the MP3 Player.
+
+   It listens to a copy of the sound (captureStream) rather than the
+   sound itself, so a song the browser will not let it hear - from a
+   site that does not allow it - still plays exactly as before, only
+   without the drawing. It draws nothing while paused, minimised,
+   hidden, or behind Game or Movie mode.
+   ============================================================ */
+const Vis = { ctx: null, sink: null };
+function visTap(media){
+  if (!media || typeof media.captureStream !== "function") return null;
+  try {
+    if (!Vis.ctx){
+      const AC = window.AudioContext || window.webkitAudioContext;
+      if (!AC) return null;
+      Vis.ctx = new AC();
+      Vis.sink = Vis.ctx.createGain();
+      Vis.sink.gain.value = 0;           /* heard nowhere - it only has to be listened to */
+      Vis.sink.connect(Vis.ctx.destination);
+    }
+    if (Vis.ctx.state === "suspended") Vis.ctx.resume().catch(() => {});
+    const tracks = media.captureStream().getAudioTracks();
+    if (!tracks.length) return null;
+    const src = Vis.ctx.createMediaStreamSource(new MediaStream([tracks[0]]));
+    const an = Vis.ctx.createAnalyser();
+    an.fftSize = 256;
+    an.smoothingTimeConstant = 0.78;
+    src.connect(an);
+    an.connect(Vis.sink);
+    return { src, an };
+  } catch (e){ return null; }
+}
+/* GitHub Pages lets other sites listen to its files, but only when asked
+   up front - so a song from the repository is asked for that way, and the
+   visualizer can hear it. Anything else is fetched as it always was. */
+function visCors(media, src){
+  if (/^https:\/\/[\w.-]+\.github\.io\//i.test(String(src || ""))) media.crossOrigin = "anonymous";
+  else media.removeAttribute("crossorigin");
+}
+function visBars(g, w, h, bins, color){
+  const n = 48, gap = Math.max(1, w / n * 0.28), bw = w / n - gap;
+  g.fillStyle = color;
+  for (let i = 0; i < n; i++){
+    /* low notes get more of the width, the way they are heard */
+    const b = Math.min(bins.length - 1, Math.floor(Math.pow(i / n, 1.6) * 100) + 1);
+    const v = bins[b] / 255;
+    const bh = Math.max(2, v * v * h * 0.95);
+    g.globalAlpha = 0.35 + v * 0.65;
+    g.fillRect(i * (bw + gap) + gap / 2, h - bh, bw, bh);
+  }
+  g.globalAlpha = 1;
+}
+function visRing(g, w, h, bins, color){
+  /* the canvas is 136% of the cover, so this is the cover's own edge */
+  const cx = w / 2, cy = h / 2, half = Math.min(w, h) / 2, r0 = half / 1.36 * 1.03;
+  const n = 72, room = half - r0 - 2;
+  g.strokeStyle = color;
+  g.lineCap = "round";
+  g.lineWidth = Math.max(2, 2 * Math.PI * r0 / n * 0.42);
+  for (let i = 0; i < n; i++){
+    /* mirrored left and right, the low notes at the top */
+    const m = i < n / 2 ? i : n - 1 - i;
+    const b = Math.min(bins.length - 1, Math.floor(Math.pow(m / (n / 2), 1.5) * 90) + 1);
+    const v = bins[b] / 255;
+    const len = 2 + v * v * room;
+    const a = i / n * Math.PI * 2 - Math.PI / 2;
+    g.globalAlpha = 0.4 + v * 0.6;
+    g.beginPath();
+    g.moveTo(cx + Math.cos(a) * r0, cy + Math.sin(a) * r0);
+    g.lineTo(cx + Math.cos(a) * (r0 + len), cy + Math.sin(a) * (r0 + len));
+    g.stroke();
+  }
+  g.globalAlpha = 1;
+}
+function visualizer(win, canvas, style){
+  const g = canvas.getContext("2d"), bins = new Uint8Array(128);
+  let tap = null, media = null, raf = 0, color = "#8bae5a", colorAt = -1e9, tryAt = 0;
+  const drop = () => { if (tap){ try { tap.src.disconnect(); tap.an.disconnect(); } catch (e){} tap = null; } };
+  const clear = () => g.clearRect(0, 0, canvas.width, canvas.height);
+  function frame(t){
+    raf = 0;
+    if (!media || media.paused || !canvas.isConnected || State.visualizer === false){ clear(); return; }
+    raf = requestAnimationFrame(frame);
+    if (win.min || document.hidden || (Focus.win && Focus.win !== win)) return;
+    /* the copy only has sound once the song is really playing, so keep asking until then */
+    if (!tap && t - tryAt > 400){ tryAt = t; tap = visTap(media); }
+    if (!tap) return;
+    if (t - colorAt > 1000){
+      colorAt = t;
+      color = getComputedStyle(document.documentElement).getPropertyValue("--accent").trim() || color;
+    }
+    const dpr = Math.min(2, devicePixelRatio || 1);
+    const cw = Math.round(canvas.clientWidth * dpr), ch = Math.round(canvas.clientHeight * dpr);
+    if (canvas.width !== cw || canvas.height !== ch){ canvas.width = cw; canvas.height = ch; }
+    tap.an.getByteFrequencyData(bins);
+    clear();
+    (style === "ring" ? visRing : visBars)(g, cw, ch, bins, color);
+  }
+  return {
+    /* a new song means a new copy of the sound */
+    follow(m){
+      drop();
+      media = m;
+      tryAt = 0;
+      if (!raf) raf = requestAnimationFrame(frame);
+    },
+    stop(){
+      drop();
+      media = null;
+      if (raf) cancelAnimationFrame(raf);
+      raf = 0;
+      clear();
+    }
+  };
+}
+function toggleVisualizer(){
+  State.visualizer = State.visualizer === false;
+  saveSettings();
+  for (const w of windows.values()) if (w.appId === "music" && w.api && w.api.visKick) w.api.visKick();
 }
 
 /* Media has two faces: the whole player, with links, videos and the list, and
@@ -8082,7 +8723,7 @@ function musicApp(win, startPath, only){
   B.innerHTML =
     '<video class="mu-video" playsinline></video>' +
     '<div class="mu-yt"></div>' +
-    '<div class="mu-now">' +
+    '<div class="mu-now"><canvas class="mu-vis"></canvas>' +
       '<div class="mu-disc"><div class="mu-art"></div><span class="mu-hole"></span></div>' +
       '<div class="mu-meta"><div class="mu-title">Nothing playing</div><div class="mu-sub">Pick a track below</div></div>' +
       '<button class="tb-btn mu-open" data-m="open" title="Open this on YouTube">Open on YouTube</button>' +
@@ -8098,12 +8739,14 @@ function musicApp(win, startPath, only){
       '<span class="mu-time">0:00</span>' +
       '<input class="mu-vol" type="range" min="0" max="100" value="90" title="Volume">' +
     '</div>' +
+    '<div class="mu-lists"></div>' +
     '<div class="mu-list"></div>';
 
   const audio = new Audio();
   const video = $(".mu-video", B), ytBox = $(".mu-yt", B);
-  const listEl = $(".mu-list", B), seek = $(".mu-seek", B), timeEl = $(".mu-time", B), vol = $(".mu-vol", B);
+  const listEl = $(".mu-list", B), listsEl = $(".mu-lists", B), seek = $(".mu-seek", B), timeEl = $(".mu-time", B), vol = $(".mu-vol", B);
   const playBtn = $('[data-m="play"]', B), openBtn = $('[data-m="open"]', B), art = $(".mu-art", B);
+  const vis = visualizer(win, $(".mu-vis", B), "bars");
   let media = audio;                 /* the element playing a file, local or linked */
   let mode = "file";                 /* "file" or "yt" */
   let yt = null, ytPoll = 0;
@@ -8130,19 +8773,62 @@ function musicApp(win, startPath, only){
 
   function scan(){
     const current = at >= 0 ? tracks[at] : null;
+    const view = mediaViewNow(), web = State.webMedia || [];
     tracks = [];
-    walkFS((p, n, name) => { if (n.type === "file" && isAudio(name)) tracks.push(p); });
-    tracks = tracks.concat(State.webMedia || []);
+    if (view === "all") walkFS((p, n, name) => { if (n.type === "file" && isAudio(name)) tracks.push(p); });
+    if (view === "all" || view === "links") tracks = tracks.concat(web);
+    else tracks = linkList(view).urls.map(u => web.find(x => x.url === u)).filter(Boolean);
     /* keep pointing at the same track wherever the list moved it, or "next"
        after a rescan or a removal starts again from the top */
     at = current == null ? -1 : tracks.indexOf(current);
+    drawLists();
     drawList();
+  }
+  /* Everything, Links, then your playlists, as a row of pills above the list */
+  function drawLists(){
+    listsEl.innerHTML = "";
+    const view = mediaViewNow();
+    const pill = (id, label, count) => {
+      const b = el("button", "mu-pill" + (id === view ? " on" : ""));
+      b.append(el("span", null, label));
+      if (count != null) b.appendChild(el("span", "c", String(count)));
+      b.onclick = () => { State.mediaView = id; saveSettings(); scan(); };
+      return b;
+    };
+    listsEl.append(pill("all", "Everything"), pill("links", "Links", (State.webMedia || []).length));
+    for (const l of State.linkLists || []){
+      const b = pill(l.id, l.name, l.urls.length);
+      b.title = "Right-click to play, rename or delete it";
+      b.oncontextmenu = e => {
+        e.preventDefault(); e.stopPropagation();
+        showCtx(e.clientX, e.clientY, [
+          { icon: "\u25B6", label: "Play " + l.name, disabled: !l.urls.length,
+            run: () => { State.mediaView = l.id; scan(); playIndex(0); } },
+          { icon: "\uD83D\uDD17", label: "Paste links into it\u2026", run: async () => {
+              State.mediaView = l.id;
+              takeLinks(await askMediaLinks(false));
+            } },
+          "-",
+          { icon: "\u270F\uFE0F", label: "Rename\u2026", run: () => renameLinkList(l) },
+          { icon: "\uD83D\uDDD1\uFE0F", label: "Delete playlist", run: () => deleteLinkList(l) }
+        ]);
+      };
+      listsEl.appendChild(b);
+    }
+    const add = el("button", "mu-pill add", "+ Playlist");
+    add.title = "A playlist made of saved links - paste them in, or add any link from its right-click menu";
+    add.onclick = () => newLinkList();
+    listsEl.appendChild(add);
   }
   function drawList(){
     listEl.innerHTML = "";
+    const pl = linkList(mediaViewNow());
     if (!tracks.length){
-      listEl.appendChild(el("div", "wb-none",
-        "Nothing to play yet. Press Add media for a song or a link, or put files in the repo's music/ folder."));
+      listEl.appendChild(el("div", "wb-none", pl
+        ? pl.name + " is empty. Right-click any link and choose Add to " + pl.name + ", or press Add media while it is open to paste links straight in."
+        : mediaViewNow() === "links"
+        ? "No saved links yet. Press Add media and paste some."
+        : "Nothing to play yet. Press Add media for a song or a link, or put files in the repo's music/ folder."));
       return;
     }
     let webHeading = false;
@@ -8167,15 +8853,31 @@ function musicApp(win, startPath, only){
           { icon: "🎬", label: "Movie mode", run: () => { playIndex(i); enterFocus(win, "movie"); } },
           "-"
         ];
-        if (isWeb(t)) items.push(
-          { icon: "↗️", label: siteOf(t) ? "Open on " + siteOf(t) : "Open the link", run: () => window.open(t.url, "_blank", "noopener") },
-          "-",
-          { icon: "✖", label: "Remove from the list", run: () => {
-              if (i === at) stopAll();
-              State.webMedia = (State.webMedia || []).filter(x => x.url !== t.url);
-              saveSettings();
-              scan();
-            } });
+        if (isWeb(t)){
+          const here = linkList(mediaViewNow());
+          const others = (State.linkLists || []).filter(l => l !== here && !l.urls.includes(t.url));
+          for (const l of others.slice(0, 8))
+            items.push({ icon: "\u2795", label: "Add to " + l.name, run: () => addToLinkList(l, t.url) });
+          items.push({ icon: "\u2728", label: "New playlist with this\u2026", run: () => newLinkList([t.url]) });
+          if (here){
+            const k = here.urls.indexOf(t.url);
+            items.push("-",
+              { icon: "\u2191", label: "Move up", disabled: k <= 0, run: () => {
+                  here.urls.splice(k - 1, 0, here.urls.splice(k, 1)[0]); refreshMediaViews(); } },
+              { icon: "\u2193", label: "Move down", disabled: k < 0 || k >= here.urls.length - 1, run: () => {
+                  here.urls.splice(k + 1, 0, here.urls.splice(k, 1)[0]); refreshMediaViews(); } },
+              { icon: "\u2716", label: "Take out of " + here.name, run: () => {
+                  if (i === at) stopAll();
+                  here.urls = here.urls.filter(u => u !== t.url); refreshMediaViews(); } });
+          }
+          items.push("-",
+            { icon: "↗️", label: siteOf(t) ? "Open on " + siteOf(t) : "Open the link", run: () => window.open(t.url, "_blank", "noopener") },
+            { icon: "✖", label: "Forget this link", run: () => {
+                if (i === at) stopAll();
+                forgetWebMedia(t.url);
+                refreshMediaViews();
+              } });
+        }
         else items.push({ icon: "📁", label: "Show in Files", run: () => openInFiles(t) });
         showCtx(e.clientX, e.clientY, items);
       };
@@ -8196,6 +8898,7 @@ function musicApp(win, startPath, only){
     playing: () => isPlaying()
   });
   function stopAll(){
+    vis.stop();
     audio.pause();
     video.pause();
     clearInterval(ytPoll);
@@ -8232,6 +8935,7 @@ function musicApp(win, startPath, only){
     const other = asVideo ? audio : video;
     try { other.removeAttribute("src"); other.load(); } catch (e){}
     media = now;
+    visCors(now, src);
     now.src = src;
     now.play().catch(() => {});
     setNow(title, sub, isWeb(t) ? t.thumb || "" : "");
@@ -8341,6 +9045,9 @@ function musicApp(win, startPath, only){
   /* ---- the link, through the same resolver Videos uses ---- */
   function takeLinks(items){
     if (!items.length) return;
+    const pl = linkList(mediaViewNow());
+    if (pl){ for (const it of items) if (!pl.urls.includes(it.url)) pl.urls.push(it.url); saveSettings(); }
+    else if (mediaViewNow() !== "all" && mediaViewNow() !== "links") State.mediaView = "links";
     scan();
     playIndex(tracks.findIndex(x => isWeb(x) && x.url === items[0].url));
   }
@@ -8363,6 +9070,7 @@ function musicApp(win, startPath, only){
 
   function play(path){
     scan();
+    if (tracks.indexOf(path) < 0 && mediaViewNow() !== "all"){ State.mediaView = "all"; scan(); }
     const i = tracks.indexOf(path);
     if (i >= 0) playIndex(i);
   }
@@ -8393,6 +9101,7 @@ function musicApp(win, startPath, only){
   for (const m of [audio, video]){
     m.onplay = m.onpause = () => {
       if (m !== media || mode !== "file") return;
+      if (!m.paused) vis.follow(m);
       mediaKeysPlaying(win, !m.paused);
       B.classList.toggle("playing", !m.paused);
       playBtn.innerHTML = m.paused ? "&#9654;" : "&#10074;&#10074;";
@@ -8448,6 +9157,7 @@ function musicApp(win, startPath, only){
         ],
         View: [
           { label: "MP3 Player", run: () => mediaSwap(win, "mp3") },
+          { label: (State.visualizer !== false ? "Hide" : "Show") + " the visualizer", run: toggleVisualizer },
           { label: "Rescan library", run: scan },
           { label: "Next", run: () => step(1) },
           { label: "Previous", run: () => step(-1) }
@@ -8456,6 +9166,7 @@ function musicApp(win, startPath, only){
     },
     toggle,
     next: () => step(1),
+    visKick(){ if (mode === "file" && !media.paused) vis.follow(media); },
     onClose(){
       if (NowPlaying.win === win) nowPlaying(null);
       releaseMediaKeys(win);
@@ -8759,7 +9470,7 @@ function galleryApp(win, startPath){
         "-",
         { icon: "✖", label: "Remove from Videos and Media", run: () => {
             if (i === at) library();
-            State.webMedia = (State.webMedia || []).filter(x => x.url !== t.url);
+            forgetWebMedia(t.url);
             saveSettings();
             scan();
           } }
@@ -9083,11 +9794,22 @@ const HELP_TOPICS = [
   { id: "seahorse", icon: "🌊", title: "Seahorse, the browser", body: [
     ["p", "Seahorse reads what it can reach. That is more than you would expect, and less than a real browser."],
     ["h", "Tabs"],
-    ["l", ["Ctrl+T opens one, Ctrl+W closes one, Ctrl+Tab moves along.",
-           "The + at the right of the tab strip opens one too.",
-           "Middle-click a tab to close it.",
-           "The strip hides itself when only one tab is open.",
-           "Each tab keeps its own history and its own page, so going back to a tab finds it where you left it."]],
+    ["l", ["Ctrl+T opens one, Ctrl+W closes one, Ctrl+Tab moves along, and Ctrl+1 to Ctrl+9 jump straight to one.",
+           "The + at the right of the tab strip opens one too, and so does double-clicking the empty strip.",
+           "Drag a tab along the strip to move it. Middle-click one to close it.",
+           "Right-click a tab to reload, duplicate or bookmark it, or to close the others or the ones to its right.",
+           "Ctrl+Shift+T brings back the last tab you closed.",
+           "Each tab keeps its own history and its own page, so going back to a tab finds it where you left it.",
+           "A new window opens with the tabs you had last time. They load when you first look at them."]],
+    ["h", "Bookmarks and history"],
+    ["l", ["The \u2606 at the end of the address bar keeps the page you are on; press it again to let it go. Ctrl+D does the same.",
+           "Bookmarks sit in a bar under the address bar - Ctrl+Shift+B hides and shows it. Right-click one to rename it, move it or delete it; middle-click to open it in a new tab.",
+           "The \u2630 button has Bookmarks and History pages, which you can search. Ctrl+H opens History, Ctrl+Shift+O Bookmarks.",
+           "As you type in the address bar, bookmarks and places you have been come up underneath. Arrow down to one and press Enter.",
+           "The start page shows your bookmarks and where you went last.",
+           "History stays in this browser. Settings \u203A ChalkBrowser turns it off or clears it."]],
+    ["h", "Keys"],
+    ["l", ["Ctrl+L to the address bar, Ctrl+R to reload, Alt+Left and Alt+Right for back and forward."]],
     ["h", "What you can type in the address bar"],
     ["l", ["Anything that looks like a web address.",
            "Plain words to search.",
@@ -9132,8 +9854,9 @@ const HELP_TOPICS = [
   { id: "saving", icon: "💾", title: "Saving, and what is lost", body: [
     ["p", "By default SEA OS keeps nothing. Reload the page and you get a fresh machine."],
     ["p", "Settings › Storage › Save my files turns on browser storage. Your files, settings and shortcuts then survive a reload, in this browser on this computer only."],
+    ["p", "Keep files in chooses where. File storage, the default, puts big files in the browser's own file storage, which holds gigabytes. localStorage keeps everything in one plain place, but only 5 to 10 MB of it, so big songs and videos will not fit. Switching moves what you have, and lets go of the old copy only once the new one is written."],
     ["h", "The repository"],
-    ["p", "SEA OS can take music, videos, pictures, apps and games from a GitHub repository. It asks GitHub what is in those folders, so anything you put there shows up on its own - no manifest.js listing files by hand. Settings › Storage names the repository, as user/repository, and works that out for itself when SEA OS is served from that repository's own Pages site."],
+    ["p", "SEA OS can take music, videos, pictures, apps and games from a GitHub repository. It asks GitHub what is in those folders, so anything you put there shows up on its own - no manifest.js listing files by hand. Settings › Storage names the repository, as user/repository, and works that out for itself when SEA OS is served from that repository's own Pages site. Left blank anywhere else, it is CHALK OS's own repository, Guernica4u/CHALK-OS."],
     ["l", ["GitHub allows sixty questions an hour from one network, so each answer is kept for a few hours, and an old answer is used rather than none when they run out.",
            "Read from anywhere else - chalkbored.win, say - the files themselves come from the repository's Pages site.",
            "The manifest.js files beside index.html are only a fallback now: for when no repository is named, GitHub cannot be reached, or index.html is opened straight off a disk.",
@@ -9147,6 +9870,7 @@ const HELP_TOPICS = [
   ]},
   { id: "look", icon: "🎨", title: "Making it yours", body: [
     ["l", ["Settings keeps a button for every page down its left side: Appearance, Wallpaper, Desktop, Widgets, Panel & clock, Seahorse, the SEA Store, Startup, Storage and About - and Developer, once Developer mode is on in Storage. A narrow Settings window keeps the buttons as icons.",
+           "Settings › Developer › Performance meter puts frames a second, the slowest frame, how long keys and clicks wait, and how busy the page is in the corner. It watches a game's own page too, when the game is in front, and stays up in Game mode - so a slow game can be told apart from a slow desktop.",
            "Settings › Appearance › Call it switches the whole desktop between CHALK OS and SEA OS. CHALK OS has the chalk logo, the chalkboard boot screen and ChalkBrowser; SEA OS brings back the sailboat, the porthole and Seahorse. The menu bar, the Terminal, the Store and this help follow along, and your files and settings stay as they are.",
            "Settings › Appearance for light and dark and the accent colour; Settings › Wallpaper for the picture behind it all.",
            "A wallpaper can be a video. It loops behind everything.",
@@ -9212,10 +9936,21 @@ const HELP_TOPICS = [
   ]},
   { id: "media", icon: "\uD83C\uDFB5", title: "Media", body: [
     ["p", "Media is the music player: your songs, and links from the web. Videos and pictures live in the Gallery, which the picture button at the top opens."],
+    ["h", "The visualizer"],
+    ["l", ["Bars rise behind the song in Media, and a ring pulses round the cover in the MP3 Player.",
+           "View \u203A Hide the visualizer turns it off, in either.",
+           "It draws your own songs and the repository's. A song from a site that will not let other pages listen still plays, just without the drawing.",
+           "It stops drawing while the music is paused or the window is out of sight."]],
     ["h", "The MP3 Player"],
     ["l", ["The disc button at the top of Media turns it into the MP3 Player: one song at a time, the cover turning like a record, and what plays next along the bottom.",
            "Click that bar for the tracklist, with a playlist for everything, one for each folder and one for links, plus shuffle and repeat.",
            "\u2630 Media, at its top left, turns it back. Media opens next time the way you left it."]],
+    ["h", "Playlists of links"],
+    ["l", ["The pills above the list pick what it shows: Everything, just your Links, or one of your playlists.",
+           "+ Playlist makes one out of nothing but links: name it, paste its links, and it is ready. Leave the paste empty to fill it later.",
+           "Right-click any link to add it to a playlist, or to start a new one with it. One link can be in as many playlists as you like.",
+           "Inside a playlist, right-click a link to move it up or down or take it out. Links pasted with Add media while a playlist is open go straight into it.",
+           "Right-click a playlist's pill to play it from the top, paste more links in, rename it or delete it. Deleting a playlist keeps its links in Links; Forget this link takes one out of everything."]],
     ["h", "Movie mode"],
     ["l", ["Right-click anything in Media or the Gallery, or a video, song or picture in Files, and choose Movie mode.",
            "Everything else stops - other players pause, and the rest of the desktop is put away - and that one thing fills the whole screen.",
@@ -9568,14 +10303,16 @@ function loadFolderManifest(dir, globalName){
 /* What GitHub says is in a folder of the repository - only on a Pages site,
    and asked once per folder, since GitHub allows only sixty questions an hour */
 const REPO_LISTS = new Map();
-/* Which repository the files come from. "user/name", or worked out on its
-   own when SEA OS is served from that repository's own Pages site. */
+/* Which repository the files come from. "user/name"; worked out on its own
+   when SEA OS is served from a repository's own Pages site, and CHALK OS's
+   own repository everywhere else - localhost, another domain, a file on disk. */
+const DEFAULT_REPO = "Guernica4u/CHALK-OS";
 function repoName(){
   const set = String(State.repo || "").trim()
     .replace(/^https?:\/\/github\.com\//i, "").replace(/\.git$/i, "").replace(/^\/+|\/+$/g, "");
   if (/^[\w.-]+\/[\w.-]+$/.test(set)) return set;
   const m = location.hostname.match(/^([\w-]+)\.github\.io$/i);
-  if (!m) return "";
+  if (!m) return DEFAULT_REPO;
   const seg = location.pathname.split("/").filter(Boolean);
   return m[1] + "/" + (seg.length ? seg[0] : m[1] + ".github.io");
 }
@@ -10675,6 +11412,76 @@ function syncWallVideo(){
   else if (v.paused) v.play().catch(() => {});
 }
 document.addEventListener("visibilitychange", syncWallVideo);
+
+/* ============================================================
+   The performance meter. Frames a second and the worst frame, how
+   long the page was busy, and how long a key or click waited before
+   anything answered it - on the desktop, and inside a game's page
+   when it is the window in front and lives on the same site.
+   ============================================================ */
+const Perf = { el: null, raf: 0, timer: 0, frames: [], last: 0, worst: 0, delays: [], busy: [], seen: new WeakSet() };
+function perfWatch(win){
+  if (!win || Perf.seen.has(win)) return;
+  let PO;
+  try { PO = win.PerformanceObserver; } catch (e){ return; }   /* another site's page - not ours to look at */
+  if (!PO) return;
+  Perf.seen.add(win);
+  try {
+    new PO(l => { for (const e of l.getEntries()) Perf.delays.push([Date.now(), Math.max(0, e.processingStart - e.startTime)]); })
+      .observe({ type: "event", durationThreshold: 16, buffered: false });
+  } catch (e){}
+  try {
+    new PO(l => { for (const e of l.getEntries()) Perf.busy.push([Date.now(), e.duration]); })
+      .observe({ type: "longtask", buffered: false });
+  } catch (e){}
+}
+function perfFrame(t){
+  if (!Perf.el) return;
+  if (Perf.last) Perf.worst = Math.max(Perf.worst, t - Perf.last);
+  Perf.last = t;
+  Perf.frames.push(t);
+  Perf.raf = requestAnimationFrame(perfFrame);
+}
+function perfDraw(){
+  if (!Perf.el) return;
+  const now = performance.now(), wall = Date.now();
+  Perf.frames = Perf.frames.filter(t => now - t < 1000);
+  Perf.delays = Perf.delays.filter(d => wall - d[0] < 5000);
+  Perf.busy = Perf.busy.filter(d => wall - d[0] < 5000);
+  /* the window in front may be a game on this site - watch its page too */
+  if (activeWin){
+    const f = activeWin.el.querySelector("iframe");
+    if (f) try { perfWatch(f.contentWindow); } catch (e){}
+  }
+  const fps = Perf.frames.length;
+  const input = Perf.delays.reduce((m, d) => Math.max(m, d[1]), 0);
+  const busy = Perf.busy.reduce((a, d) => a + d[1], 0);
+  const grade = (v, ok, bad) => v <= ok ? "good" : v >= bad ? "bad" : "meh";
+  Perf.el.innerHTML = "";
+  const item = (label, value, g) => { const s = el("span", "ph-" + g); s.append(el("b", null, value), document.createTextNode(" " + label)); Perf.el.appendChild(s); };
+  item("fps", String(fps), fps >= 55 ? "good" : fps >= 30 ? "meh" : "bad");
+  item("worst frame", Math.round(Perf.worst) + " ms", grade(Perf.worst, 34, 100));
+  item("input wait", Math.round(input) + " ms", grade(input, 16, 100));
+  item("busy", Math.round(busy / 50) + "%", grade(busy / 50, 10, 40));
+  Perf.worst = 0;
+}
+function perfHud(on){
+  if (on && !Perf.el){
+    Perf.el = el("div");
+    Perf.el.id = "perf-hud";
+    Perf.el.title = "Frames a second, the slowest frame, the longest a key or click waited, and how much of the last 5 seconds the page was busy";
+    document.body.appendChild(Perf.el);
+    perfWatch(window);
+    Perf.last = 0;
+    Perf.raf = requestAnimationFrame(perfFrame);
+    Perf.timer = setInterval(perfDraw, 500);
+  } else if (!on && Perf.el){
+    cancelAnimationFrame(Perf.raf);
+    clearInterval(Perf.timer);
+    Perf.el.remove();
+    Perf.el = null;
+  }
+}
 
 /* ---- game mode: boot straight into one game, as big as it will go ---- */
 function goFullscreen(){
@@ -11851,12 +12658,33 @@ function settingsApp(win){
       sel.appendChild(o);
     }
     sel.value = State.engine;
-    sel.onchange = () => { State.engine = sel.value; };
+    sel.onchange = () => { State.engine = sel.value; saveSettings(); };
     engRow.appendChild(sel);
     br.appendChild(engRow);
     br.appendChild(el("div", "wb-none",
       "Local HTML files always render. Anything Seahorse downloads goes into Downloads, never onto this computer. " +
-      (tideOn() ? "Sites open through Tide, below." : "Tide, below, opens the sites that refuse to open on their own.")));
+      (tideOn() ? "Sites open through Tide." : "Tide, on the Developer page, opens the sites that refuse to open on their own.")));
+    br.appendChild(toggle("Bookmarks bar", "Your bookmarks in a row under the address bar. Ctrl+Shift+B shows and hides it.",
+      State.bmBar !== false, v => { State.bmBar = v; saveSettings(); refreshBrowserViews(); render(); }));
+    br.appendChild(toggle("Open last time's tabs", "A new ChalkBrowser window starts with the tabs you had open before.",
+      State.webRestore !== false, v => { State.webRestore = v; saveSettings(); render(); }));
+    br.appendChild(toggle("Remember history",
+      "Pages you visit are noted in this browser, for the History page and the address bar's suggestions. " +
+      "Off, nothing new is kept.", State.keepHistory !== false,
+      v => { State.keepHistory = v; saveSettings(); render(); }));
+    const hRow = row(null);
+    const hClear = el("button", "btn", "Clear history");
+    hClear.disabled = !(State.webHistory || []).length;
+    hClear.onclick = async () => {
+      if (!(await osConfirm("Clear history", "Forget every page ChalkBrowser has kept a note of?", "Clear", true))) return;
+      State.webHistory = [];
+      saveSettings();
+      refreshBrowserViews();
+      render();
+    };
+    hRow.append(hClear, el("span", "store-note", (State.webHistory || []).length + " pages remembered, " +
+      (State.bookmarks || []).length + " bookmarks."));
+    br.appendChild(hRow);
 
     /* --- Tide --- */
     const td = section("Tide", "dev");
@@ -11922,8 +12750,7 @@ function settingsApp(win){
           "SEA OS. Your files and settings are not touched.", "Clear and reload"))) return;
         try {
           for (const reg of await navigator.serviceWorker.getRegistrations()) await reg.unregister();
-          indexedDB.deleteDatabase("__scramjet_controller");
-          indexedDB.deleteDatabase("$scramjet");     /* left behind by Scramjet 1 */
+          indexedDB.deleteDatabase("$scramjet");
         } catch (e){}
         setTimeout(() => location.reload(), 400);
       };
@@ -12075,6 +12902,11 @@ function settingsApp(win){
       };
       dvRow.appendChild(dvClear);
       dv.appendChild(dvRow);
+      dv.appendChild(toggle("Performance meter",
+        "A strip in the corner with frames a second, the slowest frame, how long keys and clicks wait, and how busy " +
+        "the page is. It follows a game's page too, when that game is the window in front. It stays up in Game mode.",
+        !!State.perfHud,
+        v => { State.perfHud = v; saveSettings(); perfHud(v); render(); }));
       const dvBits = el("dl", "about");
       for (const [k, v] of [["Version", VERSION],
                             ["Repository", repoName() || "none"],
@@ -12097,6 +12929,15 @@ function settingsApp(win){
       Store.on,
       v => setSaving(v),
       Store.available ? null : "unavailable"));
+    if (Store.on){
+      const whereRow = row("Keep files in");
+      whereRow.appendChild(seg([["disk", "File storage"], ["local", "localStorage"]], State.storage === "local" ? "local" : "disk",
+        v => switchStorage(v).then(render)));
+      st.appendChild(whereRow);
+      st.appendChild(el("div", "store-note", State.storage === "local"
+        ? "Everything in localStorage: simple and plain, but only 5 to 10 MB for the lot, so big songs and videos will not fit."
+        : "Big files go in the browser's own file storage, which holds gigabytes; localStorage keeps the list of them."));
+    }
     st.appendChild(toggle("Use the repository's files",
       "Music, videos, pictures, apps and games kept in a GitHub repository. Off, SEA OS uses only what you " +
       "have added to it, and asks GitHub nothing. Takes effect the next time SEA OS starts.",
@@ -12107,7 +12948,7 @@ function settingsApp(win){
       const rRow = row("Repository");
       const rIn = el("input", "modal-in");
       rIn.value = State.repo || "";
-      rIn.placeholder = repoName() || "user/repository";
+      rIn.placeholder = repoName() + " (the default)";
       rIn.spellcheck = false;
       rIn.style.cssText = "flex:1;min-width:170px;margin:0";
       rIn.onchange = () => {
@@ -12122,7 +12963,8 @@ function settingsApp(win){
       st.appendChild(el("div", "store-note", where
         ? "Asking GitHub what is in " + where + ", so music/, videos/, pictures/, apps/ and games/ need no " +
           "manifest files listing them. Answers are kept for a few hours" +
-          (repoBase() ? ", and the files themselves come from " + repoBase() + "." : ".")
+          (repoBase() ? ", and the files themselves come from " + repoBase() + "." : ".") +
+          (State.repo ? "" : " Left blank, this is CHALK OS's own repository; name another to use yours.")
         : "Name a repository as user/repository - Guernica4u/CHALK-OS, say - and SEA OS asks GitHub what is in " +
           "its folders. Without one it falls back to the manifest.js files beside index.html."));
     }
@@ -12167,7 +13009,7 @@ function settingsApp(win){
     st.appendChild(toggle("Developer mode",
       "Adds a Developer page: Tide, the repository's workings, and what SEA OS is running on.",
       !!State.devMode,
-      v => { State.devMode = v; if (!v && settingsPage === "dev") settingsPage = "storage"; saveSettings(); render(); }));
+      v => { State.devMode = v; if (!v && settingsPage === "dev") settingsPage = "storage"; perfHud(v && State.perfHud); saveSettings(); render(); }));
 
     const backupRow = row(null);
     backupRow.style.marginTop = "13px";
@@ -12430,9 +13272,23 @@ document.addEventListener("keydown", e => {
   if ((e.ctrlKey || e.metaKey) && !e.altKey && activeWin && activeWin.appId === "browser"){
     const k = (e.key || "").toLowerCase();
     const api = activeWin.api || {};
+    if (e.shiftKey && k === "t" && api.reopen){ e.preventDefault(); api.reopen(); return; }
+    if (e.shiftKey && k === "b" && api.toggleBar){ e.preventDefault(); api.toggleBar(); return; }
+    if (e.shiftKey && k === "o" && api.showBookmarks){ e.preventDefault(); api.showBookmarks(); return; }
     if (k === "t" && api.newTab){ e.preventDefault(); api.newTab(); return; }
+    if (k === "l" && api.focusAddr){ e.preventDefault(); api.focusAddr(); return; }
+    if (k === "d" && api.toggleStar){ e.preventDefault(); api.toggleStar(); return; }
+    if (k === "h" && api.showHistory){ e.preventDefault(); api.showHistory(); return; }
+    if (k === "r" && api.reload){ e.preventDefault(); api.reload(); return; }
+    if (/^[1-9]$/.test(k) && api.selectIndex){ e.preventDefault(); api.selectIndex(Number(k)); return; }
     if (k === "w" && api.closeTab){ e.preventDefault(); api.closeTab(); return; }
     if (k === "tab" && api.cycleTab){ e.preventDefault(); api.cycleTab(e.shiftKey ? -1 : 1); return; }
+  }
+  /* Alt+Left and Alt+Right: back and forward in ChalkBrowser */
+  if (e.altKey && !e.ctrlKey && !e.metaKey && !typing && activeWin && activeWin.appId === "browser" &&
+      (e.key === "ArrowLeft" || e.key === "ArrowRight") && activeWin.api && activeWin.api.back){
+    e.preventDefault();
+    return e.key === "ArrowLeft" ? activeWin.api.back() : activeWin.api.fwd();
   }
   /* Alt+Tab cycles the open windows */
   if (e.altKey && e.key === "Tab"){
@@ -12778,6 +13634,11 @@ async function firstRun(){
   const restored = loadState();
   await diskOpen();
   await diskHydrate();
+  /* kept in localStorage by choice: the disk was only opened to read anything left on it */
+  if (State.storage === "local" && Disk.ok){
+    Disk.ok = false;
+    if (Store.on && !Disk.blocked) saveFSInline();
+  }
   if (!restored) seedDisk();
   /* Help sits in the Dock for the very first boot, and steps aside on the
      next one. Pin it back after that and it stays. With saving off every
@@ -12794,6 +13655,7 @@ async function firstRun(){
   State.dock = (State.dock || []).map(id => APP_ALIAS[id] || id).filter((id, i, a) => a.indexOf(id) === i && (APPS[id] || String(id).startsWith("game:")));
   State.shortcuts = (State.shortcuts || []).map(sc => (sc.kind === "app" && APP_ALIAS[sc.target] ? Object.assign({}, sc, { target: APP_ALIAS[sc.target] }) : sc));
   refreshSystemFiles();
+  if (State.perfHud && State.devMode) perfHud(true);
   (State.installed || []).forEach(registerStoreApp);
   LINKED_GAMES.concat(myGames()).forEach(registerGame);
   applyBrand(); applyTheme(); applyAccent(); applyWallpaper(); applyChrome();
