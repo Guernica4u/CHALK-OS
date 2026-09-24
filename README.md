@@ -87,6 +87,12 @@ app**. It runs Python too, through Pyodide, which downloads the first time.
 
 ## Games
 
+Games run from CHALK OS's own site. When CHALK OS is served from somewhere
+other than the repository's Pages site, a game that only lives there is
+fetched and started from here, so the game window never opens an outside
+address. No game can open a tab in your real browser either: a link it opens
+goes to ChalkBrowser, and a file it saves goes into `~/Downloads`.
+
 The **Games** app is a launcher. Games come from **Add a game** inside CHALK OS,
 from `games/manifest.js`, and from `.html` files in the repository's `games/`
 folder. Games run sandboxed like Store apps and keep a best score each.
@@ -142,6 +148,22 @@ It runs on Supabase. The project URL and publishable key at the top of
 `chat.html` are meant to be public; what anyone can do is decided by the
 database's row-level security rules.
 
+## Terminal
+
+A shell over the same files the Files app shows. Commands pipe into each other
+and write to files the usual way:
+
+```
+ls ~/Music | grep -i mp3 | wc -l
+cat notes.md | sort | uniq -c > counts.txt
+```
+
+Besides the file commands there are `grep`, `head`, `tail`, `wc`, `sort`,
+`uniq`, `du`, `df` and `stat`; `play`, `wget` (into `~/Downloads`),
+`bookmarks` and `tide` reach the rest of the desktop; `termtheme` and
+`fontsize` change its look; and `neofetch` shows what it is all running on.
+`help grep` explains one command.
+
 ## Settings
 
 Settings keeps a button for every page down its left side: **Appearance**,
@@ -150,6 +172,10 @@ the **CHALK Store**, **Startup**, **Storage** and **About** - and
 **Developer**, once Developer mode is switched on in Storage, which holds Tide
 and the repository's workings. A narrow Settings window keeps the buttons as
 icons.
+
+**Desktop → Transparency** makes the Dock or taskbar, the menu bar and the
+windows see-through, frosted or clear. Games, ChalkBrowser, video and the
+Terminal stay solid so games stay quick.
 
 **Developer → Performance meter** puts a strip in the corner: frames a second,
 the slowest frame, how long keys and clicks wait, and how busy the page is. It
@@ -287,7 +313,7 @@ named `cover` or `folder` beside the song is used, and failing that the first
 letter of its name on a coloured disc.
 
 **Settings → Startup** chooses what opens when CHALK OS starts: the desktop,
-a game, or the MP3 Player filling the screen.
+a game in Game mode, or the MP3 Player filling the screen.
 
 ## Tide
 
@@ -310,8 +336,18 @@ It needs two things next to `index.html` on whatever hosts CHALK OS:
 
 Those versions matter. The controller refuses to start unless Scramjet is
 exactly the version it was built against, and Scramjet 2 takes a transport
-directly, so bare-mux is gone. Scramjet 2 is still an alpha: if it misbehaves,
-reverting the change that brought it in puts Scramjet 1.1.0 back.
+directly, so bare-mux is gone.
+
+Scramjet 2 is still an alpha, so Scramjet 1.1.0 stays in `tide/v1/` (with
+bare-mux 2.1.9 and libcurl-transport 1.5.2, the set it is tested against).
+**Settings → Developer → Tide → Scramjet** switches between them; `sw.js`
+loads whichever one registered it.
+
+Downloads never reach the real computer: attachments, links marked as
+downloads, files a page makes on the spot, and anything a browser would save
+rather than show all go into `~/Downloads`. The frame is sandboxed without
+downloads or popups as well, so whatever that misses is refused rather than
+let out - and a page can never open a tab in your real browser.
 
 Both have to be on an `https://` address; a page opened from a file on disk
 cannot install a service worker.

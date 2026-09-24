@@ -499,7 +499,9 @@ body.anim .win.closing{animation:winOut .15s ease-in forwards}
 }
 
 /* ---------- terminal ---------- */
-.app-term .win-body{background:#1c1d1a;padding:0}
+.app-term .win-body{padding:0}
+/* its own background, whatever the desktop style does to other windows */
+.win.app-term .win-body{background:var(--term-bg,#1c1d1a)!important}
 .term-wrap{
   flex:1;min-height:0;overflow:auto;padding:10px 12px;cursor:text;
   font:13px/1.55 ui-monospace,SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;color:#d6d6ce;
@@ -517,6 +519,35 @@ body.anim .win.closing{animation:winOut .15s ease-in forwards}
 .t-ok{color:#8bae5a}
 .t-dim{color:#8d8d84}
 .t-key{color:#d8bd6a}
+.t-media{color:#e0a45a}
+.t-web{color:#5fb3b3}
+.t-link{color:#9aa8ff;font-style:italic}
+.t-hit{color:#1c1d1a;background:#d8bd6a;border-radius:2px}
+/* the Terminal's themes: its own background, and its colours to match */
+.win-body.term-green{--term-bg:#07130a}
+.term-green .term-wrap,.term-green .term-in{color:#8cf29a}
+.term-green .ps1-u,.term-green .t-ok{color:#b6ff8a}
+.term-green .ps1-p,.term-green .t-dir{color:#5fe0c1}
+.win-body.term-amber{--term-bg:#140d02}
+.term-amber .term-wrap,.term-amber .term-in{color:#ffc46b}
+.term-amber .ps1-u,.term-amber .t-ok{color:#ffda8a}
+.term-amber .ps1-p,.term-amber .t-dir{color:#ff9d3b}
+.term-amber .t-dim{color:#a3783a}
+.win-body.term-ocean{--term-bg:#0b1a2a}
+.term-ocean .term-wrap,.term-ocean .term-in{color:#cfe3f5}
+.term-ocean .ps1-u,.term-ocean .t-ok{color:#6fd3ff}
+.term-ocean .ps1-p,.term-ocean .t-dir{color:#8fa8ff}
+.term-ocean .t-dim{color:#6f86a0}
+.win-body.term-paper{--term-bg:#fbfaf5}
+.term-paper .term-wrap,.term-paper .term-in{color:#2b2b2b;caret-color:#5f8039}
+.term-paper .ps1-u,.term-paper .t-ok{color:#4f7a26}
+.term-paper .ps1-p,.term-paper .t-dir{color:#2f63a8}
+.term-paper .ps1-s{color:#555}
+.term-paper .t-dim{color:#8a8a82}
+.term-paper .t-key{color:#9a6b00}
+.term-paper .t-img{color:#8a3f9e}
+.term-paper .t-media{color:#b8661e}
+.term-paper .t-web{color:#237a7a}
 
 /* a drop target lighting up while a file is held over it */
 .drop-on{outline:2px solid var(--accent) !important;outline-offset:-2px}
@@ -1253,6 +1284,24 @@ body.shell-macos.sub-glass .seg{border-radius:999px}
 .m3-vis{position:absolute;left:-18%;top:-18%;width:136%;height:136%;pointer-events:none}
 /* the way back to the whole of Media */
 .m3-swap{position:absolute;top:10px;left:10px;z-index:2}
+
+/* ---------- transparency ---------- */
+body.tp-panel #panel{background-color:color-mix(in srgb, var(--tp-panel-bg) var(--tp-panel), transparent)!important;background-image:none!important}
+body.tp-bar #menubar{background-color:color-mix(in srgb, var(--tp-bar-bg) var(--tp-bar), transparent)!important;background-image:none!important}
+body.tp-win .win:not(.app-ext):not(.app-web):not(.app-vid):not(.app-music):not(.app-mp3):not(.app-play):not(.app-term):not(.focus-target){
+  --surface:color-mix(in srgb, var(--tp--surface) var(--tp-win), transparent);
+  --surface-2:color-mix(in srgb, var(--tp--surface-2) var(--tp-win), transparent);
+  --surface-3:color-mix(in srgb, var(--tp--surface-3) var(--tp-win), transparent);
+  --title:color-mix(in srgb, var(--tp--title) var(--tp-win), transparent);
+  --title-off:color-mix(in srgb, var(--tp--title-off) var(--tp-win), transparent);
+  --bg:color-mix(in srgb, var(--tp--bg) var(--tp-win), transparent);
+  background-color:var(--surface)!important;
+}
+body.tp-win .win:not(.app-ext):not(.app-web):not(.app-vid):not(.app-music):not(.app-mp3):not(.app-play):not(.app-term):not(.focus-target) .win-body{background-color:transparent!important}
+body.tp-blur.tp-panel #panel,body.tp-blur.tp-bar #menubar{backdrop-filter:blur(16px) saturate(1.4)!important;-webkit-backdrop-filter:blur(16px) saturate(1.4)!important}
+body.tp-blur.tp-win .win:not(.app-ext):not(.app-web):not(.app-vid):not(.app-music):not(.app-mp3):not(.app-play):not(.app-term):not(.focus-target){
+  backdrop-filter:blur(18px) saturate(1.3)!important;-webkit-backdrop-filter:blur(18px) saturate(1.3)!important;
+}
 
 /* ---------- the performance meter ---------- */
 #perf-hud{
@@ -2070,97 +2119,13 @@ function seedDisk(){
   ensureDir(HOME + "/Videos");
   ensureDir("/etc");
 
-  writeFile(HOME + "/readme.txt", brand(
-"SEA OS " + VERSION + "\n" +
-"==========\n\n" +
-"Welcome. This entire operating system is one HTML file.\n\n" +
-"Make it yours\n" +
-"-------------\n" +
-"  * Settings > Wallpaper takes a video. It loops behind everything.\n" +
-"  * Settings > Boot screen takes a video or an image of your own.\n" +
-"  * Or right-click any picture or video in Files and set it from there.\n\n" +
-"Files go both ways now\n" +
-"----------------------\n" +
-"  * Right-click anything and pick \"Save to your computer\" to get it back out.\n" +
-"  * Drag files in from your real desktop to import them.\n" +
-"  * Select many with Shift and Ctrl, then cut, copy and paste.\n" +
-"  * Drag between folders, or onto a place in the sidebar.\n" +
-"  * Deleted things wait in Trash until you empty it.\n\n" +
-"Drag a file anywhere it makes sense\n" +
-"-----------------------------------\n" +
-"  * Onto a Dock icon, and that app opens it - a picture into Paint, a\n" +
-"    song into Media, a page into Seahorse.\n" +
-"  * Onto an open window, and that app takes it there and then.\n" +
-"  * Onto the Trash, and it goes in the Trash.\n" +
-"  * Onto the desktop, and you get a shortcut to it.\n" +
-"  * An app that has no use for what you are holding will not light up.\n\n" +
-"Bring things in from the open web\n" +
-"---------------------------------\n" +
-"  unbox piano                 find music and put it in ~/Music\n" +
-"  unbox search video ocean    look first, install nothing\n" +
-"  unbox image mountain lake   pictures, straight into ~/Pictures\n" +
-"  Openverse, Wikimedia Commons and the Internet Archive, all freely\n" +
-"  licensed. Files are linked, so they cost you no storage at all.\n\n" +
-"Finding things\n" +
-"--------------\n" +
-"  * The Menu searches your files as well as your apps.\n" +
-"  * The Terminal completes commands and paths with Tab.\n\n" +
-"Seahorse really works, within limits\n" +
-"------------------------------------\n" +
-"  * Tabs: Ctrl+T for a new one, Ctrl+W to close, Ctrl+Tab to move along.\n" +
-"  * Search pulls real answers from DuckDuckGo and Wikipedia.\n" +
-"  * so:closures reads Stack Overflow. gh:jquery/jquery reads a README.\n" +
-"  * define:serendipity looks a word up.\n" +
-"  * Ordinary websites cannot be shown: they refuse to be embedded, and a\n" +
-"    local file is not allowed to fetch them. That one is not fixable here.\n\n" +
-"Keyboard\n" +
-"--------\n" +
-"  Ctrl+Alt+Arrow    tile the window left / right / full / bottom\n" +
-"  Ctrl+Alt+T F B    open Terminal, Files or Seahorse\n" +
-"  Ctrl+T W Tab      new tab, close tab, next tab (in Seahorse)\n" +
-"  Alt+Tab           cycle windows\n" +
-"  Ctrl+C X V A      copy, cut, paste, select all in Files\n" +
-"  Delete            move to Trash    (Shift+Delete deletes for good)\n\n" +
-"Nothing is saved unless you turn on \"Save my files\" in Settings.\n" +
-"Songs and videos are kept too - the browser gives SEA OS gigabytes.\n"));
-
-  writeFile(HOME + "/notes.md", brand(
-"# Notes on SEA OS\n\n" +
-"One HTML file. Everything here is drawn by it, and nothing leaves the browser\n" +
-"unless you ask it to.\n\n" +
-"## The parts\n" +
-"- Files, with an editor built in. Import from the computer, or drag files onto it.\n" +
-"- Seahorse reads the web. Sites that refuse to open on their own come through Tide.\n" +
-"- Media plays your music and videos, and links from YouTube, Vimeo, Spotify and more.\n" +
-"- MP3 Player is the one to leave open: cover turning, Playing next along the bottom.\n" +
-"- Videos remembers where you stopped and picks up there.\n" +
-"- Playground runs HTML, CSS, JS and Python. Terminal is a small shell over this disk.\n" +
-"- SEA Store installs apps from apps/, Games plays what is in games/.\n" +
-"- Locked Notes keeps a note nothing opens without its own password.\n\n" +
-"## Worth knowing\n" +
-"- Saving is off until you turn it on in Settings > Storage. With it off, every\n" +
-"  reload is a fresh machine.\n" +
-"- Settings > Appearance > Call it switches the whole desktop between CHALK OS\n" +
-"  and SEA OS.\n" +
-"- Settings > Startup opens the desktop, a game, or the MP3 Player full screen.\n" +
-"- The screen saver comes up after ten idle minutes and waits while anything plays.\n" +
-"- Music, videos and pictures in the repository show up on their own. Off GitHub\n" +
-"  Pages they need listing in media/manifest.js.\n" +
-"- Backups: Settings > Storage. A backup carries your files and settings, never\n" +
-"  a password or a key.\n\n" +
-"## Tide, the way out to the web\n" +
-"- A small server on a machine of your own opens the connections; Settings > Tide\n" +
-"  takes its address and its key.\n" +
-"- Keep the key in a locked note rather than here. Locked Notes > New locked note,\n" +
-"  give it a password, paste the key in. Anything written in this file is plain text\n" +
-"  and rides along in every backup.\n" +
-"- Video through Tide needs Chrome or Edge. Pages work anywhere. Media plays\n" +
-"  YouTube links without Tide at all.\n" +
-"- If a page stops loading: Settings > Tide > Test, then Clear what it cached.\n"));
+  writeFile(HOME + "/readme.txt", brand(readmeText()));
+  writeFile(HOME + "/notes.md", brand(notesText()));
+  State.sysRev = SYS_REV;
 
   writeFile(HOME + "/Documents/welcome.md",
 "# Hello from SEA OS\n\n" +
-"This file lives in a filesystem that exists only in your browser tab.\n\n" +
+"This file lives in a filesystem that exists only in your browser.\n\n" +
 "Files, Terminal and the editor all read and write the same tree, so if you\n" +
 "create a file in the shell it shows up in the file list a moment later.\n\n" +
 "Try it:\n\n" +
@@ -2190,20 +2155,101 @@ function seedDisk(){
   writeFile("/etc/motd", brand(motdText()));
   writeFile("/etc/os-release", brand(osReleaseText()));
 }
+const readmeText = () =>
+"SEA OS " + VERSION + "\n" +
+"==========\n\n" +
+"Welcome. This whole desktop is one HTML file.\n\n" +
+"Make it yours\n" +
+"-------------\n" +
+"  * Settings keeps a button for every page down its left side.\n" +
+"  * Wallpaper and boot screen can be a video or a picture of your own.\n" +
+"  * Settings > Desktop > Transparency makes the Dock, menu bar and windows see-through.\n" +
+"  * Right-click any picture or video in Files to set it from there.\n\n" +
+"Files\n" +
+"-----\n" +
+"  * Drag files in from your real desktop to import them.\n" +
+"  * Right-click anything and pick \"Save to your computer\" to get it back out.\n" +
+"  * Shift and Ctrl select many; cut, copy and paste work as you expect.\n" +
+"  * Deleted things wait in Trash until you empty it.\n\n" +
+"Music, video and games\n" +
+"----------------------\n" +
+"  * Media plays songs and links; the disc button turns it into the MP3 Player.\n" +
+"  * + Playlist makes playlists out of saved links.\n" +
+"  * The Gallery holds videos and pictures, with a slideshow.\n" +
+"  * Right-click a game for Game mode, or anything to watch for Movie mode:\n" +
+"    it fills the screen and everything else stops.\n" +
+"  * Anything in the repository's music/, videos/ and games/ shows up by itself.\n\n" +
+"Seahorse\n" +
+"--------\n" +
+"  * Tabs, a bookmarks bar (the star saves a page), and History with Ctrl+H.\n" +
+"  * Search, Wikipedia, Stack Overflow and GitHub read directly.\n" +
+"  * Other sites open through Tide, set up on Settings > Developer.\n" +
+"  * Nothing opens a tab in your real browser, and downloads land in ~/Downloads.\n\n" +
+"The Terminal\n" +
+"------------\n" +
+"  ls ~/Music | grep -i mp3     pipes, and > to write the result to a file\n" +
+"  unbox piano                  freely licensed music from the open web\n" +
+"  neofetch                     what all this is running on\n\n" +
+"Keyboard\n" +
+"--------\n" +
+"  Ctrl+Alt+Arrow    tile the window left / right / full / bottom\n" +
+"  Ctrl+Alt+T F B    open Terminal, Files or Seahorse\n" +
+"  Ctrl+T W Tab      new tab, close tab, next tab (in Seahorse)\n" +
+"  Alt+Tab           cycle windows\n" +
+"  Delete            move to Trash    (Shift+Delete deletes for good)\n\n" +
+"Nothing is saved unless you turn on \"Save my files\" in Settings > Storage.\n";
+const notesText = () =>
+"# Notes on SEA OS\n\n" +
+"One HTML file. Everything here is drawn by it, and nothing leaves the browser\n" +
+"unless you ask it to.\n\n" +
+"## The parts\n" +
+"- Files, with an editor built in. Import from the computer, or drag files onto it.\n" +
+"- Seahorse reads the web, with tabs, bookmarks and history. Sites that refuse to\n" +
+"  open on their own come through Tide.\n" +
+"- Media plays your music and links from YouTube, Spotify and more, with a\n" +
+"  visualizer; its disc button turns it into the MP3 Player.\n" +
+"- The Gallery holds videos and pictures, and remembers where you stopped.\n" +
+"- Playground runs HTML, CSS, JS and Python. Terminal is a shell over this disk.\n" +
+"- Chat is live rooms and channels. Games plays what is in games/.\n\n" +
+"## Worth knowing\n" +
+"- Saving is off until you turn it on in Settings > Storage. With it off, every\n" +
+"  reload is a fresh machine. Storage also chooses file storage or localStorage.\n" +
+"- Settings > Appearance > Call it switches the whole desktop between CHALK OS\n" +
+"  and SEA OS.\n" +
+"- The repository's music/, videos/, pictures/, apps/ and games/ show up on their\n" +
+"  own; no listing needed.\n" +
+"- Backups: Settings > Storage. A backup carries your files and settings, never\n" +
+"  a password or a key.\n\n" +
+"## Tide, the way out to the web\n" +
+"- A small server on a machine of your own opens the connections; Settings >\n" +
+"  Developer > Tide takes its address and its key, and picks Scramjet 2 or 1.1.0.\n" +
+"- The key is kept apart from your files, so it never rides along in a backup.\n" +
+"- Video through Tide needs Chrome or Edge. Pages work anywhere.\n" +
+"- If a page stops loading: Test, then Clear what it cached, on the same page.\n";
 const motdText = () =>
   "Welcome to SEA OS " + VERSION + " (bsh " + VERSION + ")\n\n" +
-  "  * Documentation:  type \"help\"\n" +
-  "  * Filesystem is volatile. Nothing survives a refresh.\n";
+  "  * Type \"help\" for the commands, \"neofetch\" for the system.\n" +
+  "  * Pipes and redirects work:  ls ~/Music | grep -i mp3 > songs.txt\n";
 const osReleaseText = () =>
   "NAME=\"SEA OS\"\nVERSION=\"" + VERSION + "\"\nID=seaos\nPRETTY_NAME=\"SEA OS " + VERSION + "\"\n";
 /* A disk saved by an older version still carries its greeting and its
    os-release. They belong to the system rather than to you, so they are put
    back in step here. */
+/* The guides in the home folder were written when this disk was made, and
+   describe what SEA OS was then - Locked Notes, a browser that could not open
+   sites. They are rewritten once when they fall out of date. */
+const SYS_REV = 2;
 function refreshSystemFiles(){
   if (!node("/etc")) return;
   const motd = node("/etc/motd"), rel = node("/etc/os-release");
-  if (motd && String(motd.content).indexOf(VERSION) < 0) writeFile("/etc/motd", brand(motdText()));
+  if (motd && (String(motd.content).indexOf(VERSION) < 0 || /volatile/i.test(motd.content))) writeFile("/etc/motd", brand(motdText()));
   if (rel && String(rel.content).indexOf(VERSION) < 0) writeFile("/etc/os-release", brand(osReleaseText()));
+  if ((Number(State.sysRev) || 0) < SYS_REV){
+    if (node(HOME + "/readme.txt")) writeFile(HOME + "/readme.txt", brand(readmeText()));
+    if (node(HOME + "/notes.md")) writeFile(HOME + "/notes.md", brand(notesText()));
+    State.sysRev = SYS_REV;
+    saveSettings();
+  }
 }
 /* seedDisk() runs from boot, only when there is no saved disk to restore */
 
@@ -2443,6 +2489,14 @@ const State = {
   webHistory: [],      /* { t, title, at }, newest first */
   webRestore: true,    /* ChalkBrowser opens with last time's tabs */
   webTabs: [],         /* those tabs */
+  tpPanel: 0,          /* how see-through the Dock or taskbar is, 0 to 100 */
+  tpBar: 0,            /* the menu bar */
+  tpWin: 0,            /* windows */
+  tpBlur: true,        /* blur what shows through */
+  termTheme: "classic",/* the Terminal's colours */
+  termFont: 13,        /* and its text size */
+  sysRev: 0,           /* which version of readme.txt and notes.md the home folder has */
+  tideVersion: 2,      /* which Scramjet Tide runs on: 2 (the alpha, now the default) or 1 (1.1.0) */
   gameApp: "",
   widgetPos: {},
   weatherPlace: null,
@@ -2461,7 +2515,7 @@ let BOOT_TIME = Date.now();
    ============================================================ */
 const K = { on: "boxos.on", fs: "boxos.fs", set: "boxos.settings", sc: "boxos.shortcuts", trash: "boxos.trash" };
 const SETTING_KEYS = ["theme","accent","wallColor","customWall","wallFit","animations",
-                      "wobbly","panelPos","clock24","iconSize","engine","wallVideo","bootMedia","shell","dock","bookmarks","sounds","installed","widgets","widgetPos","weatherPlace","tempUnit","highScores","subthemes","menuFolded","helpDockPhase","webMedia","startMode","gameApp","screensaver","resume","brand","devMode","tideHost","useRepo","repo","myGames","mp3List","mp3Shuffle","mp3Repeat","mediaMode","mediaView","linkLists","storage","perfHud","visualizer","bmBar","keepHistory","webHistory","webRestore","webTabs"];
+                      "wobbly","panelPos","clock24","iconSize","engine","wallVideo","bootMedia","shell","dock","bookmarks","sounds","installed","widgets","widgetPos","weatherPlace","tempUnit","highScores","subthemes","menuFolded","helpDockPhase","webMedia","startMode","gameApp","screensaver","resume","brand","devMode","tideHost","useRepo","repo","myGames","mp3List","mp3Shuffle","mp3Repeat","mediaMode","mediaView","linkLists","storage","perfHud","visualizer","bmBar","keepHistory","webHistory","webRestore","webTabs","tideVersion","termTheme","termFont","sysRev","tpPanel","tpBar","tpWin","tpBlur"];
 /* Only a soft gauge for the usage bar. The real localStorage ceiling is not
    knowable from script and varies a lot - roughly 5 MB on a file:// page, but
    far more on some origins - so nothing here claims a hard number. */
@@ -5207,37 +5261,95 @@ function tideWorker(reg){
     });
   });
 }
+function tideVersion(){ return Number(State.tideVersion) === 1 ? 1 : 2; }
 function tideStart(){
   if (Tide.ready) return Tide.ready;
   const base = tideBase();
   Tide.ready = (async () => {
-    if (!tideHost()) throw new Error("No address for Tide yet. Settings › Tide has the box for it.");
-    if (!Tide.token) throw new Error("No key for Tide yet. Settings › Tide has the box for it.");
+    if (!tideHost()) throw new Error("No address for Tide yet. Settings \u203A Developer \u203A Tide has the box for it.");
+    if (!Tide.token) throw new Error("No key for Tide yet. Settings \u203A Developer \u203A Tide has the box for it.");
     if (!navigator.serviceWorker || !window.isSecureContext)
       throw new Error("Tide needs an https:// address. It cannot run from a file on disk.");
-    const reg = await navigator.serviceWorker.register(base + "sw.js", { scope: base, updateViaCache: "none" });
-    const sw = await tideWorker(reg);
-    await loadScriptOnce(base + "tide/scram/scramjet.js");
-    await loadScriptOnce(base + "tide/controller/controller.api.js");
-    await loadScriptOnce(base + "tide/libcurl/libcurl-client.js");
-    if (!window.$scramjet || !window.$scramjetController || !window.LibcurlTransport)
-      throw new Error("The files in tide/ did not load properly.");
-    const ctl = new $scramjetController.Controller({
-      serviceworker: sw,
-      transport: new LibcurlTransport.LibcurlClient({ wisp: tideWisp() }),
-      config: {
-        prefix: base + "tide/go/",
-        scramjetPath: base + "tide/scram/scramjet.js",
-        injectPath: base + "tide/controller/controller.inject.js",
-        wasmPath: base + "tide/scram/scramjet.wasm"
-      }
-    });
-    await ctl.wait();
+    const ctl = tideVersion() === 1 ? await tideStartV1(base) : await tideStartV2(base);
     Tide.ctl = ctl;
     return ctl;
   })();
   Tide.ready.catch(() => { Tide.ready = null; });
   return Tide.ready;
+}
+/* Scramjet 2: the page runs the tide, and the service worker only hands requests over */
+async function tideStartV2(base){
+  const reg = await navigator.serviceWorker.register(base + "sw.js", { scope: base, updateViaCache: "none" });
+  const sw = await tideWorker(reg);
+  await loadScriptOnce(base + "tide/scram/scramjet.js");
+  await loadScriptOnce(base + "tide/controller/controller.api.js");
+  await loadScriptOnce(base + "tide/libcurl/libcurl-client.js");
+  if (!window.$scramjet || !window.$scramjetController || !window.LibcurlTransport)
+    throw new Error("The files in tide/ did not load properly.");
+  const ctl = new $scramjetController.Controller({
+    serviceworker: sw,
+    transport: new LibcurlTransport.LibcurlClient({ wisp: tideWisp() }),
+    config: {
+      prefix: base + "tide/go/",
+      scramjetPath: base + "tide/scram/scramjet.js",
+      injectPath: base + "tide/controller/controller.inject.js",
+      wasmPath: base + "tide/scram/scramjet.wasm"
+    }
+  });
+  await ctl.wait();
+  return ctl;
+}
+/* Scramjet 1.1.0, kept in tide/v1/ for when the alpha misbehaves. Its
+   settings live in a database called $scramjet, only filled in when it is
+   made; a half-made one is thrown away and made again. */
+async function tideStartV1(base){
+  const v1 = base + "tide/v1/";
+  await loadScriptOnce(v1 + "scram/scramjet.all.js", "tide/v1/ is missing. Upload the tide folder, v1 and all, next to index.html.");
+  await loadScriptOnce(v1 + "baremux/index.js");
+  if (!window.$scramjetLoadController || !window.BareMux) throw new Error("The files in tide/v1/ did not load properly.");
+  const { ScramjetController } = $scramjetLoadController();
+  const ctl = new ScramjetController({
+    prefix: base + "tide/go/",
+    files: { wasm: v1 + "scram/scramjet.wasm.wasm", all: v1 + "scram/scramjet.all.js", sync: v1 + "scram/scramjet.sync.js" },
+    /* Scramjet's own defaults, spelled out: the config is merged one level deep */
+    flags: {
+      serviceworkers: false, syncxhr: false, strictRewrites: true, rewriterLogs: false,
+      captureErrors: true, cleanErrors: false, scramitize: false, sourcemaps: true,
+      destructureRewrites: false, allowInvalidJs: true, allowFailedIntercepts: true,
+      interceptDownloads: true
+    }
+  });
+  try { await ctl.init(); }
+  catch (err){
+    if (!/object stores? was not found|NotFoundError/i.test(String((err && err.message) || err))) throw err;
+    for (const reg of await navigator.serviceWorker.getRegistrations()) await reg.unregister();
+    await new Promise(done => { const r = indexedDB.deleteDatabase("$scramjet"); r.onsuccess = r.onerror = r.onblocked = done; });
+    await ctl.init();
+  }
+  ctl.addEventListener("download", e => tideDownload(e.download));
+  /* order matters: the page builds the database, then the worker reads it */
+  await navigator.serviceWorker.register(base + "sw.js?v=1", { scope: base });
+  await navigator.serviceWorker.ready;
+  const conn = new BareMux.BareMuxConnection(v1 + "baremux/worker.js");
+  await conn.setTransport(v1 + "libcurl/index.mjs", [{ websocket: tideWisp() }]);
+  ctl.v1 = true;
+  return ctl;
+}
+/* Settings > Developer > Tide: switching throws away what the other one
+   stored and its service worker, then starts over */
+async function setTideVersion(v){
+  if (v === tideVersion()) return;
+  if (!(await osConfirm("Switch Tide to Scramjet " + (v === 1 ? "1.1.0" : "2"),
+    "SEA OS reloads, and Tide starts again on the other Scramjet. Your files and settings are not touched.",
+    "Switch and reload"))) return false;
+  State.tideVersion = v;
+  saveSettings();
+  try {
+    for (const reg of await navigator.serviceWorker.getRegistrations()) await reg.unregister();
+    indexedDB.deleteDatabase("__scramjet_controller");
+    indexedDB.deleteDatabase("$scramjet");
+  } catch (e){}
+  setTimeout(() => location.reload(), 300);
 }
 /* Everything a frame opened through Tide needs beyond Scramjet's own work:
    files it hands over go into Downloads, a browser that cannot pass streams
@@ -5248,14 +5360,52 @@ function tideFilename(disposition){
   const plain = /filename\s*=\s*("([^"]*)"|[^;]+)/i.exec(disposition);
   return plain ? (plain[2] !== undefined ? plain[2] : plain[1]).trim() : "";
 }
+/* A Tide frame is sandboxed without allow-downloads, allow-popups or top
+   navigation: anything the catching below misses is refused by the browser
+   rather than landing on the real computer or opening a real tab. */
+const TIDE_SANDBOX = "allow-scripts allow-same-origin allow-forms allow-modals allow-pointer-lock allow-presentation";
+/* what a browser shows rather than saves; anything else a page navigates to is a download */
+const SHOWABLE = /^(text\/|image\/|video\/|audio\/|application\/(xhtml\+xml|xml|json|javascript|pdf|x-javascript|ld\+json|rss\+xml|atom\+xml)|multipart\/)/i;
 function tideFrame(ctl, onUrl){
+  const f = ctl.v1 ? tideFrameV1(ctl) : tideFrameV2(ctl);
+  f.element.setAttribute("sandbox", TIDE_SANDBOX);
+  if (onUrl){
+    if (f.onUrl) f.onUrl(onUrl);
+    else {
+      let last = "";
+      const check = () => {
+        let href;
+        try { href = f.element.contentWindow.location.href; } catch (e){ return; }
+        if (!href || !href.startsWith(f.prefix)) return;
+        let url;
+        try { url = f.decode(href); } catch (e){ return; }
+        if (url && url !== last){ last = url; onUrl(url); }
+      };
+      f.element.addEventListener("load", check);
+      /* history.pushState and #hash changes do not fire load, so look now and then;
+         a frame that has been taken off the page is finished with for good */
+      let seen = false;
+      const timer = setInterval(() => {
+        if (f.element.isConnected){ seen = true; check(); }
+        else if (seen) clearInterval(timer);
+      }, 1000);
+    }
+  }
+  tideKeepInFrame(f);
+  return f;
+}
+function tideFrameV2(ctl){
   const sf = ctl.createFrame();
   const { Tap, BareResponse } = $scramjet;
   Tap.tap(sf.hooks.fetch.preresponse, (ctx, props) => {
     const r = props.response;
-    const disposition = r.headers.get("content-disposition") || "";
     const dest = ctx.parsed.destination || ctx.request.rawDestination;
-    if (!/^\s*attachment/i.test(disposition) || (dest !== "document" && dest !== "iframe") || !r.body) return;
+    if ((dest !== "document" && dest !== "iframe") || !r.body) return;
+    const disposition = r.headers.get("content-disposition") || "";
+    const type = (r.headers.get("content-type") || "").split(";")[0].trim();
+    /* marked as a download, or something a browser would save rather than show */
+    const isFile = /^\s*attachment/i.test(disposition) || (type && !SHOWABLE.test(type));
+    if (!isFile || r.status >= 300) return;
     tideDownload({
       filename: tideFilename(disposition),
       url: String(ctx.parsed.url),
@@ -5270,65 +5420,63 @@ function tideFrame(ctl, onUrl){
     const body = props.response.body;
     if (body instanceof ReadableStream) props.response.body = await new Response(body).arrayBuffer();
   });
-  if (onUrl){
-    let last = "";
-    const check = () => {
-      let href;
-      try { href = sf.element.contentWindow.location.href; } catch (e){ return; }
-      if (!href || !href.startsWith(sf.context.prefix.href)) return;
-      let url;
-      try { url = $scramjet.unrewriteUrl(href, sf.context); } catch (e){ return; }
-      if (url && url !== last){ last = url; onUrl(url); }
-    };
-    sf.element.addEventListener("load", check);
-    /* history.pushState and #hash changes do not fire load, so look now and then;
-       a frame that has been taken off the page is finished with for good */
-    let seen = false;
-    const timer = setInterval(() => {
-      if (sf.element.isConnected){ seen = true; check(); }
-      else if (seen) clearInterval(timer);
-    }, 1000);
-  }
-  tideKeepInFrame(sf);
-  return sf;
+  return {
+    element: sf.element,
+    go: url => sf.go(url),
+    prefix: sf.context.prefix.href,
+    decode: href => $scramjet.unrewriteUrl(href, sf.context)
+  };
+}
+function tideFrameV1(ctl){
+  const sf = ctl.createFrame();
+  return {
+    element: sf.frame,
+    go: url => sf.go(url),
+    prefix: new URL(tideBase() + "tide/go/", location.origin).href,
+    decode: href => ctl.decodeUrl(href),
+    onUrl: fn => sf.addEventListener("urlchange", e => { if (e.url) fn(e.url); })
+  };
 }
 /* A page opened in a new tab or window would have nothing running the tide
    behind it, and just shows an error. So links, buttons and forms that ask
-   for a new tab - and Ctrl-, Shift- or middle-clicks - open in this frame. */
-function tideKeepInFrame(sf){
+   for a new tab - and Ctrl-, Shift- or middle-clicks - open in this frame,
+   and a link that downloads puts its file in Downloads. */
+function tideKeepInFrame(f){
   const patch = () => {
     let win, doc;
-    try { win = sf.element.contentWindow; doc = win.document; } catch (e){ return; }
+    try { win = f.element.contentWindow; doc = win.document; } catch (e){ return; }
     if (!win || !doc || win.__tideKeep) return;
-    if (!String(win.location.href).startsWith(sf.context.prefix.href)) return;
+    if (!String(win.location.href).startsWith(f.prefix)) return;
     win.__tideKeep = true;
     /* the real address a link points at, however it is written */
     const realUrl = raw => {
       let url = null;
       try {
         const abs = new URL(String(raw), win.location.href).href;
-        url = abs.startsWith(sf.context.prefix.href)
-          ? $scramjet.unrewriteUrl(abs, sf.context)
-          : new URL(String(raw), $scramjet.unrewriteUrl(win.location.href, sf.context)).href;
+        url = abs.startsWith(f.prefix) ? f.decode(abs) : new URL(String(raw), f.decode(win.location.href)).href;
       } catch (e){ return null; }
       return /^https?:/i.test(url) ? url : null;
     };
     const opensElsewhere = target => !!target && !/^_(self|parent|top)$/i.test(target);
     win.open = function (url){
       const real = url === undefined || url === null || String(url) === "" ? null : realUrl(url);
-      if (real) sf.go(real);
+      if (real) f.go(real);
       return null;
     };
+    catchDownloads(win, raw => {
+      const u = String(raw || "");
+      return /^(blob|data):/i.test(u) ? "" : (realUrl(u) || "");
+    });
     const onClick = e => {
       const a = e.target && e.target.closest && e.target.closest("a[href], area[href]");
-      if (!a) return;
+      if (!a || a.hasAttribute("download")) return;
       const extra = e.type === "auxclick" ? e.button === 1 : (e.ctrlKey || e.metaKey || e.shiftKey);
       if (!extra && !opensElsewhere(a.getAttribute("target"))) return;
       const real = realUrl(a.getAttribute("href"));
       if (!real) return;
       e.preventDefault();
       e.stopImmediatePropagation();
-      sf.go(real);
+      f.go(real);
     };
     doc.addEventListener("click", onClick, true);
     doc.addEventListener("auxclick", onClick, true);
@@ -5339,13 +5487,51 @@ function tideKeepInFrame(sf){
       if (form && opensElsewhere(form.getAttribute("target"))) form.setAttribute("target", "_self");
     }, true);
   };
-  sf.element.addEventListener("load", patch);
+  f.element.addEventListener("load", patch);
   /* a frame that has been taken off the page is finished with for good */
   let seen = false;
   const timer = setInterval(() => {
-    if (sf.element.isConnected){ seen = true; patch(); }
+    if (f.element.isConnected){ seen = true; patch(); }
     else if (seen) clearInterval(timer);
   }, 500);
+}
+/* Links that download - <a download>, and the files pages make on the spot
+   (blob: and data: links, the way converters and "save" buttons work) - are
+   fetched inside the page and saved into Downloads. That covers a link that
+   is clicked, and one a script makes and clicks without ever showing it. */
+function catchDownloads(win, sourceOf){
+  const take = a => {
+    const href = a.getAttribute("href");
+    if (!href) return false;
+    let abs;
+    try { abs = new URL(href, win.location.href).href; } catch (e){ return false; }
+    const given = String(a.getAttribute("download") || "").trim();
+    notify("Downloading", given || downloadName(sourceOf(abs) || abs, ""), "\u2B07\uFE0F");
+    win.fetch(abs).then(r => r.blob())
+      .then(b => saveDownload(b, sourceOf(abs) || "", given || undefined))
+      .catch(() => notify("Download failed", "That file would not come.", "\u26A0\uFE0F"));
+    return true;
+  };
+  const isDl = a => a && a.hasAttribute && a.hasAttribute("download") && a.getAttribute("href");
+  win.document.addEventListener("click", e => {
+    const a = e.target && e.target.closest && e.target.closest("a[href]");
+    if (!isDl(a)) return;
+    e.preventDefault();
+    e.stopImmediatePropagation();
+    take(a);
+  }, true);
+  try {
+    const A = win.HTMLAnchorElement.prototype;
+    const click = A.click, dispatch = win.EventTarget.prototype.dispatchEvent;
+    A.click = function (){ if (isDl(this) && !this.isConnected){ take(this); return; } return click.apply(this, arguments); };
+    win.EventTarget.prototype.dispatchEvent = function (ev){
+      if (ev && ev.type === "click" && win.HTMLAnchorElement && this instanceof win.HTMLAnchorElement && isDl(this) && !this.isConnected){
+        take(this);
+        return false;
+      }
+      return dispatch.apply(this, arguments);
+    };
+  } catch (e){}
 }
 /* A file a proxied page hands over. It is read here and saved into Downloads,
    the same as anything else Seahorse fetches, and never onto the real machine. */
@@ -5631,7 +5817,6 @@ function browserApp(win, startTarget){
         '<button class="wb-star" data-b="star" title="Bookmark this page (Ctrl+D)">&#9734;</button>' +
         '<div class="wb-sugg"></div>' +
       '</div>' +
-      '<button class="tb-btn" data-b="ext" title="Open in a real browser tab">&#8599;</button>' +
       '<button class="tb-btn" data-b="more" title="Bookmarks, history and more">&#9776;</button>' +
     '</div>' +
     '<div class="wb-bmbar"></div>' +
@@ -5837,7 +6022,6 @@ function browserApp(win, startTarget){
   function syncNav(){
     bb("back").disabled = hi <= 0;
     bb("fwd").disabled  = hi >= hist.length - 1;
-    bb("ext").disabled  = !current || !(current.kind === "web" || current.kind === "wiki" || current.kind === "search");
     const star = bb("star"), can = !!current && !internal(current), on = can && isBookmarked(current);
     star.disabled = !can;
     star.innerHTML = on ? "&#9733;" : "&#9734;";
@@ -5873,13 +6057,8 @@ function browserApp(win, startTarget){
     const p = page();
     const h = el("div", "hero");
     h.append(el("div", "wb-sad", ":("), el("h1", null, title), el("p", null, msg));
-    const url = externalUrl(target);
-    if (url){
-      const b = el("button", "btn primary", "Open in a real browser tab");
-      b.style.height = "34px";
-      b.onclick = () => window.open(url, "_blank", "noopener");
-      h.appendChild(b);
-    }
+    if (!tideOn() && target && target.kind === "web")
+      h.appendChild(el("p", null, brand("Tide opens sites like this one. It is set up on Settings \u203A Developer.")));
     p.appendChild(h);
   }
   function mountFrame(srcdoc){
@@ -5896,7 +6075,7 @@ function browserApp(win, startTarget){
     frame = el("iframe");
     /* no allow-same-origin: fetched pages get an opaque origin and cannot
        reach into SEA OS, but their own scripts still run */
-    frame.setAttribute("sandbox", "allow-scripts allow-forms allow-modals allow-popups allow-pointer-lock");
+    frame.setAttribute("sandbox", "allow-scripts allow-forms allow-modals allow-pointer-lock");
     frame.srcdoc = srcdoc;
     stage.appendChild(frame);
   }
@@ -6097,13 +6276,8 @@ function browserApp(win, startTarget){
     anyway.style.cssText = "height:34px;margin:0 4px";
     anyway.onclick = () => mountFrame(webDocument(body, t.url));
     h.appendChild(anyway);
-    const url = externalUrl(t);
-    if (url){
-      const b = el("button", "btn primary", "Open in a real browser tab");
-      b.style.cssText = "height:34px;margin:0 4px";
-      b.onclick = () => window.open(url, "_blank", "noopener");
-      h.appendChild(b);
-    }
+    if (!tideOn() && t && t.kind === "web")
+      h.appendChild(el("p", null, brand("Tide opens sites like this one. It is set up on Settings \u203A Developer.")));
     p.appendChild(h);
   }
 
@@ -6303,8 +6477,7 @@ function browserApp(win, startTarget){
     const elsewhere = [
       ["Stack Overflow", () => go({ kind: "so", q: t.q })],
       ["GitHub", () => go({ kind: "gh", q: t.q })],
-      ["Definition", () => go({ kind: "wikt", title: t.q })],
-      ["Open in a real tab", () => window.open(externalUrl(t), "_blank", "noopener")]
+      ["Definition", () => go({ kind: "wikt", title: t.q })]
     ];
     for (const [label, fn] of elsewhere){
       const b = el("button", "wb-link");
@@ -6317,10 +6490,9 @@ function browserApp(win, startTarget){
 
     if (!wiki.length && !(ddg && (ddg.AbstractText || ddg.Answer))){
       const s = el("div", "wb-sect");
-      s.appendChild(el("div", "wb-none", "Nothing came back for that. Try different words, or open it in a real browser tab."));
-      const b = el("button", "btn primary", "Search " + ENGINES[State.engine].name + " in a real tab");
-      b.onclick = () => window.open(externalUrl(t), "_blank", "noopener");
-      s.appendChild(b);
+      s.appendChild(el("div", "wb-none", tideOn() ? "Nothing came back for that. Try different words."
+        : brand("Nothing came back for that. Try different words - or set up Tide, on Settings \u203A Developer, to search " +
+                ENGINES[State.engine].name + " itself.")));
       p.appendChild(s);
     }
   }
@@ -6782,7 +6954,6 @@ function browserApp(win, startTarget){
   bb("star").onclick = toggleStar;
   bb("more").onclick = moreMenu;
   bb("home").onclick   = drawHome;
-  bb("ext").onclick    = () => { const u = externalUrl(current); if (u) window.open(u, "_blank", "noopener"); };
   /* as you type: what Enter will do, then bookmarks and places you have been */
   let sgItems = [], sgAt = 0;
   function hideSugg(){ sugg.classList.remove("on"); sgItems = []; }
@@ -6867,13 +7038,44 @@ function browserApp(win, startTarget){
 /* ============================================================
    11. Terminal
    ============================================================ */
+/* what this is running on, for neofetch and uname */
+function browserName(){
+  const u = navigator.userAgent;
+  const m = /Edg\/([\d]+)/.exec(u) || /OPR\/([\d]+)/.exec(u) || /Firefox\/([\d]+)/.exec(u) ||
+            /Chrome\/([\d]+)/.exec(u) || /Version\/([\d]+).*Safari/.exec(u);
+  const name = /Edg\//.test(u) ? "Edge" : /OPR\//.test(u) ? "Opera" : /Firefox\//.test(u) ? "Firefox"
+             : /Chrome\//.test(u) ? "Chrome" : /Safari\//.test(u) ? "Safari" : "a browser";
+  return name + (m ? " " + m[1] : "");
+}
+function osName(){
+  const u = navigator.userAgent;
+  return /Windows NT 10/.test(u) ? "Windows 10/11" : /Windows/.test(u) ? "Windows" : /CrOS/.test(u) ? "ChromeOS"
+       : /Android/.test(u) ? "Android" : /iPhone|iPad/.test(u) ? "iOS" : /Mac OS X/.test(u) ? "macOS" : /Linux/.test(u) ? "Linux" : "an unknown system";
+}
+function jsEngine(){
+  const u = navigator.userAgent;
+  return (/Firefox\//.test(u) ? "SpiderMonkey" : /Chrome\//.test(u) ? "V8" : /Safari\//.test(u) ? "JavaScriptCore" : "JavaScript") +
+         " - " + (navigator.hardwareConcurrency || "?") + " threads";
+}
 function terminalApp(win){
   const B = win.body;
   B.innerHTML =
     '<div class="term-wrap"><div class="term-out"></div>' +
     '<div class="term-in-row"><span class="ps1"></span>' +
     '<input class="term-in" spellcheck="false" autocomplete="off" autocapitalize="off"></div></div>';
-  const wrap = $(".term-wrap", B), out = $(".term-out", B), ps1 = $(".ps1", B), inp = $(".term-in", B);
+  const wrap = $(".term-wrap", B), ps1 = $(".ps1", B), inp = $(".term-in", B);
+  /* A command writes to "out". That is the screen, except in the middle of a
+     pipe or a redirect, when it is a box whose text goes on to the next
+     command or into a file. Errors always go to the screen. */
+  const screen = $(".term-out", B);
+  let out = screen;
+  const who = () => "box@" + theBrand().host;
+  const TERM_THEMES = ["classic", "green", "amber", "ocean", "paper"];
+  function applyLook(){
+    for (const t of TERM_THEMES) B.classList.toggle("term-" + t, (State.termTheme || "classic") === t);
+    wrap.style.fontSize = (Number(State.termFont) || 13) + "px";
+  }
+  applyLook();
 
   let cwd = HOME;
   const hist = [];
@@ -6895,11 +7097,46 @@ function terminalApp(win){
     out.appendChild(pre);
   }
   let failed = false;
-  const err = m => { failed = true; line([[m, "t-err"]]); };
+  const err = m => { failed = true; const o = out; out = screen; line([[m, "t-err"]]); out = o; };
+  /* text as it is - a file's contents are never renamed by the brand pass */
+  function plain(text){
+    const pre = el("div");
+    pre.style.whiteSpace = "pre-wrap";
+    pre.textContent = String(text).replace(/\n$/, "");
+    out.appendChild(pre);
+  }
+  /* what a filter reads: the files it is given, or what was piped into it */
+  function input(args, stdin, cmd){
+    const files = args.filter(x => !/^-/.test(x));
+    if (!files.length){
+      if (stdin == null){ err(cmd + ": give it a file, or pipe something into it"); return null; }
+      return stdin;
+    }
+    let text = "";
+    for (const f of files){
+      const n = node(absPath(f, cwd));
+      if (!n){ err(cmd + ": " + f + ": no such file or directory"); continue; }
+      if (n.type === "dir"){ err(cmd + ": " + f + ": is a directory"); continue; }
+      if (n.kind !== "text"){ err(cmd + ": " + f + ": binary file"); continue; }
+      text += n.content.endsWith("\n") || !n.content ? n.content : n.content + "\n";
+    }
+    return text;
+  }
+  const linesOf = t => String(t).replace(/\n$/, "").split("\n");
+  /* -n 5, -n5 and -5 all mean five */
+  function countFlag(args, dflt){
+    for (let i = 0; i < args.length; i++){
+      const a = args[i];
+      if (a === "-n" && args[i + 1] != null){ const v = parseInt(args[i + 1], 10); args.splice(i, 2); return isNaN(v) ? dflt : v; }
+      const m = /^-n?(\d+)$/.exec(a);
+      if (m){ args.splice(i, 1); return parseInt(m[1], 10); }
+    }
+    return dflt;
+  }
 
   function drawPs1(){
     ps1.innerHTML = "";
-    ps1.append(el("span", "ps1-u", "box@seaos"), el("span", "ps1-s", ":"),
+    ps1.append(el("span", "ps1-u", who()), el("span", "ps1-s", ":"),
                el("span", "ps1-p", tilde(cwd)), el("span", "ps1-s", "$ "));
   }
   function refreshFiles(){
@@ -6908,42 +7145,61 @@ function terminalApp(win){
   }
 
   const CMDS = {
-    help(){
-      block(
-"Available commands\n\n" +
-"  ls [path]          list a directory        pwd            print working directory\n" +
-"  cd [path]          change directory        cat <file>     print a file\n" +
-"  mkdir <name>       make a directory        touch <file>   create an empty file\n" +
-"  cp [-r] a b        copy                    mv a b         move or rename\n" +
-"  rm [-r] <path>     remove for good         trash <path>   move to Trash\n" +
-"  echo <text>        print text (> file)     save <file>    copy it to your computer\n" +
-"  open <path>        open in the right app   edit <file>    open in the Files editor\n" +
-"  web <url|words>    open in Seahorse        tree [path]    show the tree\n" +
-"  find <name>        search the filesystem   shortcut <t>   put something on the desktop\n" +
-"  unbox <words>      fetch from the web     unbox search   list what is out there\n" +
-"  wallpaper <file>   set the wallpaper       bootscreen <f> set the boot screen\n" +
-"  backup             save everything to a file\n" +
-"  notify <text>      raise a notification    apps           list applications\n" +
-"  launch <app>       start an application    theme [l|d]    switch light/dark\n" +
-"  date               current date/time       uptime         session uptime\n" +
-"  whoami             current user            uname [-a]     system info\n" +
-"  neofetch           system summary          history        command history\n" +
-"  clear              clear the screen        exit           close this terminal\n\n" +
-"Tab completes commands and paths. Up/Down walk the history.\n" +
-"Paths accept ~ for home and .. for parent.");
+    help(a){
+      const text =
+"Files\n" +
+"  ls [-l] [-a] [path]  list a directory      cd [path]         change directory\n" +
+"  pwd                  where you are         tree [path]       the tree below here\n" +
+"  cat <file>           print a file          stat <path>       what a thing is\n" +
+"  mkdir <name>         make a directory      touch <file>      create an empty file\n" +
+"  cp [-r] a b          copy                  mv a b            move or rename\n" +
+"  rm [-r] <path>       remove for good       trash <path>      move to Trash\n" +
+"  find <name>          search by name        du [path]         how much space things take\n" +
+"  df                   storage, and where    save <file>       copy it to your computer\n" +
+"\n" +
+"Text - these read files, or whatever is piped into them\n" +
+"  grep [-i -v -n -c] <pattern> [file]        head [-n N] [file]  tail [-n N] [file]\n" +
+"  wc [-l -w -c] [file]  count lines          sort [-r -n -u]   uniq [-c]\n" +
+"  echo <text>           print text\n" +
+"\n" +
+"The desktop\n" +
+"  open <path>           in the right app     edit <file>       in the Files editor\n" +
+"  play <song>           a file, or words     web <url|words>   in Seahorse\n" +
+"  wget <url> [-O name]  download into ~/Downloads\n" +
+"  bookmarks [add <url> [name] | open <n> | rm <n>]\n" +
+"  tide [status | test | version 1|2]         unbox <words>     music from the open web\n" +
+"  launch <app>          start an app         apps              list them\n" +
+"  shortcut <thing>      put it on the desktop notify <text>    raise a notification\n" +
+"  wallpaper <file>      bootscreen <file>    backup            theme [light|dark]\n" +
+"\n" +
+"This terminal\n" +
+"  termtheme [classic|green|amber|ocean|paper]  fontsize [10-24]   clear   exit\n" +
+"  neofetch   uname [-a]   whoami   date   uptime   history   help <command>\n" +
+"\n" +
+"Put | between commands to pipe:    ls ~/Music | grep -i mp3 | wc -l\n" +
+"> writes to a file, >> adds to it: ls > list.txt     echo more >> list.txt\n" +
+"; runs the next command anyway, && only if the last one worked.\n" +
+"Tab completes commands and paths, Up and Down walk the history, !! runs the last again.";
+      if (a && a[0]){
+        const want = a[0].toLowerCase();
+        const hits = text.split("\n").filter(l => new RegExp("(^|\\s)" + want.replace(/[^\w]/g, "") + "(\\s|$|\\[|<)").test(l));
+        if (hits.length) return block(hits.join("\n"));
+        return err("help: nothing on " + a[0]);
+      }
+      block(text);
     },
     pwd(){ line(cwd); },
     whoami(){ line("box"); },
     date(){ line(new Date().toString()); },
     uptime(){ line("up " + fmtDuration(Date.now() - BOOT_TIME) + ", " + windows.size + " window(s) open"); },
-    clear(){ out.innerHTML = ""; },
+    clear(){ screen.innerHTML = ""; },
     exit(){ win.close(); },
     history(){ hist.forEach((h, i) => line(String(i + 1).padStart(4) + "  " + h)); },
     apps(){
       for (const id in APPS)
         if (!APPS[id].hidden) line([[id.padEnd(12), "t-key"], [APPS[id].name + " - " + APPS[id].desc, ""]]);
     },
-    uname(a){ line(a[0] === "-a" ? "SEA OS seaos " + VERSION + " single-file " + (navigator.platform || "web") + " browser" : "SEA OS"); },
+    uname(a){ line(a[0] === "-a" ? "SEA OS " + theBrand().host + " " + VERSION + " single-file " + (navigator.platform || "web") + " " + browserName() : "SEA OS"); },
     theme(a){
       const t = (a[0] || "").toLowerCase();
       const next = (t === "l" || t === "light") ? "light" : (t === "d" || t === "dark") ? "dark" : (State.theme === "dark" ? "light" : "dark");
@@ -6969,19 +7225,38 @@ function terminalApp(win){
     }
   };
 
+  /* the colour a name is shown in, by what it is */
+  function tint(name, c){
+    if (c.type === "dir") return "t-dir";
+    if (c.kind === "link") return "t-link";
+    if (c.kind === "image" || IMG_EXT.includes(extOf(name))) return "t-img";
+    if (isAudio(name) || isVideo(name)) return "t-media";
+    if (isHtml(name)) return "t-web";
+    return null;
+  }
   CMDS.ls = function(a){
+    const long = a.some(x => /^-[a-z]*l/.test(x)), all = a.some(x => /^-[a-z]*a/.test(x));
     const target = a.find(x => !x.startsWith("-")) || ".";
     const p = absPath(target, cwd), n = node(p);
     if (!n) return err("ls: " + target + ": no such file or directory");
-    if (n.type === "file") return line(baseName(p));
-    const names = listDir(n);
+    if (n.type === "file") return line([[baseName(p), tint(baseName(p), n)]]);
+    const names = listDir(n).filter(nm => all || !nm.startsWith("."));
     if (!names.length) return;
+    if (long){
+      for (const name of names){
+        const c = n.children[name];
+        const kind = c.type === "dir" ? "dir " : c.kind === "link" ? "link" : (c.kind || "file").slice(0, 4).padEnd(4);
+        const size = c.type === "dir" ? Object.keys(c.children).length + " items" : fmtBytes(nodeSize(c) || 0);
+        line([[kind + "  ", "t-dim"], [size.padStart(10) + "  ", "t-dim"], [name + (c.type === "dir" ? "/" : ""), tint(name, c)]]);
+      }
+      return;
+    }
     const row = el("div", "term-row");
     names.forEach(name => {
       const c = n.children[name];
-      const s = el("span", c.type === "dir" ? "t-dir" : c.kind === "image" ? "t-img" : null, name + (c.type === "dir" ? "/" : ""));
-      s.style.marginRight = "18px";
-      row.appendChild(s);
+      const sp = el("span", tint(name, c), name + (c.type === "dir" ? "/" : ""));
+      sp.style.marginRight = "18px";
+      row.appendChild(sp);
     });
     out.appendChild(row);
   };
@@ -6992,14 +7267,17 @@ function terminalApp(win){
     cwd = p;
     drawPs1();
   };
-  CMDS.cat = function(a){
-    if (!a.length) return err("cat: missing operand");
+  CMDS.cat = function(a, raw, stdin){
+    if (!a.length){
+      if (stdin != null) return plain(stdin);
+      return err("cat: missing operand");
+    }
     for (const t of a){
       const n = node(absPath(t, cwd));
       if (!n){ err("cat: " + t + ": no such file or directory"); continue; }
       if (n.type === "dir"){ err("cat: " + t + ": is a directory"); continue; }
       if (n.kind !== "text"){ err("cat: " + t + ": binary file (" + fmtBytes(nodeSize(n)) + ")"); continue; }
-      block(n.content);
+      plain(n.content);
     }
   };
   CMDS.mkdir = function(a){
@@ -7034,19 +7312,7 @@ function terminalApp(win){
     }
     refreshFiles();
   };
-  CMDS.echo = function(a, raw){
-    const gt = raw.indexOf(">");
-    if (gt >= 0){
-      const text = raw.slice(0, gt).trim(), target = raw.slice(gt + 1).trim();
-      if (!target) return err("echo: missing file after >");
-      const p = absPath(target, cwd);
-      if (!node(dirName(p))) return err("echo: " + target + ": no such directory");
-      writeFile(p, text + "\n", "text");
-      refreshFiles();
-      return;
-    }
-    line(raw);
-  };
+  CMDS.echo = function(a, raw){ plain(raw); };
   CMDS.open = function(a){
     if (!a.length) return err("open: missing operand");
     const p = absPath(a[0], cwd), n = node(p);
@@ -7257,7 +7523,7 @@ function terminalApp(win){
             ["unbox search " + kindWord + query, "t-key"]]);
     notify("Unboxed", baseName(at) + " is in " + tilde(dirName(at)) + ".", "\uD83D\uDCE6");
   };
-  CMDS.neofetch = function(){
+  CMDS.neofetch = async function(){
     const art = theBrand().art ? theBrand().art.join("\n") :
 "          |\\\n" +
 "          | \\\n" +
@@ -7267,40 +7533,279 @@ function terminalApp(win){
 "    ______|______|______\n" +
 "    \\                  /\n" +
 "     \\________________/";
+    const shellName = { macos: "Aqua-ish", mint: "Cinnamon-ish", hypr: "Hyprland-ish" }[State.shell] || State.shell || "desktop";
+    const installed = (State.installed || []).length, games = (gamesCatalogue || []).length;
+    let storage = Store.on ? (State.storage === "local" ? "localStorage" : "file storage") : "not saving";
+    try {
+      if (Store.on && navigator.storage && navigator.storage.estimate){
+        const e = await navigator.storage.estimate();
+        if (e && e.quota) storage += " - " + fmtBytes(e.usage || 0) + " of " + fmtBytes(e.quota);
+      }
+    } catch (x){}
+    let battery = "";
+    try {
+      if (navigator.getBattery){
+        const b = await navigator.getBattery();
+        battery = Math.round(b.level * 100) + "%" + (b.charging ? " (charging)" : "");
+      }
+    } catch (x){}
+    const mem = performance.memory ? fmtBytes(performance.memory.usedJSHeapSize) + " used by this page" : "";
+    const net = navigator.connection && navigator.connection.effectiveType
+      ? navigator.connection.effectiveType.toUpperCase() + (navigator.onLine ? "" : " (offline)") : (navigator.onLine ? "online" : "offline");
     const info = [
-      ["box", "@", "seaos"], null,
-      ["OS", "SEA OS " + VERSION + " (single file)"],
-      ["Kernel", "javascript " + (navigator.hardwareConcurrency || "?") + "-core"],
-      ["Shell", "bsh " + VERSION],
+      ["box", "@", theBrand().host], null,
+      ["OS", "SEA OS " + VERSION + " - one HTML file"],
+      ["Host", browserName() + " on " + osName()],
+      ["Kernel", jsEngine()],
       ["Uptime", fmtDuration(Date.now() - BOOT_TIME)],
-      ["WM", "boxwm" + (State.wobbly ? " (wobbly)" : "") + " - " + windows.size + " window(s)"],
-      ["Theme", (State.theme === "dark" ? "Dark" : "Light") + " / " + State.accent],
-      ["Search", ENGINES[State.engine].name],
-      ["Disk", countFiles() + " files"],
-      ["Display", innerWidth + "x" + innerHeight]
-    ];
+      ["Packages", Object.keys(APPS).filter(id => !APPS[id].hidden && !APPS[id].game && !APPS[id].store).length + " apps, " +
+                   installed + " installed, " + games + " games"],
+      ["Shell", "bsh " + VERSION],
+      ["Resolution", window.screen.width + "x" + window.screen.height + " (window " + innerWidth + "x" + innerHeight + ")"],
+      ["DE", shellName + (currentSubtheme(State.shell) ? " / " + currentSubtheme(State.shell) : "")],
+      ["WM", "chalkwm - " + windows.size + " window" + (windows.size === 1 ? "" : "s") + (State.wobbly ? ", wobbly" : "")],
+      ["Theme", (State.theme === "dark" ? "Dark" : "Light") + ", accent " + State.accent],
+      ["Terminal", "bsh, " + (State.termTheme || "classic") + " at " + (Number(State.termFont) || 13) + "px"],
+      ["CPU", (navigator.hardwareConcurrency || "?") + " threads"],
+      ["Memory", (navigator.deviceMemory ? "about " + navigator.deviceMemory + " GB" : "unknown") + (mem ? ", " + mem : "")],
+      ["Disk", countFiles() + " files, " + storage],
+      ["Browser", ENGINES[State.engine].name + " search, " + (State.bookmarks || []).length + " bookmarks"],
+      ["Tide", tideOn() ? tideHost() + " on Scramjet " + (tideVersion() === 1 ? "1.1.0" : "2") : "not set up"],
+      ["Network", net],
+      battery ? ["Battery", battery] : undefined
+    ].filter(x => x !== undefined);
     const artLines = art.split("\n");
     const holder = el("div", "term-row");
     holder.style.display = "flex";
     const left = el("div");
     left.style.whiteSpace = "pre";
-    left.style.color = "#8bae5a";
+    left.style.color = State.accent;
     left.style.marginRight = "20px";
     left.textContent = art;
     const right = el("div");
     right.style.whiteSpace = "pre";
     for (let i = 0; i < Math.max(artLines.length, info.length); i++){
       const it = info[i], r = el("div");
-      if (it === null) r.append(el("span", "t-dim", "----------------------"));
+      if (it === null) r.append(el("span", "t-dim", "-".repeat(("box@" + theBrand().host).length)));
       else if (it && it.length === 3) r.append(el("span", "t-ok", it[0]), el("span", "t-dim", it[1]), el("span", "t-ok", it[2]));
-      else if (it) r.append(el("span", "t-key", it[0] + ": "), el("span", null, it[1]));
+      else if (it) r.append(el("span", "t-key", it[0] + ": "), el("span", null, brand(it[1])));
       else r.textContent = " ";
       right.appendChild(r);
     }
+    /* the colour blocks every neofetch ends with */
+    const blocks = el("div");
+    blocks.style.marginTop = "6px";
+    for (const c of ["#1c1d1a", "#e2726a", "#8bae5a", "#d8bd6a", "#6c9fd0", "#c98ed6", "#5fb3b3", "#d6d6ce", State.accent]){
+      const b = el("span");
+      b.style.cssText = "display:inline-block;width:22px;height:14px;background:" + c;
+      blocks.appendChild(b);
+    }
+    right.appendChild(blocks);
     holder.append(left, right);
     out.appendChild(holder);
   };
-  CMDS.ll = CMDS.ls;
+
+  /* ---- text: the filters ---- */
+  CMDS.grep = function(a, raw, stdin){
+    const flags = a.filter(x => /^-[a-z]+$/.test(x)).join("");
+    const rest = a.filter(x => !/^-[a-z]+$/.test(x));
+    if (!rest.length) return err("grep: what should it look for?");
+    const pat = rest.shift();
+    const text = input(rest, stdin, "grep");
+    if (text == null) return;
+    let re;
+    try { re = new RegExp(pat, flags.includes("i") ? "gi" : "g"); }
+    catch (e){ re = new RegExp(pat.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"), flags.includes("i") ? "gi" : "g"); }
+    const invert = flags.includes("v"), num = flags.includes("n"), count = flags.includes("c");
+    let hits = 0;
+    linesOf(text).forEach((l, i) => {
+      re.lastIndex = 0;
+      const m = re.test(l);
+      if (m === invert) return;
+      hits++;
+      if (count) return;
+      const row = el("div");
+      row.style.whiteSpace = "pre-wrap";
+      if (num) row.appendChild(el("span", "t-dim", (i + 1) + ":"));
+      if (invert) row.appendChild(document.createTextNode(l));
+      else {
+        re.lastIndex = 0;
+        let at = 0, mm;
+        while ((mm = re.exec(l)) && mm[0].length){
+          row.appendChild(document.createTextNode(l.slice(at, mm.index)));
+          row.appendChild(el("span", "t-hit", mm[0]));
+          at = mm.index + mm[0].length;
+        }
+        row.appendChild(document.createTextNode(l.slice(at)));
+      }
+      out.appendChild(row);
+    });
+    if (count) line(String(hits));
+    if (!hits) failed = true;             /* grep "fails" when nothing matched, so && stops */
+  };
+  CMDS.head = function(a, raw, stdin){
+    const n = countFlag(a, 10);
+    const text = input(a, stdin, "head");
+    if (text != null) plain(linesOf(text).slice(0, n).join("\n"));
+  };
+  CMDS.tail = function(a, raw, stdin){
+    const n = countFlag(a, 10);
+    const text = input(a, stdin, "tail");
+    if (text != null) plain(linesOf(text).slice(-n).join("\n"));
+  };
+  CMDS.wc = function(a, raw, stdin){
+    const flags = a.filter(x => /^-[lwc]+$/.test(x)).join("");
+    const text = input(a.filter(x => !/^-[lwc]+$/.test(x)), stdin, "wc");
+    if (text == null) return;
+    const l = text ? linesOf(text).length : 0, w = (text.match(/\S+/g) || []).length, c = text.length;
+    if (!flags) return line(String(l).padStart(7) + String(w).padStart(8) + String(c).padStart(9));
+    line([flags.includes("l") ? l : null, flags.includes("w") ? w : null, flags.includes("c") ? c : null]
+      .filter(x => x !== null).join(" "));
+  };
+  CMDS.sort = function(a, raw, stdin){
+    const flags = a.filter(x => /^-[rnu]+$/.test(x)).join("");
+    const text = input(a.filter(x => !/^-[rnu]+$/.test(x)), stdin, "sort");
+    if (text == null) return;
+    let ls = linesOf(text);
+    ls.sort(flags.includes("n") ? (x, y) => parseFloat(x) - parseFloat(y) : (x, y) => x.localeCompare(y, undefined, { numeric: true }));
+    if (flags.includes("r")) ls.reverse();
+    if (flags.includes("u")) ls = ls.filter((x, i) => ls.indexOf(x) === i);
+    plain(ls.join("\n"));
+  };
+  CMDS.uniq = function(a, raw, stdin){
+    const c = a.includes("-c");
+    const text = input(a.filter(x => x !== "-c"), stdin, "uniq");
+    if (text == null) return;
+    const outl = [];
+    for (const l of linesOf(text)){
+      const last = outl[outl.length - 1];
+      if (last && last.l === l) last.n++; else outl.push({ l, n: 1 });
+    }
+    plain(outl.map(x => (c ? String(x.n).padStart(7) + " " : "") + x.l).join("\n"));
+  };
+
+  /* ---- files: sizes and what things are ---- */
+  const sizeOf = n => n.type === "dir" ? Object.values(n.children).reduce((t, c) => t + sizeOf(c), 0) : (nodeSize(n) || 0);
+  CMDS.du = function(a){
+    const p = absPath(a.find(x => !x.startsWith("-")) || ".", cwd), n = node(p);
+    if (!n) return err("du: no such file or directory");
+    if (n.type === "dir"){
+      const rows = listDir(n).map(name => [sizeOf(n.children[name]), name, n.children[name]]).sort((x, y) => y[0] - x[0]);
+      for (const [sz, name, c] of rows) line([[fmtBytes(sz).padStart(10) + "  ", "t-dim"], [name + (c.type === "dir" ? "/" : ""), tint(name, c)]]);
+    }
+    line([[fmtBytes(sizeOf(n)).padStart(10) + "  ", "t-ok"], [tilde(p), "t-ok"]]);
+  };
+  CMDS.df = async function(){
+    const used = storageUsage() + (Disk.ok ? diskBytes() : 0);
+    line([["Saving     ", "t-key"], [Store.on ? "on" : "off - everything resets when you reload", Store.on ? "t-ok" : "t-err"]]);
+    line([["Kept in    ", "t-key"], [Store.on ? (Disk.ok ? "the browser's file storage (big files) and localStorage" : "localStorage") : "nowhere", ""]]);
+    line([["Used       ", "t-key"], [fmtBytes(used) + ", " + countFiles() + " files", ""]]);
+    try {
+      const e = navigator.storage && navigator.storage.estimate && await navigator.storage.estimate();
+      if (e && e.quota) line([["Room       ", "t-key"], [fmtBytes(e.quota) + " allowed to this site", ""]]);
+    } catch (x){}
+  };
+  CMDS.stat = function(a){
+    if (!a.length) return err("stat: missing operand");
+    const p = absPath(a[0], cwd), n = node(p);
+    if (!n) return err("stat: " + a[0] + ": no such file or directory");
+    line([["  File: ", "t-key"], [tilde(p), tint(baseName(p), n)]]);
+    line([["  Type: ", "t-key"], [n.type === "dir" ? "directory, " + Object.keys(n.children).length + " items" : (n.kind || "file") + (n.mime ? ", " + n.mime : ""), ""]]);
+    line([["  Size: ", "t-key"], [fmtBytes(sizeOf(n)), ""]]);
+    if (n.kind === "link") line([["  From: ", "t-key"], [String(n.content), "t-dim"]]);
+  };
+
+  /* ---- the desktop from here ---- */
+  CMDS.play = function(a, raw){
+    if (!raw) return err("play: a song's path, or words from its name");
+    const p = absPath(raw, cwd), n = node(p);
+    if (n && n.type === "file"){ openNode(p); return line([["playing ", "t-dim"], [baseName(p), "t-ok"]]); }
+    const q = raw.toLowerCase();
+    let hit = null;
+    walkFS((path, nn, name) => { if (!hit && nn.type === "file" && (isAudio(name) || isVideo(name)) && name.toLowerCase().includes(q)) hit = path; });
+    if (!hit) return err("play: nothing called " + raw);
+    isAudio(baseName(hit)) ? openAudio(hit) : openImage(hit);
+    line([["playing ", "t-dim"], [baseName(hit), "t-ok"]]);
+  };
+  CMDS.wget = async function(a){
+    const i = a.indexOf("-O");
+    const name = i >= 0 ? a.splice(i, 2)[1] : "";
+    const url = a[0];
+    if (!url || !/^https?:\/\//i.test(url)) return err("wget: give a web address, starting with https://");
+    line([["fetching ", "t-dim"], [url, "t-key"], ["\u2026", "t-dim"]]);
+    let res;
+    try { res = await fetch(url); }
+    catch (e){ return err("wget: " + new URL(url).hostname + " will not let other pages fetch its files"); }
+    if (!res.ok) return err("wget: the site answered " + res.status);
+    const path = await saveDownload(await res.blob(), url, name || undefined);
+    if (path) line([["saved ", "t-dim"], [tilde(path), "t-ok"]]);
+    refreshFiles();
+  };
+  CMDS.bookmarks = function(a){
+    const list = State.bookmarks || [];
+    const sub = (a[0] || "").toLowerCase();
+    if (sub === "add"){
+      const url = a[1];
+      if (!url) return err("bookmarks add: which address?");
+      const t = /^https?:\/\//i.test(url) ? { kind: "web", url } : { kind: "web", url: "https://" + url };
+      State.bookmarks = list.concat({ id: uid("bm"), label: a.slice(2).join(" ") || t.url.replace(/^https?:\/\//, ""), t });
+      saveSettings();
+      refreshBrowserViews();
+      return line([["bookmarked ", "t-dim"], [t.url, "t-ok"]]);
+    }
+    if (sub === "open" || sub === "rm"){
+      const b = list[parseInt(a[1], 10) - 1];
+      if (!b) return err("bookmarks " + sub + ": no bookmark " + (a[1] || ""));
+      if (sub === "open"){ openInBrowser(b.t); return line([["opening ", "t-dim"], [b.label, "t-ok"]]); }
+      State.bookmarks = list.filter(x => x !== b);
+      saveSettings();
+      refreshBrowserViews();
+      return line([["removed ", "t-dim"], [b.label, "t-ok"]]);
+    }
+    if (!list.length) return line([["no bookmarks yet - ", "t-dim"], ["bookmarks add <url>", "t-key"]]);
+    list.forEach((b, i) => line([[String(i + 1).padStart(3) + "  ", "t-dim"], [b.label, ""],
+      ["  " + (b.t.url || b.t.kind), "t-dim"]]));
+  };
+  CMDS.tide = async function(a){
+    const sub = (a[0] || "status").toLowerCase();
+    if (sub === "version"){
+      const v = parseInt(a[1], 10);
+      if (v !== 1 && v !== 2) return line([["Scramjet ", "t-dim"], [tideVersion() === 1 ? "1.1.0" : "2 (alpha)", "t-ok"],
+                                           [" - tide version 1 or 2 to switch", "t-dim"]]);
+      return setTideVersion(v);
+    }
+    if (sub === "test"){
+      line([["asking " + (tideHost() || "nobody") + "\u2026", "t-dim"]]);
+      const r = await tideTest();
+      return r.ok ? line([[r.why, "t-ok"]]) : err("tide: " + r.why);
+    }
+    line([["Server    ", "t-key"], [tideHost() || "not set", tideHost() ? "" : "t-dim"]]);
+    line([["Key       ", "t-key"], [Tide.token ? "saved" : "not set", Tide.token ? "t-ok" : "t-dim"]]);
+    line([["Scramjet  ", "t-key"], [tideVersion() === 1 ? "1.1.0" : "2 (alpha)", ""]]);
+    line([["Running   ", "t-key"], [Tide.ctl ? "yes" : "not yet - it starts with the first site", ""]]);
+    line([["Video     ", "t-key"], [tideCanStream() ? "streams" : "whole files only in this browser", ""]]);
+  };
+
+  /* ---- this terminal ---- */
+  CMDS.termtheme = function(a){
+    const t = (a[0] || "").toLowerCase();
+    if (!t) return line([["themes: ", "t-dim"], [TERM_THEMES.join("  "), "t-key"], ["  (now " + (State.termTheme || "classic") + ")", "t-dim"]]);
+    if (!TERM_THEMES.includes(t)) return err("termtheme: no theme called " + t);
+    State.termTheme = t;
+    saveSettings();
+    for (const w of windows.values()) if (w.appId === "terminal" && w.api && w.api.look) w.api.look();
+    line([["theme ", "t-dim"], [t, "t-ok"]]);
+  };
+  CMDS.fontsize = function(a){
+    const n = parseInt(a[0], 10);
+    if (!n) return line([["text is ", "t-dim"], [(Number(State.termFont) || 13) + "px", "t-ok"]]);
+    State.termFont = Math.max(10, Math.min(24, n));
+    saveSettings();
+    for (const w of windows.values()) if (w.appId === "terminal" && w.api && w.api.look) w.api.look();
+    line([["text is now ", "t-dim"], [State.termFont + "px", "t-ok"]]);
+  };
+  CMDS.ll = a => CMDS.ls(["-l"].concat(a));
+  CMDS.man = CMDS.help;
   CMDS.dir = CMDS.ls;
   CMDS["?"] = CMDS.help;
 
@@ -7342,29 +7847,108 @@ function terminalApp(win){
     return score <= (word.length <= 3 ? 1 : 2) ? best : null;
   }
 
-  async function runOne(cmdline){
-    const parts = cmdline.split(/\s+/), cmd = parts[0], args = parts.slice(1);
-    const rest = cmdline.slice(cmd.length).trim();
+  /* words, with "quoted phrases" kept together and the quotes taken off */
+  function words(str){
+    const w = [];
+    let buf = "", quote = "", any = false;
+    for (const c of str){
+      if (quote){ if (c === quote) quote = ""; else buf += c; continue; }
+      if (c === '"' || c === "'"){ quote = c; any = true; continue; }
+      if (/\s/.test(c)){ if (buf || any) w.push(buf); buf = ""; any = false; continue; }
+      buf += c;
+    }
+    if (buf || any) w.push(buf);
+    return w;
+  }
+  /* where a character stands outside quotes */
+  function unquoted(str, test){
+    let quote = "";
+    for (let i = 0; i < str.length; i++){
+      const c = str[i];
+      if (quote){ if (c === quote) quote = ""; continue; }
+      if (c === '"' || c === "'"){ quote = c; continue; }
+      if (test(c, i)) return i;
+    }
+    return -1;
+  }
+  function splitPipes(str){
+    const parts = [];
+    let rest = str, i;
+    while ((i = unquoted(rest, c => c === "|")) >= 0){ parts.push(rest.slice(0, i)); rest = rest.slice(i + 1); }
+    parts.push(rest);
+    return parts.map(x => x.trim());
+  }
+  /* the text a command wrote, one line a row - a row of names, as ls makes, one name a line */
+  function textOf(box){
+    const ls = [];
+    for (const row of box.children){
+      const kids = Array.from(row.children);
+      if (kids.length > 1 && kids.every(k => k.tagName === "SPAN" && k.style.marginRight)) ls.push(...kids.map(k => k.textContent));
+      else ls.push(row.textContent.replace(/\n+$/, ""));
+    }
+    return ls.length ? ls.join("\n") + "\n" : "";
+  }
+
+  async function runOne(cmdline, stdin, capture){
+    const argv = words(cmdline), cmd = argv[0];
+    if (!cmd) return { ok: true, text: stdin || "" };
+    const args = argv.slice(1), rest = args.join(" ");
     if (!CMDS[cmd]){
       err("bsh: command not found: " + cmd);
       const guess = nearest(cmd);
+      const o = out; out = screen;
       if (guess) line([["Did you mean ", "t-dim"], [guess, "t-key"], ["?", "t-dim"]]);
       else line([["Type ", "t-dim"], ["help", "t-key"], [" for a list of commands.", "t-dim"]]);
-      return false;
+      out = o;
+      return { ok: false, text: "" };
     }
     failed = false;
-    try { await CMDS[cmd](args, rest); }
-    catch (e){ err(cmd + ": " + e.message); return false; }
-    return !failed;
+    const box = capture ? el("div") : null;
+    if (box) out = box;
+    try { await CMDS[cmd](args, rest, stdin); }
+    catch (e){ err(cmd + ": " + e.message); }
+    finally { out = screen; }
+    return { ok: !failed, text: box ? textOf(box) : "" };
+  }
+  /* a | b | c > file */
+  async function runPipeline(text){
+    const stages = splitPipes(text);
+    let redirect = null;
+    const lastI = stages.length - 1;
+    const gt = unquoted(stages[lastI], c => c === ">");
+    if (gt >= 0){
+      const append = stages[lastI][gt + 1] === ">";
+      const file = words(stages[lastI].slice(gt + (append ? 2 : 1))).join(" ");
+      if (!file){ err("bsh: nothing after " + (append ? ">>" : ">")); return false; }
+      redirect = { append, file };
+      stages[lastI] = stages[lastI].slice(0, gt).trim();
+    }
+    let stdin = null, ok = true;
+    for (let i = 0; i < stages.length; i++){
+      const r = await runOne(stages[i], stdin, i < lastI || !!redirect);
+      stdin = r.text;
+      ok = r.ok;
+    }
+    if (redirect){
+      const p = absPath(redirect.file, cwd);
+      if (!node(dirName(p))){ err("bsh: " + redirect.file + ": no such directory"); return false; }
+      const had = node(p);
+      if (had && had.type === "dir"){ err("bsh: " + redirect.file + ": is a directory"); return false; }
+      const before = redirect.append && had && had.kind === "text" ? had.content : "";
+      writeFile(p, before + (stdin || ""), "text", "text/plain");
+      refreshFiles();
+    }
+    return ok;
   }
   async function run(raw){
     let cmdline = raw.trim();
-    /* !! repeats the last command, the way a real shell does */
+    /* !! repeats the last command and !3 the third, the way a real shell does */
     if (cmdline === "!!") cmdline = hist[hist.length - 1] || "";
+    else if (/^!\d+$/.test(cmdline)) cmdline = hist[parseInt(cmdline.slice(1), 10) - 1] || "";
     const echoRow = el("div", "term-row");
-    echoRow.append(el("span", "ps1-u", "box@seaos"), el("span", "ps1-s", ":"),
+    echoRow.append(el("span", "ps1-u", who()), el("span", "ps1-s", ":"),
                    el("span", "ps1-p", tilde(cwd)), el("span", "ps1-s", "$ "), el("span", null, cmdline));
-    out.appendChild(echoRow);
+    screen.appendChild(echoRow);
     if (!cmdline) return;
     hist.push(cmdline);
     hi = hist.length;
@@ -7372,7 +7956,7 @@ function terminalApp(win){
     for (const step of splitChain(cmdline)){
       if (step.sep === "&&" && !ok) continue;    /* the rest of this chain is skipped */
       if (step.sep === ";") ok = true;
-      ok = await runOne(step.text);
+      ok = await runPipeline(step.text);
       scroll();
     }
   }
@@ -7394,14 +7978,17 @@ function terminalApp(win){
     } else if (e.key === "Tab"){
       e.preventDefault();
       const value = inp.value;
-      const parts = value.split(/\s+/);
+      /* only the command being typed now - after the last |, ; or && */
+      const cut = Math.max(value.lastIndexOf("|"), value.lastIndexOf(";"), value.lastIndexOf("&&") + 1);
+      const seg = value.slice(cut + 1).replace(/^\s+/, "");
+      const parts = seg.split(/\s+/);
       const word = parts[parts.length - 1] || "";
-      let options, replaceFrom = word;
-
+      const head = value.slice(0, value.length - word.length);
+      let options;
       if (parts.length <= 1){
         options = Object.keys(CMDS).filter(c => c.startsWith(word)).sort();
       } else {
-        /* complete a path: split off the directory the user already typed */
+        /* complete a path: split off the directory already typed */
         const slash = word.lastIndexOf("/");
         const dirPart = slash >= 0 ? word.slice(0, slash + 1) : "";
         const stem = slash >= 0 ? word.slice(slash + 1) : word;
@@ -7410,27 +7997,24 @@ function terminalApp(win){
         options = listDir(dir)
           .filter(nm => nm.toLowerCase().startsWith(stem.toLowerCase()))
           .map(nm => dirPart + nm + (dir.children[nm].type === "dir" ? "/" : ""));
-        replaceFrom = word;
       }
       if (!options.length) return;
-
-      /* one match completes, several fill in the shared prefix and list */
+      /* one match completes, several fill in the shared start and are listed */
       let insert = options[0];
       if (options.length > 1){
         let prefix = options[0];
-        for (const o of options) while (!o.startsWith(prefix)) prefix = prefix.slice(0, -1);
-        insert = prefix.length >= replaceFrom.length ? prefix : replaceFrom;
+        for (const o of options) while (!o.toLowerCase().startsWith(prefix.toLowerCase())) prefix = prefix.slice(0, -1);
+        insert = prefix.length >= word.length ? prefix : word;
         const row = el("div", "term-row");
         options.forEach(o => {
           const sp = el("span", o.endsWith("/") ? "t-dir" : null, o);
           sp.style.marginRight = "18px";
           row.appendChild(sp);
         });
-        out.appendChild(row);
+        screen.appendChild(row);
         scroll();
       }
-      parts[parts.length - 1] = insert;
-      inp.value = parts.join(" ") + (options.length === 1 && !insert.endsWith("/") ? " " : "");
+      inp.value = head + insert + (options.length === 1 && !insert.endsWith("/") ? " " : "");
       setTimeout(() => inp.setSelectionRange(999, 999), 0);
     } else if (e.ctrlKey && !e.altKey && !e.metaKey){
       /* the line-editing keys a real shell gives you */
@@ -7441,7 +8025,7 @@ function terminalApp(win){
         const c = caret === undefined ? v.length : caret;
         setTimeout(() => inp.setSelectionRange(c, c), 0);
       };
-      if (k === "l"){ e.preventDefault(); out.innerHTML = ""; }
+      if (k === "l"){ e.preventDefault(); screen.innerHTML = ""; }
       else if (k === "a"){ e.preventDefault(); inp.setSelectionRange(0, 0); }
       else if (k === "e"){ e.preventDefault(); inp.setSelectionRange(inp.value.length, inp.value.length); }
       else if (k === "u"){ e.preventDefault(); put(inp.value.slice(pos), 0); }
@@ -7455,10 +8039,10 @@ function terminalApp(win){
         /* nothing to copy, so treat it as abandoning the line */
         e.preventDefault();
         const row = el("div", "term-row");
-        row.append(el("span", "ps1-u", "box@seaos"), el("span", "ps1-s", ":"),
+        row.append(el("span", "ps1-u", who()), el("span", "ps1-s", ":"),
                    el("span", "ps1-p", tilde(cwd)), el("span", "ps1-s", "$ "),
                    el("span", null, inp.value + "^C"));
-        out.appendChild(row);
+        screen.appendChild(row);
         inp.value = "";
         hi = hist.length;
         scroll();
@@ -7471,10 +8055,15 @@ function terminalApp(win){
 
   const motd = node("/etc/motd");
   block(motd ? motd.content : "SEA OS", "t-dim");
+  line(Store.on
+    ? [["  * Your files are saved in this browser (", "t-dim"], [State.storage === "local" ? "localStorage" : "file storage", "t-ok"], [").", "t-dim"]]
+    : [["  * Saving is off, so nothing here survives a reload. Settings \u203A Storage turns it on.", "t-err"]]);
+  line(" ");
   drawPs1();
   setTimeout(() => inp.focus(), 30);
   return {
     focusInput: () => inp.focus(),
+    look: applyLook,
     /* a file dropped on the terminal types its path at the prompt */
     insert(text){
       inp.value += (inp.value && !/\s$/.test(inp.value) ? " " : "") + text;
@@ -7489,12 +8078,18 @@ function terminalApp(win){
           { label: "Close Window", run: () => win.close() }
         ],
         Edit: [
-          { label: "Clear screen", run: () => { out.innerHTML = ""; } },
+          { label: "Clear screen", run: () => { screen.innerHTML = ""; } },
           { label: "Copy", run: () => document.execCommand("copy") }
         ],
         View: [
           { label: "Go home", run: () => { cwd = HOME; drawPs1(); } },
-          { label: "Show help", run: () => { run("help"); drawPs1(); scroll(); } }
+          { label: "Show help", run: () => { run("help"); drawPs1(); scroll(); } },
+          "-",
+          ...TERM_THEMES.map(t => ({ label: (State.termTheme || "classic") === t ? "\u2022 " + t : "   " + t,
+                                     run: () => { run("termtheme " + t); drawPs1(); scroll(); } })),
+          "-",
+          { label: "Bigger text", run: () => { run("fontsize " + ((Number(State.termFont) || 13) + 1)); drawPs1(); scroll(); } },
+          { label: "Smaller text", run: () => { run("fontsize " + ((Number(State.termFont) || 13) - 1)); drawPs1(); scroll(); } }
         ]
       };
     }
@@ -7908,8 +8503,8 @@ function webPlayerFrame(t){
   f.allow = "autoplay; fullscreen; encrypted-media; picture-in-picture";
   f.allowFullscreen = true;
   f.referrerPolicy = "strict-origin-when-cross-origin";
-  f.setAttribute("sandbox", "allow-scripts allow-same-origin allow-presentation allow-forms" +
-    (t.generic ? "" : " allow-popups allow-popups-to-escape-sandbox"));
+  /* no popups: a player's "watch on the site" button stays put rather than opening a real tab */
+  f.setAttribute("sandbox", "allow-scripts allow-same-origin allow-presentation allow-forms");
   return f;
 }
 /* Title and picture for a link. noembed.com answers for hundreds of sites
@@ -8962,7 +9557,7 @@ function musicApp(win, startPath, only){
                   here.urls = here.urls.filter(u => u !== t.url); refreshMediaViews(); } });
           }
           items.push("-",
-            { icon: "↗️", label: siteOf(t) ? "Open on " + siteOf(t) : "Open the link", run: () => window.open(t.url, "_blank", "noopener") },
+            { icon: "↗️", label: siteOf(t) ? "Open on " + siteOf(t) : "Open the link", run: () => openInBrowser({ kind: "web", url: t.url }) },
             { icon: "✖", label: "Forget this link", run: () => {
                 if (i === at) stopAll();
                 forgetWebMedia(t.url);
@@ -9066,7 +9661,7 @@ function musicApp(win, startPath, only){
     openBtn.textContent = "Open on " + t.site;
     openBtn.title = "Open this on " + t.site;
     openBtn.classList.add("on");
-    openBtn.onclick = () => window.open(t.url, "_blank", "noopener");
+    openBtn.onclick = () => openInBrowser({ kind: "web", url: t.url });
     nowPlaying(win, t.title || t.site, true);
     drawList();
   }
@@ -9120,7 +9715,7 @@ function musicApp(win, startPath, only){
           $(".mu-sub", B).textContent = why;
           openBtn.textContent = "Open on YouTube";
           openBtn.classList.add("on");
-          openBtn.onclick = () => window.open(t.url, "_blank", "noopener");
+          openBtn.onclick = () => openInBrowser({ kind: "web", url: t.url });
         }
       }
     });
@@ -9324,7 +9919,8 @@ function chatApp(win){
     frame.title = "Chat";
     /* first-party: it ships with CHALK OS, so it runs as itself and can reach
        its chat server. Pages you import yourself stay sandboxed. */
-    frame.setAttribute("sandbox", "allow-scripts allow-same-origin allow-forms allow-popups allow-modals");
+    frame.setAttribute("sandbox", "allow-scripts allow-same-origin allow-forms allow-modals");
+    keepInside(frame);
     frame.addEventListener("load", () => {
       settled = true;
       themeSent = "";
@@ -9359,7 +9955,6 @@ function chatApp(win){
       return {
         File: [
           { label: "Reload Chat", run: () => { if (frame){ settled = false; frame.src = frame.src; } } },
-          { label: "Open in a browser tab", run: () => window.open(frame ? frame.src : "chat.html", "_blank", "noopener") },
           "-",
           { label: "Close Window", run: () => win.close() }
         ]
@@ -9557,7 +10152,7 @@ function galleryApp(win, startPath){
       showCtx(e.clientX, e.clientY, [
         { icon: "▶", label: "Play", run: () => openAt(i) },
         { icon: "🎬", label: "Movie mode", run: () => { openAt(i); enterFocus(win, "movie"); } },
-        { icon: "↗️", label: siteOf(t) ? "Open on " + siteOf(t) : "Open the link", run: () => window.open(t.url, "_blank", "noopener") },
+        { icon: "↗️", label: siteOf(t) ? "Open on " + siteOf(t) : "Open the link", run: () => openInBrowser({ kind: "web", url: t.url }) },
         "-",
         { icon: "✖", label: "Remove from Videos and Media", run: () => {
             if (i === at) library();
@@ -9674,7 +10269,7 @@ function galleryApp(win, startPath){
       webBox.appendChild(webPlayerFrame(p));
       $(".vd-web-note", B).textContent = "Playing in " + siteOf(p) + "'s own player - use its controls.";
       vb("site").textContent = "Open on " + siteOf(p);
-      vb("site").onclick = () => window.open(p.url, "_blank", "noopener");
+      vb("site").onclick = () => openInBrowser({ kind: "web", url: p.url });
     } else {
       const n = isWeb(p) ? null : node(p);
       if (!isWeb(p) && !n) return scan();
@@ -9901,6 +10496,9 @@ const HELP_TOPICS = [
            "History stays in this browser. Settings \u203A ChalkBrowser turns it off or clears it."]],
     ["h", "Keys"],
     ["l", ["Ctrl+L to the address bar, Ctrl+R to reload, Alt+Left and Alt+Right for back and forward."]],
+    ["h", "Nothing leaves"],
+    ["l", ["No page, game or app in SEA OS can open a tab in your real browser. A link that asks for a new tab opens in Seahorse instead.",
+           "Files they hand over go into ~/Downloads, not onto the real computer."]],
     ["h", "What you can type in the address bar"],
     ["l", ["Anything that looks like a web address.",
            "Plain words to search.",
@@ -9931,7 +10529,19 @@ const HELP_TOPICS = [
            "Anything your browser has no decoder for is pushed to the bottom. Chrome cannot play Ogg Theora (.ogv), and Wikimedia Commons is full of it."]]
   ]},
   { id: "term", icon: "⌨️", title: "The Terminal", body: [
-    ["p", "A small shell over the same filesystem the Files app shows. Type help for the full list."],
+    ["p", "A shell over the same filesystem the Files app shows. Type help for the full list, or help and a command's name for just that one."],
+    ["h", "Pipes and files"],
+    ["l", ["Put | between commands and the words one prints go into the next: ls ~/Music | grep -i mp3 | wc -l.",
+           "> writes what a command prints into a file, and >> adds it to the end: ls > list.txt.",
+           "grep, head, tail, wc, sort, uniq and cat read the files you name, or whatever is piped into them.",
+           "Quotes keep words together: grep \"two words\" notes.md."]],
+    ["h", "The desktop from here"],
+    ["l", ["play finds a song by a word in its name. wget saves a web address into ~/Downloads.",
+           "bookmarks lists, adds, opens and removes Seahorse's bookmarks. tide says how Tide is doing, tests it, or switches Scramjet.",
+           "du shows what takes the room, df where your files are kept and how much space there is, stat what one thing is.",
+           "ls -l gives sizes; names are coloured by kind - folders, pictures, songs and videos, pages, links."]],
+    ["h", "Its look"],
+    ["l", ["termtheme picks classic, green, amber, ocean or paper; fontsize sets the text size. Both are in the View menu too."]],
     ["h", "Editing the line"],
     ["l", ["Tab completes commands, paths and app names. Press it twice to see the choices.",
            "Up and Down walk back through what you have typed.",
@@ -9939,7 +10549,7 @@ const HELP_TOPICS = [
            "Ctrl+L clears the screen, Ctrl+C abandons the line you are on.",
            "Drop a file on the terminal window and its path is typed for you."]],
     ["h", "Worth trying"],
-    ["c", "neofetch\ntree ~\nfind .md\nopen ~/readme.txt\nbackup"],
+    ["c", "neofetch\nls ~ | grep -i md\ncat notes.md | grep Tide > tide.txt\nplay piano\ntree ~"],
     ["p", "Commands can be chained with && and separated with ;."]
   ]},
   { id: "saving", icon: "💾", title: "Saving, and what is lost", body: [
@@ -9969,6 +10579,7 @@ const HELP_TOPICS = [
            "Settings › Appearance › Screen saver shows the porthole and a big clock after a few minutes of nothing. It waits while anything is playing, and any key or mouse move brings the desktop back.",
            "Right-click any picture or video in Files to set either from there.",
            "Settings › Desktop chooses the shell, the desktop icons and what sits in the Dock.",
+           "Settings › Desktop › Transparency makes the Dock or taskbar, the menu bar and the windows see-through, with or without a frosted blur. Games, Seahorse, video and the Terminal stay solid so they stay quick.",
            "Drop an .mp4 into the videos folder of the repository and it appears in Videos without any importing."]]
   ]},
   { id: "tide", icon: "\uD83C\uDF0A", title: "Tide", body: [
@@ -9976,14 +10587,16 @@ const HELP_TOPICS = [
     ["p", "Almost every site refuses to be shown inside another page, which is why Seahorse can only read a handful of them on its own. Tide is the way round it: a small server on a machine you own opens the connection, and what comes back is rewritten so the site behaves normally - scripts, logins and all."],
     ["h", "Setting it up"],
     ["l", ["The server runs on a machine of your own. Once it is up it prints a key.",
-           "Put its address and that key into Settings \u203A Tide, press Test, then Save.",
+           "Put its address and that key into Settings \u203A Developer \u203A Tide, press Test, then Save.",
+           "Scramjet, on the same page, chooses what does the rewriting: Scramjet 2, the default, or 1.1.0 if 2 misbehaves. Switching reloads SEA OS.",
            "Type any address into Seahorse and it opens through Tide from then on.",
            "The tide folder has to sit next to index.html on the site, and the site has to be https. Tide cannot run from a file on disk."]],
     ["h", "What to expect"],
     ["l", ["Everything the site asks for afterwards comes through the same machine, so pages that build themselves in the browser work.",
            "Every site you open sees that machine's address as the visitor, not yours.",
-           "Downloads land in ~/Downloads inside SEA OS, never on the real computer, and anything over 100 MB is refused.",
-           "If a page will not load, Settings \u203A Tide \u203A Test says whether the machine is answering.",
+           "Downloads land in ~/Downloads inside SEA OS, never on the real computer - links marked as downloads, files a page makes on the spot, and anything a browser would save rather than show. Anything over 100 MB is refused.",
+           "A page can never open a tab in your real browser: links that want one open in the same frame.",
+           "If a page will not load, Settings \u203A Developer \u203A Tide \u203A Test says whether the machine is answering.",
            "Clear what it cached, in the same place, throws away the helper Tide installs in this browser and starts it fresh."]],
     ["h", "Video"],
     ["p", "Sites load in any browser, but video through Tide needs one that can pass a half-finished download between pages. Chrome and Edge can; Firefox cannot yet, so YouTube opens but a video says an error occurred. Media plays YouTube links directly without Tide, which is the easier way to watch something."]
@@ -10064,53 +10677,6 @@ const HELP_TOPICS = [
            "Everything you add stays in the list under From the web. Right-click one to remove it.",
            "Links need the internet, and nothing from those sites is saved into your files."]]
   ]},
-  { id: "gallery", icon: "\uD83D\uDDBC\uFE0F", title: "Gallery", body: [
-    ["p", "The Gallery holds your videos and your pictures together - whatever is on the disk, wherever it sits."],
-    ["l", ["Click one to watch or look at it. The arrows either side move to the next and the last.",
-           "Slideshow steps through the pictures on its own, every few seconds.",
-           "A video remembers where you stopped and picks up there, with Start over if you would rather not.",
-           "Right-click a picture to edit it in Paint, show it in Files, or make it the wallpaper.",
-           "Add media brings in videos and pictures: from a link, from your files, or from this computer.",
-           "Paint saves into ~/Pictures, so anything you draw turns up here."]]
-  ]},
-  { id: "playground", icon: "🧪", title: "Playground", body: [
-    ["p", "Write a web page, or Python, and run it right here. A web page runs on the right as you type; untick Live to run only when you press Run or Ctrl+Enter."],
-    ["h", "Web pages"],
-    ["l", ["HTML, CSS and JS each get a tab. A dot on a tab means it has something in it.",
-           "They are saved together as one .html file, so Open in Seahorse and Install as app work on the whole page. Opening that file again puts each part back in its own tab.",
-           "The console under the preview shows console.log output and errors. An error in the JS tab says which line of that tab it came from.",
-           "The preview gets window.box too, so an app behaves the same before and after you install it."]],
-    ["h", "Python"],
-    ["l", ["New › Python script starts one. Opening any .py file does too.",
-           "Python downloads the first time it runs, which takes a few seconds, and is quick after that.",
-           "print() goes to the console. input() reads the Input box above it, one line for each call.",
-           "Importing a package that ships with Pyodide, like numpy, downloads it the first time you use it.",
-           "Stop ends a script that runs too long, including one that never finishes.",
-           "Python scripts save to ~/Documents unless they already live somewhere."]],
-    ["h", "Saving"],
-    ["p", "Ctrl+S saves and Ctrl+Shift+S saves as. A new web page goes in ~/Sites."]
-  ]},
-  { id: "media", icon: "🎵", title: "Media and links", body: [
-    ["p", "Media plays the music and video in your files, and links from the web."],
-    ["h", "Adding something"],
-    ["l", ["Searching uses the engine chosen in Settings › Seahorse. Only with Tide set up can that engine open properly; without it, Seahorse answers from DuckDuckGo and Wikipedia, which are the two that can be read directly.",
-           "Press Add media at the top right and pick one of three ways in: paste links, play a file already in SEA OS, or bring a file over from this computer.",
-           "Paste links takes as many as you like, one a line. Enter starts a new line; Ctrl+Enter adds them all.",
-           "Ctrl+V anywhere in Media, Videos or the MP3 Player adds whatever link - or links - you copied.",
-           "Drag files from your computer's desktop, or a link from another browser tab, onto a player or its Dock icon. Files are copied into ~/Music or ~/Videos.",
-           "The play, pause and skip keys on your keyboard work the player you used last, and Windows shows the song and its cover in its own media pop-up.",
-           "An imported file lands in ~/Music or ~/Videos and stays in SEA OS. Nothing is written to the real computer."]],
-    ["h", "Playing a link"],
-    ["l", ["Choose Paste a link and give it a link from YouTube, Vimeo, Dailymotion, Twitch (videos, clips and live channels), Kick, Streamable, the Internet Archive, Bilibili, Odysee, TED, TikTok, Facebook, Loom, Rumble embed links, any PeerTube server, SoundCloud, or Spotify.",
-           "A Spotify playlist, album, song or podcast opens in Spotify's own player inside Media, and stays in the list afterwards. Spotify decides how much of it plays: whole songs when you are signed in to Spotify in this browser, and thirty-second tastes when you are not.",
-           "A direct link to an audio or video file - one ending in .mp3, .mp4 and so on - works too.",
-           "Any other site is tried as well: the page itself is shown, which works for sites that allow it. Most big sites refuse, and the player stays blank - Open on the site is always there.",
-           "YouTube plays in YouTube's own player inside Media, and Media's play, skip, seek and volume controls work on it. Other sites play in their own players, with their own controls.",
-           "Links you add show up in both Media and Videos. Right-click one to remove it.",
-           "The title and picture for a link come from noembed.com, which only ever sees the link itself.",
-           "Some uploaders do not let their videos play outside their site. Open on the site takes you there instead.",
-           "Links need the internet, and nothing from these sites is saved into your files."]]
-  ]},
   { id: "widgets", icon: "🧩", title: "Widgets", body: [
     ["l", ["Right-click the desktop and choose Widgets, or open Settings › Widgets.",
            "Drag a widget anywhere and it stays there.",
@@ -10140,7 +10706,7 @@ const HELP_TOPICS = [
     ["l", ["Settings › Startup can boot SEA OS straight into one game, in Game mode.",
            "Browsers only give full screen after a click, so until then the bar at the top offers it."]],
     ["h", "Adding your own"],
-    ["p", "Add a game, at the top of Games, is the quick way: a game on a website by its address, or an .html or .swf file from Files or from this computer. Files go into ~/Games, links are kept in your settings, and nothing needs uploading anywhere. Right-click one you added to take it out again."],
+    ["p", "Add a game, at the top of Games, is the quick way: a game on a website by its address, or an .html file from Files or from this computer. Games run from SEA OS's own site - one that lives elsewhere is brought over and started here - and none of them can open a tab in your real browser: a link a game opens goes to Seahorse instead. Files go into ~/Games, links are kept in your settings, and nothing needs uploading anywhere. Right-click one you added to take it out again."],
     ["p", "A game can also be one HTML file in the games/ folder of the repository. Name it with the same tags as a Store app, plus one for the colour of its tile:"],
     ["c", "<title>My Game</title>\n<meta name=\"description\" content=\"What you do\">\n<meta name=\"box-icon\" content=\"🎯\">\n<meta name=\"box-color\" content=\"#3a7bd5\">\n<meta name=\"box-size\" content=\"520x600\">"],
     ["p", "Games get the same window.box as apps, plus two calls for scores. Higher is better:"],
@@ -10457,7 +11023,7 @@ async function discoverHtmlFolder(dir, globalName, prefix, skip){
   let paths = null;
   const names = await repoList(dir);
   if (names) paths = names.filter(isHtml).map(n => repoBase() + dir + "/" + n);
-  /* a manifest may also name links and Flash files - only its pages are read here */
+  /* a manifest may also name games on other sites - only its pages are read here */
   if (!paths) paths = (await loadFolderManifest(dir, globalName)).filter(p => typeof p === "string" && isHtml(p));
   /* Each page is fetched whole just to read its title, which is wasteful for
      a big one - so anything named elsewhere with its own details is left out */
@@ -10548,7 +11114,7 @@ function storeAppRun(win, a){
     const frame = el("iframe", "ext-frame");
     frame.title = a.name;
     /* no allow-same-origin: the app cannot reach SEA OS, only window.box */
-    frame.setAttribute("sandbox", "allow-scripts allow-forms allow-modals allow-popups allow-pointer-lock");
+    frame.setAttribute("sandbox", "allow-scripts allow-forms allow-modals allow-pointer-lock");
     const base = a.src.startsWith("fs:") ? "" : new URL(a.src, location.href).href.replace(/[^/]*$/, "");
     frame.srcdoc = withBridge(html, base);
     wrap.innerHTML = "";
@@ -10905,7 +11471,7 @@ function playgroundApp(win, startPath){
   let path = null, savedSig = "", timer = 0, errors = 0, jsFromLine = 0;
   let py = null, pyStarted = 0;
 
-  frame.setAttribute("sandbox", "allow-scripts allow-forms allow-modals allow-popups allow-pointer-lock");
+  frame.setAttribute("sandbox", "allow-scripts allow-forms allow-modals allow-pointer-lock");
   /* the preview gets window.box too, answered as if it were an installed app */
   const bridge = { frame, app: { id: "playground", name: "Playground", icon: "🧪" }, win };
   Bridged.add(bridge);
@@ -11262,58 +11828,130 @@ const LINKED_GAMES = [];
    what lets a Unity build find its data files and save its progress - and
    gets full screen, the mouse and a gamepad, but may not download anything
    onto the real computer. */
+/* A game runs from CHALK OS's own site. One that only lives somewhere else -
+   the repository's Pages site, when CHALK OS is served from another address -
+   is fetched and started from here, so the game window never opens an
+   outside address, and its saves stay with CHALK OS. A copy is kept for the
+   session, so a second window does not fetch 20 MB again. */
+const GAME_COPIES = new Map();
+async function gameSource(url){
+  let abs;
+  try { abs = new URL(url, location.href); } catch (e){ return url; }
+  if (abs.origin === location.origin) return abs.href;
+  if (GAME_COPIES.has(abs.href)) return GAME_COPIES.get(abs.href);
+  const res = await fetch(abs.href);
+  if (!res.ok) throw new Error("the site answered " + res.status);
+  if (!/html/i.test(res.headers.get("content-type") || "")) throw new Error("that is not a page");
+  let html = await res.text();
+  /* anything the game loads beside itself still comes from where it lives */
+  const base = '<base href="' + abs.href.replace(/[^/]*$/, "").replace(/"/g, "&quot;") + '">';
+  html = /<head[^>]*>/i.test(html) ? html.replace(/<head[^>]*>/i, m => m + base) : base + html;
+  const copy = URL.createObjectURL(new Blob([html], { type: "text/html" }));
+  GAME_COPIES.set(abs.href, copy);
+  return copy;
+}
+/* A page CHALK OS runs itself - a game, Chat - stays inside it. A link or a
+   window.open that wants a new tab opens in ChalkBrowser instead of a real
+   tab, and a file it hands over goes into Downloads rather than onto the real
+   computer. The frames are sandboxed without popups or downloads as well, so
+   anything this misses is refused rather than let out. */
+function keepInside(frame){
+  const patch = () => {
+    let win;
+    try { win = frame.contentWindow; if (!win || !win.document) return; } catch (e){ return; }
+    if (win.__chalkKeep) return;
+    win.__chalkKeep = true;
+    const abs = raw => { try { return new URL(String(raw), win.location.href).href; } catch (e){ return null; } };
+    const toBrowser = u => {
+      /* a game in Game mode keeps the screen; the page waits in ChalkBrowser */
+      const back = Focus.win;
+      openInBrowser({ kind: "web", url: u });
+      if (back && windows.has(back.id)){ focusWin(back); notify("Opened in ChalkBrowser", u, "\uD83C\uDF10"); }
+    };
+    win.open = function (url){
+      const u = url === undefined || url === null || String(url) === "" ? null : abs(url);
+      if (u && /^https?:/i.test(u)) toBrowser(u);
+      return null;
+    };
+    catchDownloads(win, u => (/^(blob|data):/i.test(u) ? "" : u));
+    win.document.addEventListener("click", e => {
+      const a = e.target && e.target.closest && e.target.closest("a[href]");
+      if (!a || a.hasAttribute("download")) return;
+      const t = a.getAttribute("target");
+      if (!(t && !/^_(self|parent|top)$/i.test(t)) && !(e.ctrlKey || e.metaKey || e.shiftKey)) return;
+      const u = abs(a.getAttribute("href"));
+      if (!u || !/^https?:/i.test(u)) return;
+      e.preventDefault();
+      e.stopImmediatePropagation();
+      toBrowser(u);
+    }, true);
+  };
+  frame.addEventListener("load", patch);
+  patch();
+}
 function pageGameRun(win, g){
   const B = win.body;
   B.innerHTML = "";
   const wrap = el("div", "ext-wrap");
+  const msg = el("div", "ext-msg", "Opening " + g.name + "\u2026");
+  wrap.appendChild(msg);
+  B.appendChild(wrap);
   const frame = el("iframe", "ext-frame");
   frame.title = g.name;
-  frame.src = g.url;
   frame.allow = "fullscreen; autoplay; gamepad; clipboard-write; accelerometer; gyroscope";
   frame.allowFullscreen = true;
-  frame.setAttribute("sandbox", "allow-scripts allow-same-origin allow-forms allow-pointer-lock allow-popups allow-modals");
-  wrap.appendChild(frame);
-  B.appendChild(wrap);
+  frame.setAttribute("sandbox", "allow-scripts allow-same-origin allow-forms allow-pointer-lock allow-modals");
+  keepInside(frame);
   frame.addEventListener("load", () => { if (activeWin === win) try { frame.contentWindow.focus(); } catch (x){} });
+  let src = "";
+  const start = async () => {
+    try { src = await gameSource(g.url); }
+    catch (err){
+      /* the other site will not hand the game over; it still plays, framed in this window */
+      src = new URL(g.url, location.href).href;
+    }
+    if (!frame.isConnected){ wrap.innerHTML = ""; wrap.appendChild(frame); }
+    frame.src = src;
+  };
+  start();
   return {
     focusFrame(){ try { frame.contentWindow.focus(); } catch (x){} },
     menus(){
       return {
         File: [
-          { label: "Reload " + g.name, run: () => { frame.src = g.url; } },
-          { label: "Open it in a browser tab", run: () => window.open(g.url, "_blank", "noopener") },
+          { label: "Reload " + g.name, run: () => { if (src) frame.src = src; } },
           "-",
           { label: "Close Window", run: () => win.close() }
         ],
         View: [
+          { label: "Game mode", run: () => enterFocus(win, "game") },
           { label: "Full screen", run: () => { if (frame.requestFullscreen) frame.requestFullscreen().catch(() => {}); } }
         ]
       };
     }
   };
 }
-/* manifest entries that are not a file in games/: a page ({ url }) or a
-   Flash file somewhere reachable ({ swf }) */
+/* manifest entries that are not a file in games/: a page ({ url }) */
 function gameFromEntry(e){
   if (!e || typeof e !== "object") return null;
-  let target = e.url || e.swf;
+  let target = e.url;
   if (!target || !e.name) return null;
   /* a name like games/thing.html means the repository, wherever that is */
   if (!/^[a-z]+:/i.test(target)) target = repoBase() + String(target).replace(/^\.?\//, "");
   const size = /^(\d{3,4})\s*x\s*(\d{3,4})$/i.exec(String(e.size || ""));
   return {
     id: "game:" + String(e.name).toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, ""),
-    kind: e.swf ? "swf" : "page",
+    kind: "page",
     url: target,
     name: String(e.name).slice(0, 40),
-    desc: String(e.desc || (e.swf ? "A Flash game" : "A game on " + ((() => { try { return new URL(target, location.href).hostname; } catch (x){ return "the web"; } })()))).slice(0, 120),
-    icon: String(e.icon || (e.swf ? "⚡" : "🎮")).replace(/[<>]/g, "").slice(0, 8),
+    desc: String(e.desc || ("A game on " + ((() => { try { return new URL(target, location.href).hostname; } catch (x){ return "the web"; } })()))).slice(0, 120),
+    icon: String(e.icon || "🎮").replace(/[<>]/g, "").slice(0, 8),
     color: /^#[0-9a-f]{3,8}$/i.test(e.color || "") ? e.color : "",
     w: size ? Math.min(1400, Math.max(320, +size[1])) : 960,
     h: size ? Math.min(1000, Math.max(240, +size[2])) : 640
   };
 }
-/* Games added from inside SEA OS: links kept in settings, and .html or .swf
+/* Games added from inside SEA OS: links kept in settings, and .html
    files kept in ~/Games - so they need nothing from the repository and come
    back after a reload like any other file. */
 const MY_GAMES_DIR = () => HOME + "/Games";
@@ -11341,9 +11979,8 @@ function registerGame(g){
   APPS[g.id] = { name: g.name, desc: g.desc, icon: g.icon, w: g.w, h: g.h, game: true, cls: "app-ext",
                  run: g.kind === "page" ? win => pageGameRun(win, g) : win => storeAppRun(win, g) };
 }
-/* Links and Flash files named in games/manifest.js are read on every host,
-   because GitHub's listing only knows about files. On Pages, a .swf dropped
-   into games/ turns up without being named anywhere. */
+/* Pages named in games/manifest.js are read on every host, because GitHub's
+   listing only knows about files. */
 async function gameExtras(){
   const out = [];
   for (const e of await loadFolderManifest("games", "BOXOS_GAMES")){
@@ -11608,7 +12245,7 @@ function gamesApp(win){
   B.innerHTML =
     '<div class="st-bar"><span class="st-title">Games</span><span class="ed-sp"></span>' +
     '<input class="vd-find gm-find" spellcheck="false" autocomplete="off" placeholder="Filter">' +
-    '<button class="tb-btn" data-m="add" title="A game on a website, or an .html or .swf file">\u2795 Add a game</button>' +
+    '<button class="tb-btn" data-m="add" title="A game on a website, or an .html file">\u2795 Add a game</button>' +
     '<button class="tb-btn" data-m="refresh" title="Look again">&#8635;</button></div>' +
     '<div class="gm-body"></div>';
   const body = $(".gm-body", B), find = $(".gm-find", B);
@@ -12108,10 +12745,36 @@ setInterval(() => {
 /* ============================================================
    13. appearance
    ============================================================ */
+/* Settings > Desktop > Transparency: the Dock or taskbar, the menu bar and the
+   windows can each be made see-through. The colours they start from are read
+   back from whatever the theme and desktop style make them, so it works in
+   every style and in light and dark alike. Windows that redraw all the time -
+   games, pages, video - stay solid, the same as with Liquid Glass. */
+function applyTransparency(){
+  const root = document.documentElement, body = document.body;
+  if (!body) return;
+  const clear = v => Math.max(0, Math.min(100, Number(v) || 0));
+  const panel = clear(State.tpPanel), bar = clear(State.tpBar), win = clear(State.tpWin);
+  body.classList.remove("tp-panel", "tp-bar", "tp-win", "tp-blur");
+  const bgOf = sel => { const e = $(sel); return e ? getComputedStyle(e).backgroundColor : ""; };
+  const cs = getComputedStyle(root);
+  root.style.setProperty("--tp-panel-bg", bgOf("#panel") || "rgb(44,44,44)");
+  root.style.setProperty("--tp-bar-bg", bgOf("#menubar") || "rgb(240,240,240)");
+  for (const v of ["--surface", "--surface-2", "--surface-3", "--title", "--title-off", "--bg"])
+    root.style.setProperty("--tp" + v, cs.getPropertyValue(v).trim());
+  root.style.setProperty("--tp-panel", (100 - panel) + "%");
+  root.style.setProperty("--tp-bar", (100 - bar) + "%");
+  root.style.setProperty("--tp-win", (100 - win) + "%");
+  body.classList.toggle("tp-panel", panel > 0);
+  body.classList.toggle("tp-bar", bar > 0);
+  body.classList.toggle("tp-win", win > 0);
+  body.classList.toggle("tp-blur", State.tpBlur !== false && (panel > 0 || bar > 0 || win > 0));
+}
 function applyTheme(){
   document.documentElement.dataset.theme = State.theme;
   $("#traytheme").textContent = State.theme === "dark" ? "\u2600\uFE0F" : "\uD83C\uDF19";
   $("#traytheme").title = State.theme === "dark" ? "Switch to light" : "Switch to dark";
+  applyTransparency();
 }
 function applyAccent(){
   document.documentElement.style.setProperty("--accent", State.accent);
@@ -12258,6 +12921,7 @@ function applyShell(){
   updateMenuBarApp();
   applyShellSizing();
   retile();
+  applyTransparency();
 }
 /* the dock lists what you have pinned, plus anything running that is not */
 function drawDock(){
@@ -12705,6 +13369,32 @@ function settingsApp(win){
     d.appendChild(sizeRow);
 
     /* --- widgets --- */
+    /* --- see-through --- */
+    const tp = section("Transparency", "desktop");
+    const clearRow = (label, key) => {
+      const r = row(label);
+      const inp = el("input");
+      inp.type = "range"; inp.min = "0"; inp.max = "100"; inp.step = "5";
+      inp.value = String(Number(State[key]) || 0);
+      inp.style.cssText = "flex:1;min-width:140px;max-width:320px";
+      const val = el("span", "store-note", "");
+      val.style.cssText = "min-width:74px;margin:0";
+      const say = () => { const v = Number(inp.value); val.textContent = v ? v + "% clear" : "solid"; };
+      inp.oninput = () => { State[key] = Number(inp.value); say(); applyTransparency(); };
+      inp.onchange = () => saveSettings();
+      say();
+      r.append(inp, val);
+      tp.appendChild(r);
+    };
+    clearRow(State.shell === "macos" ? "Dock" : "Taskbar", "tpPanel");
+    if (State.shell === "macos" || State.shell === "hypr") clearRow("Menu bar", "tpBar");
+    clearRow("Windows", "tpWin");
+    tp.appendChild(toggle("Blur what shows through",
+      "Frosted rather than clear. It costs a little speed; games, pages and video windows never blur.",
+      State.tpBlur !== false, v => { State.tpBlur = v; saveSettings(); applyTransparency(); render(); }));
+    tp.appendChild(el("div", "store-note",
+      "Windows that redraw all the time - games, ChalkBrowser, video, Media and the Terminal - stay solid, so games stay quick."));
+
     const wg = section("Widgets", "widgets");
     for (const id of WIDGETS){
       const place = State.weatherPlace;
@@ -12825,6 +13515,14 @@ function settingsApp(win){
     tdKeyRow.append(tdKey, tdSave, tdTest);
     td.appendChild(tdKeyRow);
     td.appendChild(tdNote);
+
+    const tdVer = row("Scramjet");
+    tdVer.appendChild(seg([["2", "2 (alpha)"], ["1", "1.1.0"]], String(tideVersion()),
+      v => { setTideVersion(Number(v)).then(r => { if (r === false) render(); }); }));
+    td.appendChild(tdVer);
+    td.appendChild(el("div", "store-note", tideVersion() === 2
+      ? "Scramjet 2 is the default: newer, and still an alpha. If sites misbehave, try 1.1.0."
+      : "Scramjet 1.1.0: older and settled. It needs the tide/v1 folder uploaded too."));
 
     if (Tide.token){
       const tdOff = row(null);
