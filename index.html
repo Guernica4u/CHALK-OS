@@ -7,7 +7,7 @@
 <link rel="icon" id="favicon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' rx='15' fill='%232f5d4e'/><g transform='translate(7 5) scale(.8)' fill='none' stroke='%23fff' stroke-linecap='round'><path d='M36 34 48 14' stroke-width='16'/><path d='M31 42.3 36.2 33.7' stroke-opacity='.45' stroke-width='16'/><path d='M6 55c4-5 8 2 12-1.5s7-2 10-.5' stroke-width='6'/><circle cx='36' cy='54' r='2.6' fill='%23fff' fill-opacity='.5' stroke='none'/></g></svg>">
 <style>
 /* ============================================================
-   SEA OS 0.99 - a mini desktop in a single HTML file
+   SEA OS ALPHA 1.0 - a mini desktop in a single HTML file
    Flat colours, no gradients.
    ============================================================ */
 /* an app icon that is inline SVG rather than an emoji */
@@ -422,7 +422,64 @@ body.anim .win.closing{animation:winOut .15s ease-in forwards}
 .rz.se{right:-5px;bottom:-5px;width:17px;height:17px;cursor:nwse-resize}
 .win.max .rz{display:none}
 
+/* ---------- ChalkBrowser's start page ---------- */
+.wb-home.ws-start{
+  padding:52px 26px 40px;
+  background:radial-gradient(120% 70% at 50% 0%, color-mix(in srgb, var(--accent) 16%, var(--surface)) 0%, var(--surface) 62%);
+}
+.ws-top{display:flex;flex-direction:column;align-items:center;gap:4px;margin-bottom:22px}
+.ws-logo{color:var(--accent)}
+.ws-hello{font-size:26px;font-weight:600;letter-spacing:.01em}
+.ws-clock{font-size:13px;color:var(--dim);font-variant-numeric:tabular-nums}
+.ws-search{
+  display:flex;align-items:center;gap:8px;max-width:600px;margin:0 auto;height:50px;padding:0 6px 0 18px;
+  background:var(--surface);border:1px solid var(--border);border-radius:25px;box-shadow:0 8px 26px rgba(0,0,0,.08);
+}
+.ws-search:focus-within{border-color:var(--accent);box-shadow:0 0 0 4px color-mix(in srgb, var(--accent) 20%, transparent),0 8px 26px rgba(0,0,0,.08)}
+.ws-lens{opacity:.55}
+.ws-search input{flex:1;min-width:0;height:100%;border:0;outline:none;background:none;color:var(--text);font:inherit;font-size:15px}
+.ws-go{
+  width:38px;height:38px;border:0;border-radius:50%;background:var(--accent);color:var(--accent-fg);
+  font-size:18px;cursor:pointer;flex:0 0 auto;
+}
+.ws-go:hover{filter:brightness(1.08)}
+.ws-chips{display:flex;flex-wrap:wrap;justify-content:center;gap:7px;max-width:640px;margin:16px auto 0}
+.ws-chips.left{justify-content:flex-start;margin:0}
+.ws-chip{
+  display:inline-flex;align-items:center;gap:7px;height:30px;padding:0 13px;border-radius:15px;
+  border:1px solid var(--border-soft);background:var(--surface-2);color:var(--text);font:inherit;font-size:12.5px;cursor:pointer;
+}
+.ws-chip:hover{border-color:var(--accent)}
+.ws-dial{display:grid;grid-template-columns:repeat(auto-fill,minmax(92px,1fr));gap:10px;max-width:640px;margin:30px auto 0}
+.ws-tile{
+  display:flex;flex-direction:column;align-items:center;gap:8px;padding:12px 6px 10px;border:0;border-radius:14px;
+  background:none;color:var(--text);font:inherit;cursor:pointer;min-width:0;
+}
+.ws-tile:hover{background:var(--surface-2)}
+.ws-face{
+  width:48px;height:48px;border-radius:14px;display:grid;place-items:center;color:#fff;font-size:21px;font-weight:600;
+  box-shadow:0 4px 12px rgba(0,0,0,.14);
+}
+.ws-tile.add .ws-face{background:var(--surface-2);color:var(--dim);border:1px dashed var(--border);box-shadow:none}
+.ws-name{font-size:12px;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ws-recent{max-width:640px;margin:28px auto 0}
+.ws-h{display:flex;align-items:center;margin:0 4px 8px;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--dim)}
+.ws-row{
+  display:flex;align-items:center;gap:10px;width:100%;padding:8px 10px;border:0;border-radius:9px;background:none;
+  color:var(--text);font:inherit;font-size:13px;text-align:left;cursor:pointer;
+}
+.ws-row:hover{background:var(--surface-2)}
+.ws-row .g{width:18px;text-align:center;flex:0 0 auto}
+.ws-row .n{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ws-row .d{font-size:11.5px;color:var(--dim);flex:0 0 auto}
+.ws-foot{max-width:640px;margin:34px auto 0;text-align:center;font-size:12px;color:var(--dim)}
+
 /* ---------- files ---------- */
+.fm-trash{display:none;flex:1;min-width:0;flex-direction:column;background:var(--surface)}
+.fm-trash .fm-list{flex:1}
+.fm-main.trashing > .fm-list,.fm-main.trashing > .fm-edit{display:none!important}
+.fm-main.trashing .fm-trash{display:flex}
+.fm-main.trashing ~ .fm-status{display:none}
 .app-files .win-body{overflow:hidden}
 .fm-tb{
   flex:0 0 auto;display:flex;align-items:center;gap:5px;padding:6px 7px;
@@ -548,6 +605,18 @@ body.anim .win.closing{animation:winOut .15s ease-in forwards}
 .term-paper .t-img{color:#8a3f9e}
 .term-paper .t-media{color:#b8661e}
 .term-paper .t-web{color:#237a7a}
+/* classic, the default, is paper in light mode and the dark screen in dark mode */
+:root:not([data-theme="dark"]) .win-body.term-classic{--term-bg:#fbfaf5}
+:root:not([data-theme="dark"]) .term-classic .term-wrap,:root:not([data-theme="dark"]) .term-classic .term-in{color:#2b2b2b;caret-color:#5f8039}
+:root:not([data-theme="dark"]) .term-classic .ps1-u,:root:not([data-theme="dark"]) .term-classic .t-ok{color:#4f7a26}
+:root:not([data-theme="dark"]) .term-classic .ps1-p,:root:not([data-theme="dark"]) .term-classic .t-dir{color:#2f63a8}
+:root:not([data-theme="dark"]) .term-classic .ps1-s{color:#555}
+:root:not([data-theme="dark"]) .term-classic .t-dim{color:#8a8a82}
+:root:not([data-theme="dark"]) .term-classic .t-key{color:#9a6b00}
+:root:not([data-theme="dark"]) .term-classic .t-img{color:#8a3f9e}
+:root:not([data-theme="dark"]) .term-classic .t-media{color:#b8661e}
+:root:not([data-theme="dark"]) .term-classic .t-web{color:#237a7a}
+:root:not([data-theme="dark"]) .term-classic .t-err{color:#b8423a}
 
 /* a drop target lighting up while a file is held over it */
 .drop-on{outline:2px solid var(--accent) !important;outline-offset:-2px}
@@ -896,7 +965,7 @@ body.shell-macos.sub-glass .seg{border-radius:999px}
 }
 .app-music .win-body.playing .mu-disc{animation-play-state:running}
 .mu-disc .mu-art{
-  position:absolute;inset:0;border-radius:50%;display:flex;align-items:center;justify-content:center;
+  position:absolute;inset:0;width:auto;height:auto;border-radius:50%;display:flex;align-items:center;justify-content:center;
   font-size:22px;font-weight:600;color:var(--accent-fg);background:var(--accent);
 }
 .mu-disc .mu-art.thumb{background-color:transparent;color:transparent}
@@ -1151,22 +1220,6 @@ body.shell-macos.sub-glass .seg{border-radius:999px}
 }
 #snapghost.on{opacity:1}
 
-/* ---------- paint ---------- */
-.app-paint .win-body{overflow:hidden}
-.pt-tb{
-  flex:0 0 auto;display:flex;align-items:center;gap:7px;padding:6px 8px;flex-wrap:wrap;
-  background:var(--surface-2);border-bottom:1px solid var(--border-soft);
-}
-.pt-swatches{display:flex;gap:4px}
-.pt-sw{width:20px;height:20px;border-radius:4px;border:2px solid transparent;cursor:pointer;box-shadow:0 0 0 1px var(--border) inset}
-.pt-sw.on{border-color:var(--text)}
-.pt-sep{width:1px;height:20px;background:var(--border)}
-.pt-sizes button{padding:3px 10px}
-.tb-btn.on{background:var(--accent);color:var(--accent-fg);border-color:var(--accent)}
-.pt-stage{flex:1;min-height:0;display:flex;align-items:center;justify-content:center;padding:12px;background:var(--surface-3)}
-.pt-stage canvas{background:#fff;box-shadow:0 2px 12px rgba(0,0,0,.25);cursor:crosshair;touch-action:none;max-width:100%;max-height:100%}
-.pt-status{flex:0 0 auto;padding:5px 11px;font-size:11.5px;color:var(--dim);background:var(--surface-2);border-top:1px solid var(--border-soft)}
-
 /* ---------- files: selection, clipboard, drop target ---------- */
 .fm-tab tr.cut td{opacity:.45;font-style:italic}
 .fm-tab tr.dropping td{background:var(--accent);color:var(--accent-fg);opacity:.85}
@@ -1303,6 +1356,18 @@ body.tp-blur.tp-win .win:not(.app-ext):not(.app-web):not(.app-vid):not(.app-musi
   backdrop-filter:blur(18px) saturate(1.3)!important;-webkit-backdrop-filter:blur(18px) saturate(1.3)!important;
 }
 
+body.tp-abs #panel{
+  background:transparent!important;background-image:none!important;border-color:transparent!important;
+  box-shadow:none!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important;
+}
+body.tp-abs #panel .dock-sep{opacity:0}
+body.tp-abs #panel .dock-app,body.tp-abs #panel .task,body.tp-abs #panel #menubtn{
+  background:transparent!important;border-color:transparent!important;box-shadow:none!important;
+  filter:drop-shadow(0 2px 6px rgba(0,0,0,.4));
+}
+body.tp-abs #panel .task .t{display:none}
+body.tp-abs #panel .task{min-width:0;padding:0 8px}
+
 /* ---------- the performance meter ---------- */
 #perf-hud{
   position:fixed;right:10px;bottom:10px;z-index:2147483602;display:flex;gap:10px;padding:5px 11px;border-radius:999px;
@@ -1376,7 +1441,12 @@ body.focus-idle,body.focus-idle *{cursor:none!important}
    graphics chips that is what made games slow to answer. */
 body.sub-glass .win.app-ext,body.sub-glass .win.app-web,body.sub-glass .win.app-vid,
 body.sub-glass .win.app-music,body.sub-glass .win.app-mp3,body.sub-glass .win.app-play{
-  backdrop-filter:none!important;-webkit-backdrop-filter:none!important;background:var(--surface)!important;
+  backdrop-filter:none!important;-webkit-backdrop-filter:none!important;background:transparent!important;
+}
+/* their title bars stay glass like every other window's; only the part that redraws is solid */
+body.sub-glass .win.app-ext .win-title,body.sub-glass .win.app-web .win-title,body.sub-glass .win.app-vid .win-title,
+body.sub-glass .win.app-music .win-title,body.sub-glass .win.app-mp3 .win-title,body.sub-glass .win.app-play .win-title{
+  background:var(--glass-strong)!important;backdrop-filter:var(--glass-blur);-webkit-backdrop-filter:var(--glass-blur);
 }
 body.sub-glass .win.app-ext .win-body,body.sub-glass .win.app-web .win-body,body.sub-glass .win.app-vid .win-body,
 body.sub-glass .win.app-music .win-body,body.sub-glass .win.app-mp3 .win-body,body.sub-glass .win.app-play .win-body{
@@ -1793,7 +1863,7 @@ try {
   </div>
   <div class="name" aria-label="CHALK"><span>C</span><span>H</span><span>A</span><span>L</span><span>K</span></div>
   <div class="sub">operating system</div>
-  <div class="ver">version 0.99</div>
+  <div class="ver">ALPHA 1.0</div>
   <div class="bar"><i id="bootbar"></i></div>
   <div class="tip">click anywhere to skip</div>
   </div>
@@ -1893,7 +1963,7 @@ let idSeq = 0;
    system files a saved disk carries are rewritten at startup when they were
    written by an older one - otherwise the Terminal would go on greeting you
    with the version you first installed. */
-const VERSION = "0.99";
+const VERSION = "ALPHA 1.0";
 const uid = p => (p || "id") + "_" + (++idSeq) + "_" + Math.random().toString(36).slice(2, 6);
 
 function fmtBytes(n){
@@ -2136,21 +2206,7 @@ function seedDisk(){
   writeFile(HOME + "/Documents/todo.txt",
 "- water the plants\n- rebuild the window manager (done)\n- make the windows wobble (done)\n- think about persistence\n");
 
-  writeFile(HOME + "/Sites/hello.html",
-"<!DOCTYPE html>\n<html>\n<head>\n<meta charset=\"utf-8\">\n<title>Hello from inside SEA OS</title>\n<style>\n" +
-"  body{margin:0;font:16px/1.6 system-ui,sans-serif;background:#f4f4ef;color:#2b2b2b;\n" +
-"       display:flex;align-items:center;justify-content:center;height:100vh}\n" +
-"  .card{background:#fff;border:1px solid #d8d8d0;border-radius:8px;padding:34px 40px;max-width:460px}\n" +
-"  h1{margin:0 0 10px;font-size:24px;color:#5f8039}\n" +
-"  p{margin:0 0 14px;color:#555}\n" +
-"  button{font:inherit;padding:8px 16px;border:0;border-radius:5px;background:#8bae5a;color:#fff;cursor:pointer}\n" +
-"  #out{margin-top:14px;font-weight:600;color:#5f8039;min-height:1.6em}\n" +
-"</style>\n</head>\n<body>\n  <div class=\"card\">\n" +
-"    <h1>It really is a web page</h1>\n" +
-"    <p>This file lives in the SEA OS filesystem and is being rendered by the\n" +
-"       built-in Browser. Its JavaScript runs too - try the button.</p>\n" +
-"    <button onclick=\"document.getElementById('out').textContent='Clicked at ' + new Date().toLocaleTimeString()\">Click me</button>\n" +
-"    <div id=\"out\"></div>\n  </div>\n</body>\n</html>\n");
+  ensureDir(HOME + "/Sites");
 
   writeFile("/etc/motd", brand(motdText()));
   writeFile("/etc/os-release", brand(osReleaseText()));
@@ -2170,7 +2226,7 @@ const readmeText = () =>
 "  * Drag files in from your real desktop to import them.\n" +
 "  * Right-click anything and pick \"Save to your computer\" to get it back out.\n" +
 "  * Shift and Ctrl select many; cut, copy and paste work as you expect.\n" +
-"  * Deleted things wait in Trash until you empty it.\n\n" +
+"  * Deleted things wait in the Trash, in the Files sidebar, until you empty it.\n\n" +
 "Music, video and games\n" +
 "----------------------\n" +
 "  * Media plays songs and links; the disc button turns it into the MP3 Player.\n" +
@@ -2238,7 +2294,7 @@ const osReleaseText = () =>
 /* The guides in the home folder were written when this disk was made, and
    describe what SEA OS was then - Locked Notes, a browser that could not open
    sites. They are rewritten once when they fall out of date. */
-const SYS_REV = 2;
+const SYS_REV = 3;
 function refreshSystemFiles(){
   if (!node("/etc")) return;
   const motd = node("/etc/motd"), rel = node("/etc/os-release");
@@ -2247,6 +2303,9 @@ function refreshSystemFiles(){
   if ((Number(State.sysRev) || 0) < SYS_REV){
     if (node(HOME + "/readme.txt")) writeFile(HOME + "/readme.txt", brand(readmeText()));
     if (node(HOME + "/notes.md")) writeFile(HOME + "/notes.md", brand(notesText()));
+    /* the sample page from the first versions, only if it is still the one SEA OS wrote */
+    const hello = node(HOME + "/Sites/hello.html");
+    if (hello && /It really is a web page/.test(String(hello.content))) removePath(HOME + "/Sites/hello.html");
     State.sysRev = SYS_REV;
     saveSettings();
   }
@@ -2328,7 +2387,7 @@ function saveTrash(){
 }
 function refreshTrashViews(){
   for (const w of windows.values())
-    if (w.appId === "trash" && w.api && w.api.refresh) w.api.refresh();
+    if (w.appId === "files" && w.api && w.api.refreshTrash) w.api.refreshTrash();
   drawDesktop();
 }
 
@@ -2400,7 +2459,7 @@ function applyBrand(){
     });
   }
   const ver = $("#boot .ver");
-  if (ver) ver.textContent = "version " + VERSION;
+  if (ver) ver.textContent = VERSION;
   const mb = $(".mb-app");
   if (mb) mb.textContent = b.os;
   const who = $(".who");
@@ -2493,6 +2552,7 @@ const State = {
   tpBar: 0,            /* the menu bar */
   tpWin: 0,            /* windows */
   tpBlur: true,        /* blur what shows through */
+  tpAbs: false,        /* absolute transparency: no Dock or taskbar at all, only its icons */
   termTheme: "classic",/* the Terminal's colours */
   termFont: 13,        /* and its text size */
   sysRev: 0,           /* which version of readme.txt and notes.md the home folder has */
@@ -2515,7 +2575,7 @@ let BOOT_TIME = Date.now();
    ============================================================ */
 const K = { on: "boxos.on", fs: "boxos.fs", set: "boxos.settings", sc: "boxos.shortcuts", trash: "boxos.trash" };
 const SETTING_KEYS = ["theme","accent","wallColor","customWall","wallFit","animations",
-                      "wobbly","panelPos","clock24","iconSize","engine","wallVideo","bootMedia","shell","dock","bookmarks","sounds","installed","widgets","widgetPos","weatherPlace","tempUnit","highScores","subthemes","menuFolded","helpDockPhase","webMedia","startMode","gameApp","screensaver","resume","brand","devMode","tideHost","useRepo","repo","myGames","mp3List","mp3Shuffle","mp3Repeat","mediaMode","mediaView","linkLists","storage","perfHud","visualizer","bmBar","keepHistory","webHistory","webRestore","webTabs","tideVersion","termTheme","termFont","sysRev","tpPanel","tpBar","tpWin","tpBlur"];
+                      "wobbly","panelPos","clock24","iconSize","engine","wallVideo","bootMedia","shell","dock","bookmarks","sounds","installed","widgets","widgetPos","weatherPlace","tempUnit","highScores","subthemes","menuFolded","helpDockPhase","webMedia","startMode","gameApp","screensaver","resume","brand","devMode","tideHost","useRepo","repo","myGames","mp3List","mp3Shuffle","mp3Repeat","mediaMode","mediaView","linkLists","storage","perfHud","visualizer","bmBar","keepHistory","webHistory","webRestore","webTabs","tideVersion","termTheme","termFont","sysRev","tpPanel","tpBar","tpWin","tpBlur","tpAbs"];
 /* Only a soft gauge for the usage bar. The real localStorage ceiling is not
    knowable from script and varies a lot - roughly 5 MB on a file:// page, but
    far more on some origins - so nothing here claims a hard number. */
@@ -3763,19 +3823,19 @@ const APPS = {
   playground: { name: "Playground", desc: "Web pages and Python, run as you type", icon: "🧪", w: 1000, h: 640, cls: "app-play", run: playgroundApp },
   videos:   { name: "Gallery",    desc: "Your videos and pictures, in one place", icon: "\uD83D\uDDBC\uFE0F", w: 880, h: 620, cls: "app-vid", run: galleryApp },
   music:    { name: "Media",      desc: "Play video and audio",            icon: "\uD83C\uDFB5", w: 640, h: 560, cls: "app-music", run: mediaApp },
-  trash:    { name: "Trash",      desc: "Put deleted files back",         icon: "\uD83D\uDDD1\uFE0F", w: 660, h: 440, cls: "app-trash", run: trashApp, single: true },
-  paint:    { name: "Paint",      desc: "Draw something and keep it",     icon: "\uD83C\uDFA8", w: 760, h: 560, cls: "app-paint", run: paintApp },
   games:    { name: "Games",      desc: "The games in the repo's games/ folder", icon: "\uD83C\uDFAE", w: 780, h: 580, cls: "app-games", run: gamesApp, single: true },
   settings: { name: "Settings",  desc: "Appearance, desktop, system",  icon: "\u2699\uFE0F", w: 640, h: 580, cls: "app-set",   run: settingsApp, single: true },
   help:     { name: "Help",       desc: "How everything here works",        icon: "\u2753", w: 780, h: 600, cls: "app-help", run: helpApp, single: true },
 };
 
 /* apps that were folded into others - a Dock pin or shortcut still works */
-const APP_ALIAS = { photos: "videos", viewer: "videos", mp3: "music", store: "settings", flash: "files", vault: "files", mines: "games", calc: "files" };
+const APP_ALIAS = { paint: "videos", photos: "videos", viewer: "videos", mp3: "music", store: "settings", flash: "files", vault: "files", mines: "games", calc: "files" };
 function launch(appId, arg, forceNew){
   /* the old names still open the right face or page */
   if (appId === "mp3") State.mediaMode = "mp3";
   if (appId === "store") settingsPage = "apps";
+  /* the Trash is a place in Files now */
+  if (appId === "trash") return openTrash();
   appId = APP_ALIAS[appId] || appId;
   const app = APPS[appId];
   if (!app) return null;
@@ -3787,6 +3847,13 @@ function launch(appId, arg, forceNew){
   w.api = app.run(w, arg) || {};
   focusWin(w);
   Sfx.play("open");
+  return w;
+}
+function openTrash(){
+  let w = null;
+  for (const o of windows.values()) if (o.appId === "files") w = o;
+  if (w) focusWin(w); else w = launch("files");
+  if (w && w.api && w.api.showTrash) w.api.showTrash();
   return w;
 }
 function openInFiles(path){
@@ -4001,7 +4068,6 @@ function appAccepts(appId, paths){
     case "terminal": return true;
     case "browser":  return all(p => isHtml(p) || fileIsText(p));
     case "editor":   return all(fileIsText);
-    case "paint":    return all(fileIsImage);
     case "music":    return all(p => isFile(p) && (isAudio(p) || isVideo(p)));
     case "videos":   return all(p => isFile(p) && (isVideo(p) || fileIsImage(p)));
 
@@ -4032,9 +4098,6 @@ function dropOnApp(appId, paths, w){
     case "editor":
       if (api.open) api.open(paths[0]); else launch("editor", paths[0]);
       each((p, i) => { if (i) launch("editor", p); });
-      break;
-    case "paint":
-      if (api.loadImage) api.loadImage(paths[0]); else launch("paint", paths[0]);
       break;
     case "viewer":
       each(openImage);
@@ -4607,6 +4670,7 @@ function filesApp(win, startPath){
       '<div class="fm-list"><table class="fm-tab">' +
         '<thead><tr><th>Name</th><th class="col-size">Size</th><th class="col-type">Type</th></tr></thead><tbody></tbody>' +
       '</table><div class="fm-drop">Drop files here to import</div></div>' +
+      '<div class="fm-trash"></div>' +
       '<div class="fm-edit">' +
         '<div class="ed-head">' +
           '<span class="ed-name"></span><span class="ed-dot">&bull;</span><span class="ed-sp"></span>' +
@@ -4629,8 +4693,20 @@ function filesApp(win, startPath){
   const edArea = $(".ed-area", B),  edInfo = $(".ed-info", B);
   const edView = $(".ed-view", B),  drop   = $(".fm-drop", B);
   const btn    = a => $('[data-a="' + a + '"]', B);
+  /* the Trash's count in the sidebar, kept up to date */
+  let sideTimer = 0;
+  const drawSideSoon = () => { clearTimeout(sideTimer); sideTimer = setTimeout(() => { if (typeof drawSide === "function") drawSide(); }, 50); };
 
   let cwd = HOME, sel = new Set(), anchor = null, history = [], editing = null, previewing = false;
+  let trashUi = null;
+  function showTrash(){
+    main.classList.add("trashing");
+    crumbs.innerHTML = "";
+    crumbs.appendChild(el("span", "crumb", "\uD83D\uDDD1\uFE0F Trash"));
+    if (!trashUi) trashUi = trashView($(".fm-trash", B), t => win.setTitle(t));
+    else trashUi.refresh();
+    $$(".place", side).forEach(p => p.classList.toggle("on", p.classList.contains("place-trash")));
+  }
 
   const selPaths = () => Array.from(sel).map(n => absPath(n, cwd));
   const only = () => (sel.size === 1 ? Array.from(sel)[0] : null);
@@ -4660,10 +4736,10 @@ function filesApp(win, startPath){
       b.ondrop = e => { e.preventDefault(); b.classList.remove("dropping"); dropOnto(p.path); };
       side.appendChild(b);
     }
-    const t = el("button", "place");
+    const t = el("button", "place place-trash" + (main.classList.contains("trashing") ? " on" : ""));
     t.append(el("span", "g", "\uD83D\uDDD1\uFE0F"), el("span", null, "Trash"));
     if (Trash.items.length) t.append(el("span", "place-n", String(Trash.items.length)));
-    t.onclick = () => launch("trash");
+    t.onclick = showTrash;
     side.appendChild(t);
   }
 
@@ -4671,6 +4747,7 @@ function filesApp(win, startPath){
     const abs = absPath(path, cwd);
     const n = node(abs);
     if (!n || n.type !== "dir") return false;
+    main.classList.remove("trashing");
     if (!noHistory && abs !== cwd) history.push(cwd);
     cwd = abs;
     sel.clear();
@@ -5108,6 +5185,8 @@ function filesApp(win, startPath){
   if (startPath && node(startPath) && node(startPath).type === "file") activate(baseName(startPath));
 
   return {
+    showTrash,
+    refreshTrash(){ if (trashUi && main.classList.contains("trashing")) trashUi.refresh(); drawSideSoon(); },
     /* a file dragged in from another window lands in the folder on show */
     dropHere(paths){
       const wanted = paths.filter(p => dirName(p) !== cwd);
@@ -6548,95 +6627,119 @@ function browserApp(win, startTarget){
   }
 
   /* ---- start page ---- */
+  /* The start page: a greeting, one search bar, a few places to go, your
+     bookmarks as a speed dial, and where you went last. */
   function drawHome(){
     current = null;
     setAddr("");
     setTitle("Seahorse");
     const p = page();
-    const hero = el("div", "hero");
-    hero.innerHTML =
-      '<span class="logo"><svg viewBox="0 0 64 64" width="52" height="52" aria-hidden="true" fill="none">' +
-      theBrand().logo + "</svg></span>";
-    hero.append(el("h1", null, brand("Seahorse")));
-    hero.append(el("p", null, "Search, read Wikipedia and Stack Overflow, browse GitHub, open your own pages."));
-    const form = el("div", "wb-search");
+    p.classList.add("ws-start");
+    const hour = new Date().getHours();
+    const top = el("div", "ws-top");
+    const logo = el("span", "ws-logo");
+    logo.innerHTML = '<svg viewBox="0 0 64 64" width="40" height="40" aria-hidden="true" fill="none">' + theBrand().logo + "</svg>";
+    top.append(logo, el("div", "ws-hello", hour < 5 ? "Up late" : hour < 12 ? "Good morning" : hour < 18 ? "Good afternoon" : "Good evening"),
+               el("div", "ws-clock", new Date().toLocaleTimeString([], { hour: "numeric", minute: "2-digit" })));
+    p.appendChild(top);
+
+    const eng = ENGINES[State.engine] || ENGINES.ddg;
+    const form = el("div", "ws-search");
     const q = el("input");
-    q.placeholder = "Search, or type an address";
-    const gob = el("button", "btn primary", "Go");
-    gob.style.cssText = "height:38px;border-radius:19px;padding:0 20px";
+    q.placeholder = "Search " + eng.name + " or type an address";
+    q.spellcheck = false;
+    q.autocomplete = "off";
+    const gob = el("button", "ws-go", "\u2192");
+    gob.title = "Go";
     const submit = () => { if (q.value.trim()) go(q.value); };
     gob.onclick = submit;
     q.onkeydown = e => { if (e.key === "Enter" || e.key === "Return") submit(); };
-    form.append(q, gob);
-    hero.appendChild(form);
-    p.appendChild(hero);
+    form.append(el("span", "ws-lens", "\uD83D\uDD0D"), q, gob);
+    p.appendChild(form);
 
-    const tiles = (title, list, more) => {
-      const sect = el("div", "wb-sect");
-      const h = el("h2", null, title);
-      if (more){
-        const a = el("button", "wb-more", more[0]);
-        a.onclick = more[1];
-        h.appendChild(a);
-      }
-      sect.appendChild(h);
-      const grid = el("div", "wb-links");
-      for (const [t, label] of list){
-        const b = el("button", "wb-link");
-        b.append(el("span", null, targetIcon(t)), el("span", null, label));
-        b.title = targetLabel(t);
-        b.onclick = e => (e.ctrlKey || e.metaKey) ? newTab(t) : go(t);
-        grid.appendChild(b);
-      }
-      sect.appendChild(grid);
-      p.appendChild(sect);
+    const chips = el("div", "ws-chips");
+    for (const [label, t] of [["Random article", { kind: "wiki", title: "Special:Random" }], ["Hacker News", { kind: "hn" }],
+                              ["Stack Overflow", { kind: "so", q: "javascript" }], ["GitHub", { kind: "gh", q: "browser games" }],
+                              ["On this day", { kind: "search", q: "on this day" }]]){
+      const c = el("button", "ws-chip");
+      c.append(el("span", null, targetIcon(t)), el("span", null, label));
+      c.onclick = () => go(t);
+      chips.appendChild(c);
+    }
+    p.appendChild(chips);
+
+    /* bookmarks, as a speed dial - a letter on a colour of its own */
+    const dial = el("div", "ws-dial");
+    const hue = str => { let h = 0; for (const c of String(str)) h = (h * 31 + c.charCodeAt(0)) % 360; return h; };
+    for (const b of (State.bookmarks || []).slice(0, 11)){
+      const tile = el("button", "ws-tile");
+      const face = el("span", "ws-face", (b.label || "?").trim().charAt(0).toUpperCase() || "?");
+      face.style.background = "hsl(" + hue(b.label) + " 42% 46%)";
+      tile.append(face, el("span", "ws-name", b.label));
+      tile.title = b.label + "\n" + targetLabel(b.t);
+      tile.onclick = e => (e.ctrlKey || e.metaKey) ? newTab(b.t) : go(b.t);
+      tile.onauxclick = e => { if (e.button === 1){ e.preventDefault(); newTab(b.t); } };
+      tile.oncontextmenu = e => bookmarkCtx(e, b);
+      dial.appendChild(tile);
+    }
+    const add = el("button", "ws-tile add");
+    add.append(el("span", "ws-face", "+"), el("span", "ws-name", "Add a site"));
+    add.onclick = async () => {
+      const raw = await osPrompt("Add a site", "Its address. It goes on this page and in your bookmarks.", "");
+      const t = raw && resolve(raw);
+      if (!t) return;
+      const guess = t.kind === "web" ? t.url.replace(/^https?:\/\/(www\.)?/i, "").split("/")[0] : targetLabel(t);
+      const name = await osPrompt("Name it", "", guess);
+      if (name === null || name === undefined || name === false) return;
+      State.bookmarks = (State.bookmarks || []).concat({ id: uid("bm"), label: (String(name).trim() || guess).slice(0, 80), t });
+      saveSettings();
+      refreshBrowserViews();
+      if (!current) drawHome();
     };
-    const bms = State.bookmarks || [];
-    if (bms.length) tiles("Bookmarks", bms.slice(0, 12).map(b => [b.t, b.label]),
-                          ["All bookmarks", () => go({ kind: "bookmarks" })]);
-    const recent = (State.webHistory || []).slice(0, 6);
-    if (recent.length) tiles("Recently visited", recent.map(h => [h.t, h.title || targetLabel(h.t)]),
-                             ["All history", () => go({ kind: "history" })]);
+    dial.appendChild(add);
+    p.appendChild(dial);
+
+    const recent = (State.webHistory || []).slice(0, 5);
+    if (recent.length){
+      const sec = el("div", "ws-recent");
+      const head = el("div", "ws-h");
+      head.appendChild(el("span", null, "Recently visited"));
+      const all = el("button", "wb-more", "All history");
+      all.onclick = () => go({ kind: "history" });
+      head.appendChild(all);
+      sec.appendChild(head);
+      for (const h of recent){
+        const r = el("button", "ws-row");
+        r.append(el("span", "g", targetIcon(h.t)), el("span", "n", h.title || targetLabel(h.t)), el("span", "d", fmtAgo(h.at)));
+        r.title = targetLabel(h.t);
+        r.onclick = () => go(h.t);
+        sec.appendChild(r);
+      }
+      p.appendChild(sec);
+    }
 
     const pages = [];
     walkFS((path, n, name) => { if (n.type === "file" && isHtml(name)) pages.push(path); });
-    const s1 = el("div", "wb-sect");
-    s1.appendChild(el("h2", null, "Pages on this computer"));
     if (pages.length){
-      const grid = el("div", "wb-links");
-      for (const path of pages){
-        const b = el("button", "wb-link");
-        b.append(el("span", null, String.fromCodePoint(0x1F310)), el("span", null, baseName(path)));
-        b.title = tilde(path);
-        b.onclick = () => go("box:" + path);
-        grid.appendChild(b);
+      const sec = el("div", "ws-recent");
+      const head = el("div", "ws-h");
+      head.appendChild(el("span", null, "Your pages"));
+      sec.appendChild(head);
+      const row = el("div", "ws-chips left");
+      for (const path of pages.slice(0, 12)){
+        const c = el("button", "ws-chip");
+        c.append(el("span", null, "\uD83D\uDCC4"), el("span", null, baseName(path)));
+        c.title = tilde(path);
+        c.onclick = () => go("box:" + path);
+        row.appendChild(c);
       }
-      s1.appendChild(grid);
-    } else {
-      s1.appendChild(el("div", "wb-none", "No HTML files yet. Import one in Files, or make one with New File."));
+      sec.appendChild(row);
+      p.appendChild(sec);
     }
-    p.appendChild(s1);
 
-    const s2 = el("div", "wb-sect");
-    s2.appendChild(el("h2", null, "Places to start"));
-    const grid2 = el("div", "wb-links");
-    const picks = [
-      ["Hacker News", () => go({ kind: "hn" })],
-      ["Stack Overflow", () => go({ kind: "so", q: "javascript" })],
-      ["GitHub search", () => go({ kind: "gh", q: "operating system" })],
-      ["Operating system", () => go({ kind: "wiki", title: "Operating_system" })],
-      ["Linux Mint", () => go({ kind: "wiki", title: "Linux_Mint" })],
-      ["Today in history", () => go({ kind: "search", q: "on this day" })],
-      ["Random article", () => go({ kind: "wiki", title: "Special:Random" })]
-    ];
-    for (const [label, fn] of picks){
-      const b = el("button", "wb-link");
-      b.textContent = label;
-      b.onclick = fn;
-      grid2.appendChild(b);
-    }
-    s2.appendChild(grid2);
-    p.appendChild(s2);
+    p.appendChild(el("div", "ws-foot", brand(tideOn()
+      ? "Sites open through Tide, at " + tideHost() + "."
+      : "Search, Wikipedia, Hacker News and GitHub work straight away. Tide, on Settings \u203A Developer, opens every other site.")));
     syncNav();
     setTimeout(() => q.focus(), 30);
   }
@@ -8097,150 +8200,10 @@ function terminalApp(win){
 }
 
 /* ============================================================
-   12b. Paint - draws to a canvas and saves a real PNG into Pictures
+   12e. Trash - real, with restore, shown inside Files
    ============================================================ */
-const PAINT_COLORS = ["#1e1e1e","#ffffff","#c9534b","#e08a3c","#d8bd6a","#8bae5a",
-                      "#3aa99f","#4a90d9","#9268b8","#d0699e","#7a5c46","#8a8a8a"];
-
-function paintApp(win, startPath){
-  const B = win.body;
-  B.innerHTML =
-    '<div class="pt-tb">' +
-      '<div class="pt-swatches"></div>' +
-      '<span class="pt-sep"></span>' +
-      '<div class="seg pt-sizes"></div>' +
-      '<button class="tb-btn" data-p="erase" title="Eraser">Eraser</button>' +
-      '<span class="ed-sp"></span>' +
-      '<button class="tb-btn" data-p="clear">Clear</button>' +
-      '<button class="tb-btn accent" data-p="save">Save to Pictures</button>' +
-    '</div>' +
-    '<div class="pt-stage"><canvas></canvas></div>' +
-    '<div class="pt-status"></div>';
-
-  const cv = $("canvas", B), ctx = cv.getContext("2d");
-  const stage = $(".pt-stage", B), status = $(".pt-status", B);
-  let color = "#1e1e1e", size = 4, erasing = false, drawing = false, last = null, dirty = false;
-
-  function fit(){
-    const w = Math.max(200, stage.clientWidth - 24), h = Math.max(160, stage.clientHeight - 24);
-    if (cv.width === w && cv.height === h) return;
-    const keep = cv.width ? ctx.getImageData(0, 0, cv.width, cv.height) : null;
-    cv.width = w; cv.height = h;
-    ctx.fillStyle = "#ffffff";
-    ctx.fillRect(0, 0, w, h);
-    if (keep) ctx.putImageData(keep, 0, 0);
-    ctx.lineCap = "round";
-    ctx.lineJoin = "round";
-  }
-  const swatches = $(".pt-swatches", B);
-  PAINT_COLORS.forEach(c => {
-    const b = el("button", "pt-sw" + (c === color ? " on" : ""));
-    b.style.background = c;
-    b.onclick = () => {
-      color = c; erasing = false;
-      $$(".pt-sw", B).forEach(o => o.classList.toggle("on", o.style.background === b.style.background));
-      $('[data-p="erase"]', B).classList.remove("on");
-      say();
-    };
-    swatches.appendChild(b);
-  });
-  const sizes = $(".pt-sizes", B);
-  [2, 4, 9, 18].forEach(n => {
-    const b = el("button", n === size ? "on" : null, String(n));
-    b.onclick = () => { size = n; $$("button", sizes).forEach(o => o.classList.toggle("on", o === b)); say(); };
-    sizes.appendChild(b);
-  });
-  const eraseBtn = $('[data-p="erase"]', B);
-  eraseBtn.onclick = () => { erasing = !erasing; eraseBtn.classList.toggle("on", erasing); say(); };
-  $('[data-p="clear"]', B).onclick = async () => {
-    if (dirty && !(await osConfirm("Clear canvas", "Throw away this drawing?", "Clear", true))) return;
-    ctx.fillStyle = "#ffffff";
-    ctx.fillRect(0, 0, cv.width, cv.height);
-    dirty = false;
-    say();
-  };
-  $('[data-p="save"]', B).onclick = async () => {
-    const name = await osPrompt("Save drawing", "File name", "drawing.png");
-    if (!name) return;
-    const fname = /\.png$/i.test(name) ? name : name + ".png";
-    ensureDir(HOME + "/Pictures");
-    let data;
-    try { data = cv.toDataURL("image/png"); }
-    catch (e){
-      return osAlert("Cannot save this one",
-        "The picture on the canvas came from a site that will not let the page read it back, " +
-        "so it cannot be written to a file.");
-    }
-    const saved = addUnique(HOME + "/Pictures", fname, data, "image", "image/png");
-    dirty = false;
-    say();
-    notify("Drawing saved", "Pictures/" + saved, String.fromCodePoint(0x1F3A8));
-    openImage(HOME + "/Pictures/" + saved);
-  };
-
-  const at = e => {
-    const r = cv.getBoundingClientRect();
-    return { x: (e.clientX - r.left) * (cv.width / r.width), y: (e.clientY - r.top) * (cv.height / r.height) };
-  };
-  cv.addEventListener("pointerdown", e => {
-    if (e.button !== 0) return;
-    e.preventDefault();
-    cv.setPointerCapture(e.pointerId);
-    drawing = true;
-    last = at(e);
-    stroke(last, last);
-  });
-  cv.addEventListener("pointermove", e => { if (!drawing) return; const p = at(e); stroke(last, p); last = p; });
-  const stop = () => { if (drawing) say(); drawing = false; last = null; };
-  cv.addEventListener("pointerup", stop);
-  cv.addEventListener("pointercancel", stop);
-  function stroke(a, b){
-    ctx.strokeStyle = erasing ? "#ffffff" : color;
-    ctx.lineWidth = erasing ? size * 2.5 : size;
-    ctx.beginPath();
-    ctx.moveTo(a.x, a.y);
-    ctx.lineTo(b.x, b.y);
-    ctx.stroke();
-    dirty = true;
-  }
-  function say(){
-    status.textContent = (erasing ? "Eraser" : "Brush") + " - " + size + "px - " +
-      cv.width + " x " + cv.height + (dirty ? " - unsaved" : "");
-  }
-  /* an image dropped on Paint is drawn onto the canvas, scaled to fit */
-  function loadImage(p){
-    const n = node(p);
-    if (!n || n.type !== "file") return;
-    const img = new Image();
-    /* a picture linked from the web taints the canvas unless its host
-       allows the read; most of the catalogues do, and if this one does
-       not the drawing simply cannot be saved back out */
-    if (/^https?:/i.test(n.content)) img.crossOrigin = "anonymous";
-    img.onload = () => {
-      fit();
-      ctx.fillStyle = "#ffffff";
-      ctx.fillRect(0, 0, cv.width, cv.height);
-      const s = Math.min(cv.width / img.width, cv.height / img.height, 1);
-      const w = Math.round(img.width * s), h = Math.round(img.height * s);
-      ctx.drawImage(img, Math.round((cv.width - w) / 2), Math.round((cv.height - h) / 2), w, h);
-      dirty = true;
-      say();
-      win.setTitle(baseName(p));
-    };
-    img.onerror = () => osAlert("Cannot open that", baseName(p) + " would not load as a picture.");
-    img.src = n.content;
-  }
-  const ro = new ResizeObserver(() => { fit(); say(); });
-  ro.observe(stage);
-  setTimeout(() => { fit(); say(); if (startPath) loadImage(startPath); }, 0);
-  return { loadImage, onClose(){ ro.disconnect(); return true; } };
-}
-
-/* ============================================================
-   12e. Trash - real, with restore
-   ============================================================ */
-function trashApp(win){
-  const B = win.body;
+/* the Trash, drawn into the place Files keeps for it */
+function trashView(B, setTitle){
   B.innerHTML =
     '<div class="fm-tb">' +
       '<span class="tr-count"></span><span class="ed-sp"></span>' +
@@ -8281,7 +8244,7 @@ function trashApp(win){
     status.textContent = Trash.items.length
       ? Trash.items.length + " item(s) \u00b7 " + fmtBytes(trashBytes()) + " \u00b7 double-click to put something back"
       : "Nothing here. Deleted files land in Trash until you empty it.";
-    win.setTitle("Trash" + (Trash.items.length ? " (" + Trash.items.length + ")" : ""));
+    setTitle("Trash" + (Trash.items.length ? " (" + Trash.items.length + ")" : ""));
   }
   function putBack(id){
     const to = restoreTrash(id);
@@ -10067,7 +10030,7 @@ function galleryApp(win, startPath){
     if (!shown.length){
       grid.appendChild(el("div", "vd-none", all.length
         ? "Nothing here matches that."
-        : "Nothing here yet. Press Add media, draw something in Paint, or put files in the repository's " +
+        : "Nothing here yet. Press Add media, or put files in the repository's " +
           "videos/ and pictures/ folders."));
       return;
     }
@@ -10119,7 +10082,6 @@ function galleryApp(win, startPath){
       showCtx(e.clientX, e.clientY, [
         { icon: "\uD83D\uDDBC\uFE0F", label: "Open", run: () => openAt(i) },
         { icon: "🎬", label: "Movie mode", run: () => { openAt(i); enterFocus(win, "movie"); } },
-        { icon: "\uD83C\uDFA8", label: "Edit in Paint", run: () => launch("paint", p) },
         { icon: "\uD83D\uDCC1", label: "Show in Files", run: () => openInFiles(p) },
         "-",
         { icon: "\uD83D\uDDBC\uFE0F", label: "Set as wallpaper", run: () => setWallpaperFrom(p) }
@@ -10415,7 +10377,6 @@ function galleryApp(win, startPath){
           { label: "Library", run: library, disabled: !watching() },
           { label: "Full screen", run: () => vb("full").click(), disabled: !watching() },
           "-",
-          { label: "Edit in Paint", disabled: at < 0 || !isPic(shown[at]), run: () => launch("paint", shown[at]) },
           { label: "Slideshow", run: () => slideshow(!showing) },
           "-",
           { label: "Set as wallpaper", disabled: at < 0 || isWeb(shown[at]), run: () => setWallpaperFrom(shown[at]) },
@@ -10463,10 +10424,11 @@ const HELP_TOPICS = [
     ["h", "Selecting"],
     ["l", ["Click to select, Ctrl+click to add one, Shift+click for a run of them.",
            "Ctrl+C, Ctrl+X and Ctrl+V copy, cut and paste. Ctrl+A selects everything.",
-           "Delete moves to Trash. Shift+Delete skips the Trash."]],
+           "Delete moves to Trash. Shift+Delete skips the Trash.",
+           "The Trash is in the Files sidebar: put things back, delete them for good, or empty it."]],
     ["h", "Dragging a file somewhere useful"],
     ["p", "Pick a file up in Files and it can be dropped on almost anything that would know what to do with it."],
-    ["l", ["A Dock icon, or a taskbar button - that app opens it. A picture goes to Paint, a song to Media, a page to Seahorse, a video to Videos.",
+    ["l", ["A Dock icon, or a taskbar button - that app opens it. A picture or a video goes to the Gallery, a song to Media, a page to Seahorse.",
            "An open window - the app takes it there and then, without opening another window.",
            "The Trash - it goes in the Trash.",
            "The desktop - you get a shortcut to it.",
@@ -10579,7 +10541,7 @@ const HELP_TOPICS = [
            "Settings › Appearance › Screen saver shows the porthole and a big clock after a few minutes of nothing. It waits while anything is playing, and any key or mouse move brings the desktop back.",
            "Right-click any picture or video in Files to set either from there.",
            "Settings › Desktop chooses the shell, the desktop icons and what sits in the Dock.",
-           "Settings › Desktop › Transparency makes the Dock or taskbar, the menu bar and the windows see-through, with or without a frosted blur. Games, Seahorse, video and the Terminal stay solid so they stay quick.",
+           "Settings › Desktop › Transparency makes the Dock or taskbar, the menu bar and the windows see-through, with or without a frosted blur. Absolute transparency takes the Dock or taskbar away altogether and leaves only its icons. Games, Seahorse, video and the Terminal stay solid so they stay quick.",
            "Drop an .mp4 into the videos folder of the repository and it appears in Videos without any importing."]]
   ]},
   { id: "tide", icon: "\uD83C\uDF0A", title: "Tide", body: [
@@ -10617,9 +10579,8 @@ const HELP_TOPICS = [
     ["l", ["Click one to watch or look at it. The arrows either side move to the next and the last.",
            "Slideshow steps through the pictures on its own, every few seconds.",
            "A video remembers where you stopped and picks up there, with Start over if you would rather not.",
-           "Right-click a picture to edit it in Paint, show it in Files, or make it the wallpaper.",
-           "Add media brings in videos and pictures: from a link, from your files, or from this computer.",
-           "Paint saves into ~/Pictures, so anything you draw turns up here."]]
+           "Right-click a picture to show it in Files or make it the wallpaper.",
+           "Add media brings in videos and pictures: from a link, from your files, or from this computer."]]
   ]},
   { id: "playground", icon: "🧪", title: "Playground", body: [
     ["p", "Write a web page, or Python, and run it right here. A web page runs on the right as you type; untick Live to run only when you press Run or Ctrl+Enter."],
@@ -10707,11 +10668,11 @@ const HELP_TOPICS = [
            "Browsers only give full screen after a click, so until then the bar at the top offers it."]],
     ["h", "Adding your own"],
     ["p", "Add a game, at the top of Games, is the quick way: a game on a website by its address, or an .html file from Files or from this computer. Games run from SEA OS's own site - one that lives elsewhere is brought over and started here - and none of them can open a tab in your real browser: a link a game opens goes to Seahorse instead. Files go into ~/Games, links are kept in your settings, and nothing needs uploading anywhere. Right-click one you added to take it out again."],
-    ["p", "A game can also be one HTML file in the games/ folder of the repository. Name it with the same tags as a Store app, plus one for the colour of its tile:"],
+    ["p", "A game can also be one HTML file in the games/ folder of the repository. It turns up in Games named after its file, and runs as a page of its own with its own storage, so games that save - Eaglercraft's worlds, say - keep what they save."],
+    ["p", "A game added through Add a game into ~/Games is read like a Store app instead, so it can carry these tags:"],
     ["c", "<title>My Game</title>\n<meta name=\"description\" content=\"What you do\">\n<meta name=\"box-icon\" content=\"🎯\">\n<meta name=\"box-color\" content=\"#3a7bd5\">\n<meta name=\"box-size\" content=\"520x600\">"],
-    ["p", "Games get the same window.box as apps, plus two calls for scores. Higher is better:"],
+    ["p", "Those games get the same window.box as apps, plus two calls for scores. Higher is better:"],
     ["c", "const best = await box.getHighScore()\nconst { best, isNew } = await box.submitScore(score)"],
-    ["p", "Off GitHub Pages, list the file in games/manifest.js as well."],
     ["h", "Games that live somewhere else"],
     ["p", "A Unity build, an emulator, or any page with a game on it can go in Games without copying anything. Add a line to games/manifest.js with its name and address, and it opens in a window just as it is:"],
     ["c", "{ name: \"My Game\", url: \"https://example.com/game/\", icon: \"\uD83C\uDFAE\",\n  color: \"#3a7bd5\", desc: \"What you do\", size: \"960x640\" }"],
@@ -11989,14 +11950,42 @@ async function gameExtras(){
   }
   return out;
 }
+/* A game in games/ is a page of its own: it runs with its own storage, the
+   way a game that saves needs to, and is named after its file - never after
+   its <title>, which some games dress up as something else entirely. The page
+   is not fetched just to be listed, so a 20 MB game costs nothing until it
+   is played. A few games are known by name and get their proper details. */
+const KNOWN_GAMES = {
+  eaglercraft: { name: "Eaglercraft", icon: "\u26CF\uFE0F", color: "#5b8731",
+                 desc: "Minecraft 1.5.2 in the browser - worlds are kept in this browser", w: 1100, h: 700 }
+};
+async function discoverGameFiles(skip){
+  let paths = null;
+  const names = await repoList("games");
+  if (names) paths = names.filter(isHtml).map(n => "games/" + n);
+  if (!paths) paths = (await loadFolderManifest("games", "BOXOS_GAMES"))
+    .filter(p => typeof p === "string" && isHtml(p)).map(p => p.replace(/^\.?\//, ""));
+  return paths.filter(p => !(skip && skip.has(p))).map(p => {
+    const file = baseName(p).replace(/\.html?$/i, "");
+    const slug = file.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "") || "game";
+    const known = KNOWN_GAMES[slug] || {};
+    return {
+      id: "game:" + slug, kind: "page", url: repoBase() + p,
+      name: known.name || file.replace(/[-_]+/g, " ").replace(/\b\w/g, c => c.toUpperCase()).slice(0, 40),
+      desc: known.desc || "A game in the games folder",
+      icon: known.icon || "\uD83C\uDFAE", color: known.color || "",
+      w: known.w || 960, h: known.h || 640
+    };
+  });
+}
 async function discoverGames(){
   /* A game named in games/manifest.js comes with its own details, and wins
      over the same file found by looking in the folder - so a big page game
      like Eaglercraft can be listed as a page, with its own storage, and is
      never downloaded just to read its title. */
   const extras = await gameExtras();
-  const named = new Set(extras.filter(g => g.kind === "page" && !/^[a-z]+:/i.test(g.url)).map(g => g.url.replace(/^\.\//, "")));
-  const found = await discoverHtmlFolder("games", "BOXOS_GAMES", "game", named);
+  const named = new Set(extras.map(g => g.url.replace(repoBase(), "").replace(/^\.\//, "")));
+  const found = await discoverGameFiles(named);
   /* your own first, then the built-in links, then what the manifest names, then whatever else is in games/ */
   const all = [];
   for (const g of myGames().concat(LINKED_GAMES, extras, found)) if (g && !all.some(x => x.id === g.id)) all.push(g);
@@ -12769,6 +12758,7 @@ function applyTransparency(){
   body.classList.toggle("tp-bar", bar > 0);
   body.classList.toggle("tp-win", win > 0);
   body.classList.toggle("tp-blur", State.tpBlur !== false && (panel > 0 || bar > 0 || win > 0));
+  body.classList.toggle("tp-abs", !!State.tpAbs);
 }
 function applyTheme(){
   document.documentElement.dataset.theme = State.theme;
@@ -12979,13 +12969,6 @@ function drawDock(){
     dock.appendChild(el("div", "dock-sep"));
     extra.forEach(id => add(id, false));
   }
-  dock.appendChild(el("div", "dock-sep"));
-  const t = el("button", "dock-app");
-  setAppIcon(t, "\uD83D\uDDD1\uFE0F");
-  t.title = "Trash" + (Trash.items.length ? " (" + Trash.items.length + ")" : "");
-  makeDropTarget(t, () => "trash", () => null);
-  t.onclick = () => launch("trash");
-  dock.appendChild(t);
 
   brandTree(dock);
   if (dockIntroPending) runDockIntro();
@@ -13386,7 +13369,10 @@ function settingsApp(win){
       r.append(inp, val);
       tp.appendChild(r);
     };
-    clearRow(State.shell === "macos" ? "Dock" : "Taskbar", "tpPanel");
+    tp.appendChild(toggle("Absolute transparency",
+      "The " + (State.shell === "macos" ? "Dock" : "taskbar") + " itself disappears and only its icons are left, standing on the wallpaper.",
+      !!State.tpAbs, v => { State.tpAbs = v; saveSettings(); applyTransparency(); render(); }));
+    if (!State.tpAbs) clearRow(State.shell === "macos" ? "Dock" : "Taskbar", "tpPanel");
     if (State.shell === "macos" || State.shell === "hypr") clearRow("Menu bar", "tpBar");
     clearRow("Windows", "tpWin");
     tp.appendChild(toggle("Blur what shows through",
@@ -13666,7 +13652,7 @@ function settingsApp(win){
       gm.appendChild(el("div", "store-note",
         "SEA OS opens straight into the MP3 Player, filling the screen. Close it for the desktop."));
     } else {
-      gm.appendChild(el("div", "store-note", "Files opens on startup, the way it always has."));
+      gm.appendChild(el("div", "store-note", "The desktop, with nothing open on it."));
     }
 
     /* --- the Store --- */
@@ -14485,7 +14471,7 @@ async function firstRun(){
         if (w && !w.max) toggleMax(w);
         return;
       }
-      launch("files");
+      /* the desktop, with nothing open on it */
       /* nothing stored for us yet means this is a fresh machine */
       if (!restored && !Store.on){
         setTimeout(firstRun, 900);

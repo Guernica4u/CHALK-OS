@@ -72,7 +72,7 @@
     timer = setTimeout(save, 600);
   }
   async function save() {
-    if (!window.box) { status.textContent = "Open this inside BOX OS to keep your notes."; return; }
+    if (!window.box) { status.textContent = "Open this inside SEA OS to keep your notes."; return; }
     try {
       const where = await box.saveFile("notes.json", notes);
       status.textContent = "Saved to " + where;
@@ -88,7 +88,7 @@
   };
 
   (async () => {
-    if (!window.box) { status.textContent = "Open this inside BOX OS to keep your notes."; draw(); return; }
+    if (!window.box) { status.textContent = "Open this inside SEA OS to keep your notes."; draw(); return; }
     try {
       const saved = await box.readFile("notes.json");
       notes = saved ? JSON.parse(saved) : [];

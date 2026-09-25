@@ -174,8 +174,9 @@ and the repository's workings. A narrow Settings window keeps the buttons as
 icons.
 
 **Desktop → Transparency** makes the Dock or taskbar, the menu bar and the
-windows see-through, frosted or clear. Games, ChalkBrowser, video and the
-Terminal stay solid so games stay quick.
+windows see-through, frosted or clear. **Absolute transparency** takes the Dock
+or taskbar away altogether and leaves only its icons. Games, ChalkBrowser,
+video and the Terminal stay solid so games stay quick.
 
 **Developer → Performance meter** puts a strip in the corner: frames a second,
 the slowest frame, how long keys and clicks wait, and how busy the page is. It
@@ -203,6 +204,10 @@ the cost of the 5 MB limit. Switching moves what you have, and lets go of the
 old copy only once the new one is written.
 
 ## Seahorse, the browser
+
+Its start page greets you with one search bar, a few places to go, your
+bookmarks as a speed dial (**Add a site** puts one there) and where you went
+last.
 
 Out of the box it reads Wikipedia, Stack Overflow, GitHub READMEs, Wiktionary,
 Hacker News and DuckDuckGo answers — directly, with no middleman.
