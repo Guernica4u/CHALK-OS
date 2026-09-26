@@ -7592,6 +7592,7 @@ function terminalApp(win){
 "  play <song>           a file, or words     web <url|words>   in Seahorse\n" +
 "  wget <url> [-O name]  download into ~/Downloads\n" +
 "  grab <url> [--audio]  save a YouTube (and more) video or song into ~/Videos or ~/Music\n" +
+"  spotify <link>        a Spotify playlist as YouTube links, in Media (through Tide)\n" +
 "  bookmarks [add <url> [name] | open <n> | rm <n>]\n" +
 "  tide [status | test | speed | version 1|2] unbox <words>     music from the open web\n" +
 "  launch <app>          start an app         apps              list them\n" +
@@ -8153,6 +8154,16 @@ function terminalApp(win){
     isAudio(baseName(hit)) ? openAudio(hit) : openImage(hit);
     line([["playing ", "t-dim"], [baseName(hit), "t-ok"]]);
   };
+  CMDS.spotify = async function(a){
+    const url = a.find(x => /^https?:\/\//i.test(x));
+    if (!url || !spotifyTarget(url)) return err("spotify: give a Spotify playlist, album or song link - spotify <link>");
+    if (!tideOn()) return err("spotify: this goes through Tide - set it up in Settings \u203A Developer \u203A Tide");
+    const r = await spotifyToYouTube(url, step => line([[step, "t-dim"]]));
+    if (!r) return err("spotify: nothing made - the notification says why");
+    line([[r.list ? "made " : "found ", "t-dim"], [r.list ? r.list.name : "it", "t-ok"],
+          [" - " + r.found + " of " + r.total + " songs from YouTube, in Media", "t-dim"]]);
+    for (const m of r.missed) line([["  not found: " + m, "t-dim"]]);
+  };
   CMDS.grab = async function(a){
     const audio = a.some(x => x === "--audio" || x === "-a");
     const url = a.find(x => /^https?:\/\//i.test(x));
@@ -8671,8 +8682,10 @@ async function youTubeInfo(url){
     return { title: j.title || "", author: j.author_name || "", thumb: j.thumbnail_url || "" };
   } catch (e){ return null; }
 }
+/* enough for a few whole playlists; an entry is a few hundred bytes */
+const WEB_MEDIA_MAX = 1000;
 function rememberWebMedia(item){
-  State.webMedia = [item].concat((State.webMedia || []).filter(x => x.url !== item.url)).slice(0, 60);
+  State.webMedia = [item].concat((State.webMedia || []).filter(x => x.url !== item.url)).slice(0, WEB_MEDIA_MAX);
   saveSettings();
 }
 
@@ -9053,6 +9066,7 @@ function showAddMedia(btn, ways){
     { icon: "\uD83D\uDD17", label: "Paste links\u2026", run: ways.link },
     { icon: "📁", label: "From my files…", run: ways.files },
     { icon: "📥", label: "Import from this computer…", run: ways.computer },
+    ...(ways.noAudio ? [] : [{ icon: "\uD83C\uDFA7", label: "Spotify playlist \u2192 YouTube\u2026", run: askSpotifyToYouTube }]),
     "-",
     ...(ways.noAudio ? [] : [{ icon: "⬇️", label: "Save a song from a link…", run: () => askSaveLink(true) }]),
     { icon: "⬇️", label: "Save a video from a link…", run: () => askSaveLink(false) }
@@ -9145,7 +9159,7 @@ async function saveFromLink(url, audio){
     refreshMediaViews();
     osAlert("Spotify cannot be saved",
       "Spotify locks its songs so only its own player can play them, so there is no file for anything to save. " +
-      "The link is in Media instead, where it plays - whole songs when you are signed in to Spotify in this browser.");
+      "The link is in Media instead. Right-click it there and choose Make it a YouTube playlist for whole songs without a Spotify account.");
     return null;
   }
   const api = saverUrl();
@@ -9712,6 +9726,178 @@ function addToLinkList(l, url){
   refreshMediaViews();
 }
 
+/* ---- a Spotify playlist, turned into YouTube links ----
+   Spotify's songs only play in Spotify's own player, and only whole when you
+   are signed in. So the playlist is read - each song's name, artist and
+   length, from the page Spotify hands out for embedding - and each song is
+   looked up on YouTube, taking the upload that best matches all three. What
+   comes out is a Media playlist of YouTube links: whole songs, streamed,
+   nothing downloaded. Spotify and YouTube both refuse to be read by other
+   pages, so both questions go through Tide. */
+const SPOTIFY_LINK = /open\.spotify\.com\/(?:intl-[\w-]+\/)?(?:embed\/)?(playlist|album|track)\/([A-Za-z0-9]{10,})/i;
+function spotifyTarget(url){
+  const m = SPOTIFY_LINK.exec(String(url || ""));
+  return m ? { type: m[1].toLowerCase(), id: m[2] } : null;
+}
+/* up to 100 songs: as many as Spotify puts on that page */
+async function spotifyTracks(url){
+  const t = spotifyTarget(url);
+  if (!t) throw new Error("That is not a link to a Spotify playlist, album or song.");
+  const res = await tideFetch("https://open.spotify.com/embed/" + t.type + "/" + t.id,
+                              { headers: { "Accept-Language": "en", "User-Agent": navigator.userAgent } });
+  if (!res.ok) throw new Error("Spotify answered " + res.status + ". A private playlist cannot be read.");
+  const html = await res.text();
+  const m = /<script id="__NEXT_DATA__" type="application\/json">([\s\S]*?)<\/script>/.exec(html);
+  let e = null;
+  try { e = JSON.parse(m[1]).props.pageProps.state.data.entity; } catch (x){}
+  if (!e) throw new Error("Spotify's page did not have the songs in it. A private playlist cannot be read.");
+  const tracks = e.type === "track"
+    ? [{ title: e.name || e.title || "", artist: (e.artists || []).map(a => a.name).join(", "), ms: e.duration || 0 }]
+    : (e.trackList || []).map(x => ({ title: x.title || "", artist: String(x.subtitle || "").replace(/\u00a0/g, " "), ms: x.duration || 0 }));
+  return { name: e.name || e.title || "Spotify", type: e.type, tracks: tracks.filter(x => x.title) };
+}
+const runsText = t => !t ? "" : t.simpleText || (t.runs || []).map(r => r.text).join("");
+function ytClock(txt){
+  const p = String(txt || "").split(":").map(Number);
+  return !txt || p.some(isNaN) ? 0 : p.reduce((a, b) => a * 60 + b, 0);
+}
+/* YouTube's own search, the one its website asks, videos only */
+async function youTubeSearch(q){
+  const res = await tideFetch("https://www.youtube.com/youtubei/v1/search?prettyPrint=false", {
+    method: "POST",
+    headers: { "Content-Type": "application/json", "Accept-Language": "en" },
+    body: JSON.stringify({ context: { client: { clientName: "WEB", clientVersion: "2.20250101.00.00", hl: "en", gl: "US" } },
+                           query: q, params: "EgIQAQ%3D%3D" })
+  });
+  if (!res.ok) throw new Error("YouTube answered " + res.status);
+  const j = await res.json();
+  const out = [];
+  const walk = o => {
+    if (out.length >= 10 || !o || typeof o !== "object") return;
+    if (Array.isArray(o)){ for (const v of o) walk(v); return; }
+    const v = o.videoRenderer;
+    if (v && v.videoId) out.push({ id: v.videoId, title: runsText(v.title), author: runsText(v.ownerText || v.longBylineText),
+                                   secs: ytClock(v.lengthText && v.lengthText.simpleText) });
+    else for (const k in o) walk(o[k]);
+  };
+  walk(j);
+  return out;
+}
+/* how well an upload matches a song: its name, its artist, its length, and
+   not being a cover, a remix or a sped-up version the song is not */
+const plainWords = x => String(x || "").toLowerCase().normalize("NFKD").replace(/[\u0300-\u036f]/g, "")
+  .replace(/[^a-z0-9 ]+/g, " ").replace(/\s+/g, " ").trim();
+const NOT_THE_SONG = ["live", "cover", "remix", "sped up", "slowed", "karaoke", "reaction", "instrumental", "nightcore",
+                      "8d", "reverb", "1 hour", "loop", "acoustic", "tutorial", "lesson", "bass boosted"];
+function ytScore(v, t, rank){
+  const vt = plainWords(v.title), va = plainWords(v.author);
+  const tt = plainWords(t.title.replace(/\s*[-(\[].*$/, "")) || plainWords(t.title);
+  const ar = plainWords(String(t.artist).split(",")[0]);
+  let s = 0;
+  if (tt && vt.includes(tt)) s += 4;
+  else {
+    const w = tt.split(" ").filter(Boolean);
+    s += 3 * (w.filter(x => vt.includes(x)).length / Math.max(w.length, 1));
+  }
+  if (ar && (vt.includes(ar) || va.includes(ar))) s += 3;
+  if (/ topic$/.test(va)) s += 2;                       /* the label's own upload of the record */
+  if (v.secs && t.ms){
+    const d = Math.abs(v.secs - t.ms / 1000);
+    s += d < 5 ? 3 : d < 15 ? 2 : d < 40 ? 0 : -3;
+  }
+  const whole = plainWords(t.title);
+  for (const bad of NOT_THE_SONG) if (vt.includes(bad) && !whole.includes(bad)) s -= 3;
+  return s - rank * 0.3;
+}
+async function findOnYouTube(t){
+  const hits = await youTubeSearch((String(t.artist).split(",")[0] + " " + t.title).trim());
+  let best = null, top = -Infinity;
+  hits.forEach((v, i) => { const sc = ytScore(v, t, i); if (sc > top){ top = sc; best = v; } });
+  if (!best || top < 3) return null;
+  return { kind: "yt", url: "https://www.youtube.com/watch?v=" + best.id, id: best.id, list: undefined,
+           title: t.title + (t.artist ? " - " + t.artist : ""), author: best.author || "YouTube",
+           thumb: "https://i.ytimg.com/vi/" + best.id + "/hqdefault.jpg" };
+}
+async function tideNeeded(what){
+  if (!(await osConfirm("This needs Tide", what + " Spotify and YouTube do not let other pages read them, so the " +
+    "question goes through Tide. It is set up in Settings \u203A Developer \u203A Tide.", "Open Tide's settings"))) return;
+  if (!State.devMode){ State.devMode = true; saveSettings(); }
+  settingsPage = "dev";
+  const w = launch("settings");
+  if (w && w.api && w.api.refresh) w.api.refresh();
+  refreshSettings();
+}
+/* The whole thing. say() hears each step, for the Terminal. Returns the
+   playlist made, or null. */
+async function spotifyToYouTube(url, say){
+  say = say || (() => {});
+  if (!tideOn()){ tideNeeded("Turning a Spotify playlist into YouTube links reads both sites."); return null; }
+  say("Reading the playlist from Spotify\u2026");
+  notify("Reading the playlist", "From Spotify, through Tide\u2026", "\uD83C\uDFA7");
+  let sp;
+  try { sp = await spotifyTracks(url); }
+  catch (e){ osAlert("Could not read that", (e && e.message) || String(e)); return null; }
+  const n = sp.tracks.length;
+  if (!n){ osAlert("Nothing to find", "That " + sp.type + " has no songs in it."); return null; }
+
+  /* a playlist of its own, named after the Spotify one, that fills in as songs are found */
+  let l = null;
+  if (sp.type !== "track"){
+    let name = sp.name.slice(0, 40), k = 2;
+    while ((State.linkLists || []).some(x => x.name === name)) name = sp.name.slice(0, 36) + " " + k++;
+    l = { id: uid("pl"), name, urls: [] };
+    State.linkLists = (State.linkLists || []).concat(l);
+    State.mediaView = l.id;
+  } else State.mediaView = "links";
+  State.mediaMode = "list";
+  mediaWin("music");
+  say("Finding " + n + (n === 1 ? " song" : " songs") + " on YouTube\u2026");
+  if (n > 1) notify("Finding " + n + " songs on YouTube", sp.name + " fills in, in Media, as they are found.", "\uD83D\uDCFA");
+
+  const found = new Array(n), missed = [];
+  let next = 0, done = 0;
+  const flush = () => {
+    const items = found.filter(Boolean);
+    const urls = new Set(items.map(x => x.url));
+    State.webMedia = items.concat((State.webMedia || []).filter(x => !urls.has(x.url))).slice(0, WEB_MEDIA_MAX);
+    if (l) l.urls = items.map(x => x.url);
+    refreshMediaViews();
+  };
+  const worker = async () => {
+    while (next < n){
+      const i = next++, t = sp.tracks[i];
+      let hit = null;
+      try { hit = await findOnYouTube(t); } catch (e){}
+      if (hit) found[i] = hit; else missed.push(t.title + (t.artist ? " - " + t.artist : ""));
+      done++;
+      if (done % 5 === 0 || done === n){ say("  " + done + " of " + n); flush(); }
+    }
+  };
+  await Promise.all([worker(), worker(), worker(), worker()]);
+  flush();
+  const got = found.filter(Boolean).length;
+  if (!got){
+    if (l){ State.linkLists = State.linkLists.filter(x => x !== l); State.mediaView = "links"; refreshMediaViews(); }
+    notify("Nothing found", "YouTube did not answer, or had none of those songs.", "\u26A0\uFE0F");
+    return null;
+  }
+  notify(l ? "Playlist ready" : "Found it",
+    (l ? l.name + ": " + got + " of " + n + " songs, from YouTube." : found.find(Boolean).title + " is in Media.") +
+    (missed.length ? " Not found: " + missed.slice(0, 3).join("; ") + (missed.length > 3 ? " and " + (missed.length - 3) + " more." : ".") : ""),
+    "\uD83D\uDCFA");
+  return { list: l, found: got, total: n, missed };
+}
+async function askSpotifyToYouTube(){
+  if (!tideOn()) return tideNeeded("Turning a Spotify playlist into YouTube links reads both sites.");
+  const raw = await osPrompt("Spotify playlist \u2192 YouTube",
+    "Paste a Spotify playlist, album or song link. Each song is found on YouTube, and they become a playlist in Media " +
+    "that plays whole songs, with no Spotify account. Up to 100 songs.", "");
+  if (!raw) return;
+  const u = linksIn(raw)[0];
+  if (!u || !spotifyTarget(u)) return osAlert("Not a Spotify link", "Paste a link to a Spotify playlist, album or song - one starting https://open.spotify.com/.");
+  return spotifyToYouTube(u);
+}
+
 /* ============================================================
    The visualizer: the music, drawn - bars behind what is playing in
    Media, and a ring round the turning cover in the MP3 Player.
@@ -10007,6 +10193,8 @@ function musicApp(win, startPath, only){
           for (const l of others.slice(0, 8))
             items.push({ icon: "\u2795", label: "Add to " + l.name, run: () => addToLinkList(l, t.url) });
           items.push({ icon: "\u2728", label: "New playlist with this\u2026", run: () => newLinkList([t.url]) });
+          if (spotifyTarget(t.url))
+            items.push("-", { icon: "\uD83D\uDCFA", label: "Make it a YouTube playlist", run: () => spotifyToYouTube(t.url) });
           if ((t.kind === "yt" || t.kind === "embed") && !/(^|\.)spotify\./i.test(hostOfUrl(t.url)))
             items.push("-", { icon: "\u2B07\uFE0F", label: "Save the song into SEA OS", run: () => saveFromLink(t.url, true) },
                        { icon: "\u2B07\uFE0F", label: "Save the video into SEA OS", disabled: !!t.audio, run: () => saveFromLink(t.url, false) });
@@ -10975,6 +11163,15 @@ const HELP_TOPICS = [
     ["h", "Downloads"],
     ["p", "Click a link to a file and it is saved into Downloads inside SEA OS, never onto the real computer. File › Show Downloads opens the folder."]
   ]},
+  { id: "spotyt", icon: "\uD83C\uDFA7", title: "Spotify playlists as YouTube", body: [
+    ["p", "A Spotify playlist only plays thirty-second tastes unless you are signed in to Spotify. Spotify playlist \u2192 YouTube turns one into whole songs: each song is found on YouTube and the lot become a playlist in Media."],
+    ["l", ["Add media \u203A Spotify playlist \u2192 YouTube, then paste a playlist, album or song link.",
+           "Or right-click a Spotify link already in Media and choose Make it a YouTube playlist.",
+           "Or spotify <link> in the Terminal.",
+           "The playlist is named after the Spotify one and fills in while you watch. It takes the YouTube upload that best matches each song's name, artist and length, and passes over covers, remixes and sped-up versions.",
+           "Songs stream from YouTube - nothing is downloaded. Up to 100 songs, which is as many as Spotify shows other sites; a private playlist cannot be read.",
+           "Spotify and YouTube do not let other pages read them, so this needs Tide, in Settings \u203A Developer."]]
+  ]},
   { id: "webapps", icon: "\uD83C\uDF10", title: "Websites as apps", body: [
     ["p", "A site you keep going back to can be an app of its own, with a place in the menu and the Dock and a window that shows just the site - no tabs, no bookmarks bar."],
     ["l", ["In Seahorse, the \u2630 menu has Make this site an app for the page you are on, and Put this site on the desktop for a plain shortcut.",
@@ -10993,7 +11190,7 @@ const HELP_TOPICS = [
            "Songs land in ~/Music as MP3s and videos in ~/Videos, inside SEA OS. Nothing is saved onto the real computer. Anything over 100 MB is refused.",
            "If the network blocks the server and Tide is set up, the request goes through Tide instead."]],
     ["h", "Spotify"],
-    ["p", "Spotify cannot be saved: its songs are locked so only its own player can play them. A Spotify link goes into Media instead, where it plays."]
+    ["p", "Spotify cannot be saved: its songs are locked so only its own player can play them. A Spotify link goes into Media instead, where it plays - and Spotify playlist \u2192 YouTube turns it into whole songs."]
   ]},
   { id: "unbox", icon: "📦", title: "unbox: music, video, pictures", body: [
     ["p", "unbox is a terminal command that brings freely licensed media in from the open web. Openverse (which covers Jamendo, Freesound and ccMixter), Wikimedia Commons and the Internet Archive."],

@@ -411,6 +411,14 @@ is what CHALK OS reads.
 Spotify songs cannot be saved as files: Spotify locks them so only its own
 player can play them. Saving a Spotify link puts it in Media instead.
 
+**Spotify playlist → YouTube**, in Media's **Add media** menu (or right-click a
+Spotify link in Media, or `spotify <link>` in the Terminal), turns a playlist,
+album or song into whole songs without a Spotify account: each song is found on
+YouTube, picking the upload that best matches its name, artist and length, and
+they become a Media playlist named after the Spotify one. Nothing is
+downloaded. Up to 100 songs (all Spotify shows other sites), and it needs Tide,
+since neither Spotify nor YouTube lets other pages read them.
+
 ## Screen saver
 
 After ten minutes with no mouse or keyboard, CHALK OS shows the boot porthole and
