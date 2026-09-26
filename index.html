@@ -18,6 +18,14 @@
 :root{--seahorse:#2b7fd4;--chalkweb:#2f7d62}
 [data-theme="dark"]{--seahorse:#4d9ee8;--chalkweb:#6cc39e}
 .app-svg.chalkweb{color:var(--chalkweb)}
+/* the drawn icons: a glyph on a tile of its own colour */
+.app-svg.tile{overflow:visible}
+.dock-app .app-svg.tile{width:40px;height:40px;filter:drop-shadow(0 2px 3px rgba(0,0,0,.2))}
+.mapp .g .app-svg.tile{width:24px;height:24px}
+.win-title .g .app-svg.tile,.task .g .app-svg.tile{width:16px;height:16px}
+.dicon .g .app-svg{margin:0 auto}
+.dicon .g .app-svg.tile{width:1.2em;height:1.2em;filter:drop-shadow(0 2px 4px rgba(0,0,0,.28))}
+.shortrow .g .app-svg,.wa-row .g .app-svg{width:20px;height:20px;margin:0 auto}
 :root{
   --accent:#8bae5a;
   --accent-fg:#ffffff;
@@ -477,6 +485,24 @@ body.anim .win.closing{animation:winOut .15s ease-in forwards}
 /* ---------- games: when there are none ---------- */
 .gm-empty{line-height:1.7;max-width:460px;margin:40px auto;text-align:center}
 .gm-link{border:0;background:none;padding:0;color:var(--accent);font:inherit;cursor:pointer;text-decoration:underline;text-underline-offset:3px;word-break:break-all}
+
+/* ---------- a website as an app: just the site, none of the browser ---------- */
+.wb-appmode .wb-tabs,.wb-appmode .wb-bmbar,.wb-appmode [data-b="star"],.wb-appmode [data-b="more"]{display:none !important}
+.wb-tb .wb-out{display:none}
+.wb-appmode .wb-tb .wb-out{display:inline-block}
+.wa-list{display:flex;flex-direction:column;gap:4px;margin:4px 0 10px}
+.wa-row{display:flex;align-items:center;gap:10px;padding:6px 8px;border-radius:8px;background:var(--surface-2)}
+.wa-row .g{flex:0 0 22px;font-size:17px;text-align:center}
+.wa-row .n{flex:1;min-width:0;display:flex;flex-direction:column}
+.wa-row .n small{color:var(--dim);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+
+/* ---------- Tide's speed test ---------- */
+.tsp{margin:4px 0 8px;overflow-x:auto}
+.tsp table{width:100%;border-collapse:collapse;font-size:12.5px;font-variant-numeric:tabular-nums}
+.tsp th{font-weight:600;text-align:left;color:var(--dim);font-size:11px;padding:4px 6px;border-bottom:1px solid var(--border-soft);white-space:nowrap}
+.tsp td{padding:5px 6px;border-bottom:1px solid var(--border-soft);white-space:nowrap}
+.tsp tr.now td{font-weight:600}
+.tsp .big{color:var(--accent)}
 
 /* ---------- files ---------- */
 .fm-trash{display:none;flex:1;min-width:0;flex-direction:column;background:var(--surface)}
@@ -2561,6 +2587,10 @@ const State = {
   termFont: 13,        /* and its text size */
   sysRev: 0,           /* which version of readme.txt and notes.md the home folder has */
   tideVersion: 2,      /* which Scramjet Tide runs on: 2 (the alpha, now the default) or 1 (1.1.0) */
+  tideSpeeds: [],      /* the last few Tide speed tests, newest first */
+  iconStyle: "drawn",  /* app icons: "drawn" tiles, or "emoji" as they were */
+  webApps: [],         /* websites made into apps: { id, name, url } */
+  saverHost: "",       /* the cobalt server that saves from YouTube and the like */
   gameApp: "",
   widgetPos: {},
   weatherPlace: null,
@@ -2579,7 +2609,7 @@ let BOOT_TIME = Date.now();
    ============================================================ */
 const K = { on: "boxos.on", fs: "boxos.fs", set: "boxos.settings", sc: "boxos.shortcuts", trash: "boxos.trash" };
 const SETTING_KEYS = ["theme","accent","wallColor","customWall","wallFit","animations",
-                      "wobbly","panelPos","clock24","iconSize","engine","wallVideo","bootMedia","shell","dock","bookmarks","sounds","installed","widgets","widgetPos","weatherPlace","tempUnit","highScores","subthemes","menuFolded","helpDockPhase","webMedia","startMode","gameApp","screensaver","resume","brand","devMode","tideHost","useRepo","repo","myGames","mp3List","mp3Shuffle","mp3Repeat","mediaMode","mediaView","linkLists","storage","perfHud","visualizer","bmBar","keepHistory","webHistory","webRestore","webTabs","tideVersion","termTheme","termFont","sysRev","tpPanel","tpBar","tpWin","tpBlur","tpAbs"];
+                      "wobbly","panelPos","clock24","iconSize","engine","wallVideo","bootMedia","shell","dock","bookmarks","sounds","installed","widgets","widgetPos","weatherPlace","tempUnit","highScores","subthemes","menuFolded","helpDockPhase","webMedia","startMode","gameApp","screensaver","resume","brand","devMode","tideHost","useRepo","repo","myGames","mp3List","mp3Shuffle","mp3Repeat","mediaMode","mediaView","linkLists","storage","perfHud","visualizer","bmBar","keepHistory","webHistory","webRestore","webTabs","tideVersion","termTheme","termFont","sysRev","tpPanel","tpBar","tpWin","tpBlur","tpAbs","tideSpeeds","iconStyle","webApps","saverHost"];
 /* Only a soft gauge for the usage bar. The real localStorage ceiling is not
    knowable from script and varies a lot - roughly 5 MB on a file:// page, but
    far more on some origins - so nothing here claims a hard number. */
@@ -3461,7 +3491,7 @@ function createWindow(opts){
   const bMax = el("button", "wb", "\u2610"); bMax.title = "Maximize";
   const bCls = el("button", "wb close", "\u2715"); bCls.title = "Close";
   const titleIcon = el("span", "g");
-  setAppIcon(titleIcon, opts.icon || "▫️");
+  setAppIcon(titleIcon, opts.icon || "▫️", opts.appId);
   bar.append(titleIcon, tt, bMin, bMax, bCls);
 
   const body = el("div", "win-body");
@@ -3470,7 +3500,7 @@ function createWindow(opts){
 
   const task = el("button", "task");
   const taskIcon = el("span", "g");
-  setAppIcon(taskIcon, opts.icon || "▫️");
+  setAppIcon(taskIcon, opts.icon || "▫️", opts.appId);
   task.append(taskIcon, el("span", "t", opts.title || "Window"));
   task.title = opts.title || "Window";
   $("#tasks").appendChild(task);
@@ -3479,6 +3509,7 @@ function createWindow(opts){
     id, el: root, body, task, appId: opts.appId, api: {},
     min: false, max: false, prev: null, wob: null,
     setTitle(t){ t = brand(t); tt.textContent = t; task.querySelector(".t").textContent = t; task.title = t; },
+    redrawIcon(){ setAppIcon(titleIcon, opts.icon || "▫️", w.appId); setAppIcon(taskIcon, opts.icon || "▫️", w.appId); },
     close(){ closeWin(w); }
   };
   windows.set(id, w);
@@ -3815,6 +3846,85 @@ const SEAHORSE_SVG =
   'stroke-width="2.6" stroke-linecap="round"/>' +
   '</svg>';
 
+/* ---- the drawn app icons ----
+   Each app gets a flat tile of its own colour with a white glyph on it, in
+   one style, so the Dock and the menu look like a set. Settings > Desktop >
+   App icons turns them back into the emoji every app started with. */
+function iconTile(bg, glyph){
+  return '<svg class="app-svg tile" viewBox="0 0 32 32" aria-hidden="true">' +
+    '<rect x="1" y="1" width="30" height="30" rx="8.5" fill="' + bg + '"/>' +
+    '<g fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">' + glyph + '</g></svg>';
+}
+const DRAWN = {
+  files: ["#3b82c4", b => '<path d="M6.5 11.2a2 2 0 0 1 2-2h4.6l2.1 2.3h8.3a2 2 0 0 1 2 2v8.8a2 2 0 0 1-2 2H8.5a2 2 0 0 1-2-2z" fill="#fff" stroke="none"/>' +
+    '<path d="M6.8 14.6h18.4" stroke="' + b + '" stroke-width="1.5" opacity=".45"/>'],
+  chalkweb: ["#2f7d62", () => '<g stroke-width="1.9"><circle cx="16" cy="16" r="8"/><ellipse cx="16" cy="16" rx="3.4" ry="8"/><path d="M8.6 13h14.8M8.6 19h14.8"/></g>'],
+  seahorse: ["#2b7fd4", () => '<g transform="translate(16 16) scale(.66) translate(-17 -13.8)" stroke-width="3.3">' +
+    '<path d="M20.6 4.2c3.9 1.4 6.7 5.1 6.7 9.5 0 5.6-4.5 10.1-10.1 10.1-4.6 0-8.4-3.1-9.6-7.3-.5-1.8-.2-3.6.8-4.9 1-1.3 2.6-2 4.2-1.8 1.5.2 2.8 1.2 3.3 2.6.4 1.1.2 2.3-.5 3.1-.6.7-1.5 1-2.3.8-.7-.2-1.3-.7-1.5-1.4-.2-.6 0-1.2.4-1.6"/>' +
+    '<path d="M20.6 4.2c-2.4-.9-5-.9-7.4 0"/></g>'],
+  terminal: ["#2b313c", () => '<path d="M9.5 11.5l4.5 4.5-4.5 4.5M16.5 21h6.5" stroke-width="2.5"/>'],
+  chat: ["#7c5cd6", b => '<path d="M8.2 9.5h15.6a1.8 1.8 0 0 1 1.8 1.8v8.4a1.8 1.8 0 0 1-1.8 1.8h-8.3l-4.6 3.6v-3.6H8.2a1.8 1.8 0 0 1-1.8-1.8v-8.4a1.8 1.8 0 0 1 1.8-1.8z" fill="#fff" stroke="none"/>' +
+    '<g fill="' + b + '" stroke="none"><circle cx="12.2" cy="15.5" r="1.3"/><circle cx="16" cy="15.5" r="1.3"/><circle cx="19.8" cy="15.5" r="1.3"/></g>'],
+  editor: ["#e0a526", b => '<rect x="9" y="6.5" width="14" height="19" rx="2.2" fill="#fff" stroke="none"/>' +
+    '<path d="M12.4 11.5h7.2M12.4 15h7.2M12.4 18.5h4.6" stroke="' + b + '" stroke-width="1.7"/>'],
+  playground: ["#d94f8a", () => '<path d="M13.2 7.2h5.6M14.3 7.4v5.7L9 22.3a1.8 1.8 0 0 0 1.6 2.7h10.8a1.8 1.8 0 0 0 1.6-2.7l-5.3-9.2V7.4"/>' +
+    '<path d="M11.3 18.6h9.4l2.3 3.8a1.8 1.8 0 0 1-1.6 2.6H10.6a1.8 1.8 0 0 1-1.6-2.6z" fill="#fff" stroke="none"/>'],
+  videos: ["#e8743b", () => '<rect x="6.8" y="8.3" width="18.4" height="15.4" rx="2.4"/><circle cx="12.2" cy="13.2" r="1.8" fill="#fff" stroke="none"/>' +
+    '<path d="M7.5 21.5l5.3-5 3.7 3.4 2.8-2.6 5.3 4.6"/>'],
+  music: ["#e24b5b", () => '<path d="M13.8 21.2V10.6l10-2.3v10.4"/><path d="M13.8 12.9l10-2.3" stroke-width="3"/>' +
+    '<circle cx="10.9" cy="21.3" r="2.9" fill="#fff" stroke="none"/><circle cx="20.9" cy="18.8" r="2.9" fill="#fff" stroke="none"/>'],
+  games: ["#4f5bd5", b => '<path d="M11 10.8h10a4.6 4.6 0 0 1 4.5 3.7l1.1 5.4a2.7 2.7 0 0 1-4.7 2.3L19.6 19.5h-7.2l-2.3 2.7a2.7 2.7 0 0 1-4.7-2.3l1.1-5.4A4.6 4.6 0 0 1 11 10.8z" fill="#fff" stroke="none"/>' +
+    '<path d="M11.2 13.4v4.2M9.1 15.5h4.2" stroke="' + b + '" stroke-width="1.7"/>' +
+    '<g fill="' + b + '" stroke="none"><circle cx="20.6" cy="14.2" r="1.15"/><circle cx="22.8" cy="16.6" r="1.15"/></g>'],
+  settings: ["#6b7480", () => '<circle cx="16" cy="16" r="5.9" stroke-width="2.6"/><circle cx="16" cy="16" r="2" stroke-width="2"/>' +
+    '<path d="M16 6.8v2.4M16 22.8v2.4M6.8 16h2.4M22.8 16h2.4M9.5 9.5l1.7 1.7M20.8 20.8l1.7 1.7M9.5 22.5l1.7-1.7M20.8 11.2l1.7-1.7" stroke-width="3"/>'],
+  help: ["#1e9bd7", () => '<circle cx="16" cy="16" r="8.6"/><path d="M13.3 13.6a2.8 2.8 0 1 1 4 2.5c-.8.4-1.3 1-1.3 1.8v.5"/>' +
+    '<circle cx="16" cy="21.4" r="1.25" fill="#fff" stroke="none"/>'],
+  trash: ["#7b8794", () => '<path d="M8.5 10.6h15M13.4 10.4V8.9a1.3 1.3 0 0 1 1.3-1.3h2.6a1.3 1.3 0 0 1 1.3 1.3v1.5"/>' +
+    '<path d="M10.3 10.8l1 12.6a1.9 1.9 0 0 0 1.9 1.7h5.6a1.9 1.9 0 0 0 1.9-1.7l1-12.6"/><path d="M14.4 14.4v6.6M17.6 14.4v6.6" stroke-width="1.8"/>'],
+  computer: ["#4a5a70", () => '<rect x="6.8" y="8" width="18.4" height="12.6" rx="2"/><path d="M12.5 24.6h7M16 20.8v3.8"/>'],
+  home: ["#169a79", () => '<path d="M7.6 15.6 16 8.4l8.4 7.2"/><path d="M10.2 13.6v10.6h11.6V13.6"/><path d="M14.4 24.2v-4.8h3.2v4.8"/>']
+};
+/* a site, or anything else without a glyph of its own: its first letter */
+function letterTile(name){
+  let h = 0;
+  for (const c of String(name || "?")) h = (h * 31 + c.charCodeAt(0)) % 360;
+  const ch = (String(name || "?").trim().charAt(0) || "?").toUpperCase().replace(/[&<>"']/g, "?");
+  return '<svg class="app-svg tile" viewBox="0 0 32 32" aria-hidden="true">' +
+    '<rect x="1" y="1" width="30" height="30" rx="8.5" fill="hsl(' + h + ' 45% 44%)"/>' +
+    '<text x="16" y="21.4" text-anchor="middle" font-family="system-ui,\'Segoe UI\',sans-serif" font-size="15" font-weight="700" fill="#fff">' +
+    ch + '</text></svg>';
+}
+/* the drawn icon for an app id, a desktop item ("trash", "home"), or "letter:Name" */
+function drawnIcon(key){
+  if (!key) return null;
+  key = String(key);
+  if (key.startsWith("letter:")) return letterTile(key.slice(7));
+  if (key === "browser") key = theBrand() === BRANDS.sea ? "seahorse" : "chalkweb";
+  key = APP_ALIAS[key] || key;
+  const d = DRAWN[key];
+  if (d) return iconTile(d[0], d[1](d[0]));
+  const a = APPS[key];
+  if (a && a.web) return letterTile(a.name);
+  return null;
+}
+/* which drawn icon a desktop item wants, if any */
+function shortcutIconKey(s){
+  if (s.kind === "app") return s.target;
+  if (s.kind === "trash") return "trash";
+  if (s.builtin) return s.id;
+  if (s.kind === "url") return "letter:" + s.label;
+  return null;
+}
+function setIconStyle(v){
+  State.iconStyle = v === "emoji" ? "emoji" : "drawn";
+  saveSettings();
+  drawDock();
+  drawDesktop();
+  for (const w of windows.values()) if (w.redrawIcon) w.redrawIcon();
+  refreshSettings();
+}
+
 /* ============================================================
    7. app registry + routing
    ============================================================ */
@@ -3892,6 +4002,82 @@ function openNode(path){
   else if (n.kind === "text") openInFiles(path);
   else if (fileIsImage(path)) openImage(path);
   else osAlert(baseName(path), "No preview available for this file type yet.\n\n" + fmtBytes(nodeSize(n)) + " \u00b7 " + (n.mime || "unknown"));
+}
+
+/* ============================================================
+   7b. websites as apps
+
+   A site you keep going back to can be an app of its own: a place in the
+   menu and the Dock, and a window with just the site in it - no tabs, no
+   bookmarks bar. It opens through Tide when Tide is set up.
+   ============================================================ */
+function webAppHost(url){ try { return new URL(url).hostname.replace(/^www\./, ""); } catch (e){ return String(url); } }
+function webAppUrl(raw){
+  let t = String(raw || "").trim();
+  if (!t) return "";
+  if (!/^https?:\/\//i.test(t)){
+    if (!/^[\w-]+(\.[\w-]+)+(:\d+)?(\/|$)/.test(t)) return "";
+    t = "https://" + t;
+  }
+  try { return new URL(t).href; } catch (e){ return ""; }
+}
+function registerWebApp(a){
+  APPS[a.id] = { name: a.name, desc: webAppHost(a.url), icon: "\uD83C\uDF10", w: 1000, h: 660, cls: "app-web", web: true,
+                 run: w => browserApp(w, { kind: "web", url: a.url }, a) };
+}
+function addWebApp(url, name){
+  url = webAppUrl(url);
+  if (!url) return null;
+  const had = (State.webApps || []).find(a => a.url === url);
+  if (had){ notify("Already an app", had.name + " is in the menu already.", "\u2139\uFE0F"); return had; }
+  const a = { id: uid("web"), name: (String(name || "").trim() || webAppHost(url)).slice(0, 40), url };
+  State.webApps = (State.webApps || []).concat(a);
+  registerWebApp(a);
+  State.dock = (State.dock || []).concat(a.id);
+  saveSettings();
+  drawDock();
+  refreshSettings();
+  notify("New app", a.name + " is in the menu and the Dock.", "\uD83C\uDF10");
+  return a;
+}
+function removeWebApp(id){
+  const a = (State.webApps || []).find(x => x.id === id);
+  if (!a) return;
+  for (const w of Array.from(windows.values())) if (w.appId === id) w.close();
+  State.webApps = State.webApps.filter(x => x.id !== id);
+  State.dock = (State.dock || []).filter(x => x !== id);
+  State.shortcuts = State.shortcuts.filter(sc => !(sc.kind === "app" && sc.target === id));
+  delete APPS[id];
+  saveSettings();
+  drawDock();
+  drawDesktop();
+  refreshSettings();
+  notify("Removed", a.name + " is gone from the menu and the Dock.", "\uD83C\uDF10");
+}
+async function newWebAppDialog(url, name){
+  const vals = await modal({
+    title: "Make a website an app",
+    message: "It gets a place in the menu and the Dock, and opens in a window of its own with just the site in it.",
+    fields: [
+      { label: "Address", value: url || "", placeholder: "example.com" },
+      { label: "Name (optional)", value: name || "" }
+    ],
+    ok: "Make the app"
+  });
+  if (!vals) return null;
+  if (!webAppUrl(vals[0])){
+    osAlert("Make a website an app", "\u201c" + vals[0] + "\u201d is not a web address.");
+    return null;
+  }
+  return addWebApp(vals[0], vals[1]);
+}
+/* a site on the desktop, as a shortcut rather than an app */
+function addSiteShortcut(url, label){
+  url = webAppUrl(url);
+  if (!url) return;
+  if (State.shortcuts.some(sc => sc.kind === "url" && sc.target === url))
+    return notify("Already there", webAppHost(url) + " is already on the desktop.", "\u2139\uFE0F");
+  addShortcut({ kind: "url", target: url, icon: "\uD83C\uDF10", label: (label || webAppHost(url)).slice(0, 40) });
 }
 
 /* ============================================================
@@ -3998,7 +4184,7 @@ function drawDesktop(){
   for (const s of desktopItems()){
     const d = el("div", "dicon");
     const di = el("span", "g");
-    setAppIcon(di, s.icon);
+    setAppIcon(di, s.icon, shortcutIconKey(s));
     d.append(di, el("span", "l", s.label));
     d.title = s.kind === "app" ? (APPS[s.target] ? APPS[s.target].name : s.label) : (s.target || s.label);
     d.addEventListener("pointerdown", () => {
@@ -5305,6 +5491,125 @@ function tideTest(){
     ws.onerror = ws.onclose = () => { clearTimeout(timer); finish({ ok: false, why: "Turned away. Check the key, and that this address is one the server allows." }); };
   });
 }
+/* ---- Tide's speed test ----
+   Three things, each timed: opening a connection to the server, a round
+   trip through it to a site and back, and a download through it - next to
+   the same download made directly, for comparison. The files come from
+   Cloudflare's speed test, which sends exactly as many bytes as asked. */
+const SPEED_URL = "https://speed.cloudflare.com/__down?bytes=";
+let TideClient = null;
+/* libcurl on its own, for fetching through the server without a page in between */
+async function tideClient(){
+  if (Tide.ready){ try { await Tide.ready; } catch (e){} }   /* never two libcurl start-ups at once */
+  const wisp = tideWisp();
+  if (TideClient && TideClient.wisp === wisp) return TideClient.c;
+  await loadScriptOnce(tideBase() + "tide/libcurl/libcurl-client.js");
+  if (!window.LibcurlTransport) throw new Error("tide/libcurl did not load.");
+  const c = new LibcurlTransport.LibcurlClient({ wisp });
+  await c.init();
+  TideClient = { wisp, c };
+  return c;
+}
+/* a fetch that goes through Tide's server; answers like fetch() does */
+async function tideFetch(url, opts){
+  opts = opts || {};
+  const c = await tideClient();
+  const r = await c.request(new URL(url), opts.method || "GET", opts.body || null, new Headers(opts.headers || {}), opts.signal);
+  const empty = [101, 204, 205, 304].includes(r.status);
+  const headers = new Headers();
+  try { for (const [k, v] of (r.headers || [])) headers.append(k, v); } catch (e){}
+  return new Response(empty ? null : r.body, { status: r.status || 200, statusText: r.statusText || "", headers });
+}
+function wispOpenTime(){
+  return new Promise(resolve => {
+    const t0 = performance.now();
+    let ws;
+    try { ws = new WebSocket(tideWisp()); } catch (e){ return resolve(null); }
+    const timer = setTimeout(() => { try { ws.close(); } catch (e){} resolve(null); }, 9000);
+    ws.onopen = () => { clearTimeout(timer); const ms = performance.now() - t0; try { ws.close(); } catch (e){} resolve(Math.round(ms)); };
+    ws.onerror = () => { clearTimeout(timer); resolve(null); };
+  });
+}
+/* megabits a second: a small download to guess, then one sized to take a few seconds */
+async function measureDown(get){
+  const once = async (bytes, limit) => {
+    const ctl = new AbortController();
+    const timer = setTimeout(() => ctl.abort(), limit);
+    const t0 = performance.now();
+    let got = 0;
+    try {
+      const body = await get(SPEED_URL + bytes, ctl.signal);
+      const rd = body.getReader();
+      for (;;){
+        const { done, value } = await rd.read();
+        if (done) break;
+        got += value.byteLength;
+      }
+    } catch (e){ if (!got) throw e; }
+    finally { clearTimeout(timer); }
+    return got * 8 / 1e6 / Math.max((performance.now() - t0) / 1000, 0.001);
+  };
+  try {
+    const guess = await once(1e6, 10000);
+    const bytes = Math.round(Math.min(25e6, Math.max(2e6, guess * 1e6 / 8 * 4)));
+    return Math.round(await once(bytes, 12000) * 10) / 10;
+  } catch (e){ return null; }
+}
+async function tideSpeedTest(say){
+  say = say || (() => {});
+  if (!tideOn()) return { error: "Fill in Tide's address and key first." };
+  const out = { at: Date.now(), v: tideVersion(), host: tideHost() };
+  const opens = [];
+  for (let i = 0; i < 3; i++){
+    say("Connecting to " + tideHost() + " (" + (i + 1) + " of 3)\u2026");
+    const ms = await wispOpenTime();
+    if (ms === null) return { error: "No answer from " + tideHost() + ", or the key was turned away. Test, above, says which." };
+    opens.push(ms);
+  }
+  out.connect = Math.min(...opens);
+  say("Loading Tide's connection library\u2026");
+  let c;
+  try { c = await tideClient(); }
+  catch (e){ return { error: "Tide's files did not load: " + ((e && e.message) || e) }; }
+  const trips = [];
+  for (let i = 0; i < 4; i++){
+    say("Round trips through Tide (" + (i + 1) + " of 4)\u2026");
+    const t0 = performance.now();
+    try {
+      const r = await c.request(new URL(SPEED_URL + "0"), "GET", null, new Headers(), undefined);
+      if (r.body && r.body.getReader){ const rd = r.body.getReader(); while (!(await rd.read()).done){} }
+    } catch (e){ return { error: "A request through Tide failed: " + ((e && e.message) || e) }; }
+    trips.push(performance.now() - t0);
+  }
+  /* the first one also sets up the secure connection, so it is shown on its own */
+  out.first = Math.round(trips[0]);
+  const warm = trips.slice(1).sort((a, b) => a - b);
+  out.ping = Math.round(warm[1]);
+  say("Downloading through Tide\u2026");
+  out.down = await measureDown((url, signal) => c.request(new URL(url), "GET", null, new Headers(), signal).then(r => r.body));
+  say("Downloading directly, to compare\u2026");
+  out.direct = await measureDown((url, signal) => fetch(url, { cache: "no-store", signal })
+    .then(r => { if (!r.ok) throw new Error("status " + r.status); return r.body; }));
+  State.tideSpeeds = [out].concat(State.tideSpeeds || []).slice(0, 6);
+  saveSettings();
+  return out;
+}
+const fmtMbps = v => v === null || v === undefined ? "\u2014" : (v >= 100 ? Math.round(v) : v) + " Mbit/s";
+function speedTable(list){
+  const t = el("table");
+  const head = el("tr");
+  for (const h of ["When", "Scramjet", "Connect", "Round trip", "Via Tide", "Direct"]) head.appendChild(el("th", null, h));
+  t.appendChild(head);
+  list.forEach((r, i) => {
+    const tr = el("tr", i === 0 ? "now" : "");
+    tr.title = (r.host || "") + " - the first round trip, which also sets up the secure connection, took " + r.first + " ms";
+    tr.append(el("td", null, fmtAgo(r.at)), el("td", null, r.v === 1 ? "1.1.0" : "2"),
+              el("td", null, r.connect + " ms"), el("td", null, r.ping + " ms"),
+              el("td", "big", fmtMbps(r.down)), el("td", null, fmtMbps(r.direct)));
+    t.appendChild(tr);
+  });
+  return t;
+}
 /* Whether this browser can pass a stream from one page to another. Where it
    cannot - Firefox, as of now - each answer has to be downloaded whole
    before it is handed to the service worker. Pages are fine; video is not,
@@ -5886,7 +6191,8 @@ function targetIcon(t){
            so: "\uD83D\uDCAC", sopost: "\uD83D\uDCAC", gh: "\uD83D\uDC19", ghrepo: "\uD83D\uDC19", hn: "\uD83D\uDCF0",
            bookmarks: "\u2B50", history: "\uD83D\uDD58" }[t.kind] || "\uD83C\uDF10";
 }
-function browserApp(win, startTarget){
+/* appMode is a website made into an app: the same browser, with only the site showing */
+function browserApp(win, startTarget, appMode){
   const B = win.body;
   B.innerHTML =
     '<div class="wb-tabs"><button class="wb-newtab" title="New tab (Ctrl+T)">+</button></div>' +
@@ -5901,10 +6207,12 @@ function browserApp(win, startTarget){
         '<div class="wb-sugg"></div>' +
       '</div>' +
       '<button class="tb-btn" data-b="more" title="Bookmarks, history and more">&#9776;</button>' +
+      '<button class="tb-btn wb-out" data-b="out" title="Open in Seahorse">&#8599;</button>' +
     '</div>' +
     '<div class="wb-bmbar"></div>' +
     '<div class="wb-stages"></div>';
 
+  if (appMode) B.classList.add("wb-appmode");
   const addr   = $(".wb-addr", B), stages = $(".wb-stages", B), tabbar = $(".wb-tabs", B);
   const bb     = k => $('[data-b="' + k + '"]', B);
   const bmbar  = $(".wb-bmbar", B), sugg = $(".wb-sugg", B);
@@ -5924,7 +6232,7 @@ function browserApp(win, startTarget){
     active.frame = frame; active.scroll = stage ? stage.scrollTop : 0;
   }
   function setTitle(s){
-    win.setTitle(s);
+    win.setTitle(appMode ? appMode.name : s);
     if (active){ active.title = brand(s); drawTabs(); }
     /* the page's own name, once it is known, is what history shows */
     const h = State.webHistory && State.webHistory[0];
@@ -6059,6 +6367,7 @@ function browserApp(win, startTarget){
   }
   /* the tabs to open next time */
   function saveSession(){
+    if (appMode) return;
     State.webTabs = tabs.map(x => (x === active ? current : x.current)).filter(t => t && !internal(t)).slice(0, 15);
     saveWebSoon();
   }
@@ -6970,6 +7279,11 @@ function browserApp(win, startTarget){
       { icon: "\uD83D\uDD58", label: "History", run: () => newTab({ kind: "history" }) },
       { icon: "\u2630", label: (State.bmBar !== false ? "Hide" : "Show") + " the bookmarks bar", run: toggleBar },
       "-",
+      { icon: "\uD83D\uDCCC", label: "Put this site on the desktop", disabled: !current || current.kind !== "web",
+        run: () => addSiteShortcut(current.url, active && active.title) },
+      { icon: "\uD83C\uDF10", label: "Make this site an app\u2026", disabled: !current || current.kind !== "web",
+        run: () => newWebAppDialog(current.url, active && active.title) },
+      "-",
       { icon: "\uD83D\uDCE5", label: "Downloads", run: () => { ensureDir(HOME + "/Downloads"); openInFiles(HOME + "/Downloads"); } },
       { icon: "\u2699\uFE0F", label: "Browser settings", run: () => { settingsPage = "browser"; const w = launch("settings"); if (w && w.api && w.api.refresh) w.api.refresh(); refreshSettings(); } }
     ]);
@@ -6989,6 +7303,8 @@ function browserApp(win, startTarget){
           } },
         "-",
         { label: "Bookmark this page", run: bookmarkThis, disabled: !current || internal(current) || isBookmarked(current) },
+        { label: "Put this site on the desktop", disabled: !current || current.kind !== "web", run: () => addSiteShortcut(current.url, active && active.title) },
+        { label: "Make this site an app\u2026", disabled: !current || current.kind !== "web", run: () => newWebAppDialog(current.url, active && active.title) },
         { label: "Save page text to Files", disabled: !current, run: savePageText },
         { label: "Show Downloads", run: () => { ensureDir(HOME + "/Downloads"); openInFiles(HOME + "/Downloads"); } },
         "-",
@@ -7060,7 +7376,9 @@ function browserApp(win, startTarget){
   bb("reload").onclick = reload;
   bb("star").onclick = toggleStar;
   bb("more").onclick = moreMenu;
-  bb("home").onclick   = drawHome;
+  bb("home").onclick   = appMode ? () => go({ kind: "web", url: appMode.url }) : drawHome;
+  if (appMode) bb("home").title = appMode.name + "'s first page";
+  bb("out").onclick = () => openInBrowser(current && current.kind === "web" ? { kind: "web", url: current.url } : { kind: "web", url: appMode.url });
   /* as you type: what Enter will do, then bookmarks and places you have been */
   let sgItems = [], sgAt = 0;
   function hideSugg(){ sugg.classList.remove("on"); sgItems = []; }
@@ -7273,8 +7591,9 @@ function terminalApp(win){
 "  open <path>           in the right app     edit <file>       in the Files editor\n" +
 "  play <song>           a file, or words     web <url|words>   in Seahorse\n" +
 "  wget <url> [-O name]  download into ~/Downloads\n" +
+"  grab <url> [--audio]  save a YouTube (and more) video or song into ~/Videos or ~/Music\n" +
 "  bookmarks [add <url> [name] | open <n> | rm <n>]\n" +
-"  tide [status | test | version 1|2]         unbox <words>     music from the open web\n" +
+"  tide [status | test | speed | version 1|2] unbox <words>     music from the open web\n" +
 "  launch <app>          start an app         apps              list them\n" +
 "  shortcut <thing>      put it on the desktop notify <text>    raise a notification\n" +
 "  wallpaper <file>      bootscreen <file>    backup            theme [light|dark]\n" +
@@ -7834,6 +8153,16 @@ function terminalApp(win){
     isAudio(baseName(hit)) ? openAudio(hit) : openImage(hit);
     line([["playing ", "t-dim"], [baseName(hit), "t-ok"]]);
   };
+  CMDS.grab = async function(a){
+    const audio = a.some(x => x === "--audio" || x === "-a");
+    const url = a.find(x => /^https?:\/\//i.test(x));
+    if (!url) return err("grab: give a link - grab <url> [--audio]");
+    if (!saverUrl()) return err("grab: no saving server yet - Settings \u203A Seahorse \u203A Saving from links");
+    line([["saving ", "t-dim"], [url, "t-key"], [audio ? " as a song\u2026" : "\u2026", "t-dim"]]);
+    const p = await saveFromLink(url, audio);
+    if (p) line([["saved ", "t-dim"], [tilde(p), "t-ok"]]);
+    else err("grab: nothing saved - the notification says why");
+  };
   CMDS.wget = async function(a){
     const i = a.indexOf("-O");
     const name = i >= 0 ? a.splice(i, 2)[1] : "";
@@ -7880,6 +8209,16 @@ function terminalApp(win){
       if (v !== 1 && v !== 2) return line([["Scramjet ", "t-dim"], [tideVersion() === 1 ? "1.1.0" : "2 (alpha)", "t-ok"],
                                            [" - tide version 1 or 2 to switch", "t-dim"]]);
       return setTideVersion(v);
+    }
+    if (sub === "speed"){
+      if (!tideOn()) return err("tide: set an address and a key first (Settings \u203A Developer \u203A Tide)");
+      const r = await tideSpeedTest(step => line([[step, "t-dim"]]));
+      if (r.error) return err("tide: " + r.error);
+      line([["Connect       ", "t-key"], [r.connect + " ms", "t-ok"]]);
+      line([["Round trip    ", "t-key"], [r.ping + " ms", "t-ok"], ["  (the first took " + r.first + " ms)", "t-dim"]]);
+      line([["Through Tide  ", "t-key"], [fmtMbps(r.down), "t-ok"]]);
+      line([["Direct        ", "t-key"], [fmtMbps(r.direct), ""]]);
+      return;
     }
     if (sub === "test"){
       line([["asking " + (tideHost() || "nobody") + "\u2026", "t-dim"]]);
@@ -8713,8 +9052,164 @@ function showAddMedia(btn, ways){
   showCtx(r.left, r.bottom + 4, [
     { icon: "\uD83D\uDD17", label: "Paste links\u2026", run: ways.link },
     { icon: "📁", label: "From my files…", run: ways.files },
-    { icon: "📥", label: "Import from this computer…", run: ways.computer }
+    { icon: "📥", label: "Import from this computer…", run: ways.computer },
+    "-",
+    ...(ways.noAudio ? [] : [{ icon: "⬇️", label: "Save a song from a link…", run: () => askSaveLink(true) }]),
+    { icon: "⬇️", label: "Save a video from a link…", run: () => askSaveLink(false) }
   ]);
+}
+
+/* ---- saving from links: YouTube, SoundCloud, TikTok and the rest ----
+   Sites like these never hand over a file, so a cobalt server (the
+   open-source downloader, github.com/imputnet/cobalt) is asked for one. What
+   comes back goes into ~/Music or ~/Videos inside SEA OS - never onto this
+   computer. The server is yours to choose, in Settings > Seahorse. Where the
+   school or the network blocks it, the request goes through Tide instead. */
+const SAVER_KEY = "boxos.saverkey";
+const LinkSaver = { key: "" };
+try { if (localStorage.getItem("boxos.on") === "1") LinkSaver.key = localStorage.getItem(SAVER_KEY) || ""; } catch (e){}
+function saverUrl(){
+  const h = String(State.saverHost || "").trim().replace(/\/+$/, "");
+  return !h ? "" : /^https?:\/\//i.test(h) ? h + "/" : "https://" + h + "/";
+}
+function setSaverKey(k){
+  LinkSaver.key = String(k || "").trim();
+  try {
+    if (!Store.on){}
+    else if (LinkSaver.key) localStorage.setItem(SAVER_KEY, LinkSaver.key);
+    else localStorage.removeItem(SAVER_KEY);
+  } catch (e){}
+  refreshSettings();
+}
+/* straight there, or through Tide when straight there is refused */
+async function netFetch(url, opts){
+  try { return await fetch(url, opts); }
+  catch (err){
+    if (!tideOn() || (opts && opts.signal && opts.signal.aborted)) throw err;
+    return tideFetch(url, opts);
+  }
+}
+function saverHeaders(){
+  const h = { "Accept": "application/json", "Content-Type": "application/json" };
+  if (LinkSaver.key) h.Authorization = "Api-Key " + LinkSaver.key;
+  return h;
+}
+async function saverTest(){
+  const api = saverUrl();
+  if (!api) return { ok: false, why: "Fill in the server's address first." };
+  try {
+    const res = await netFetch(api, { headers: { "Accept": "application/json" } });
+    const j = await res.json();
+    const c = j && j.cobalt;
+    if (!c) return { ok: false, why: "Something answered, but it is not a cobalt server." };
+    const svc = c.services || [];
+    return { ok: true, why: "cobalt " + (c.version || "") + " answered. It saves from " + svc.length + " sites" +
+             (svc.length ? ": " + svc.slice(0, 10).join(", ") + (svc.length > 10 ? " and more." : ".") : ".") };
+  } catch (e){ return { ok: false, why: "No answer from " + api.replace(/^https?:\/\/|\/$/g, "") + "." }; }
+}
+const SAVER_ERRORS = {
+  "auth": "the server wants a key, or turned the key away. Settings \u203A Seahorse \u203A Saving from links has the box for one",
+  "link.invalid": "that link is not one it understands",
+  "link.unsupported": "that site is not one the server saves from",
+  "service.unsupported": "that site is not one the server saves from",
+  "content.too_long": "that one is too long for the server",
+  "content.video.unavailable": "that video is not available - private, removed or blocked where the server is",
+  "content.video.live": "a live stream cannot be saved",
+  "content.video.age": "that video is age-restricted",
+  "youtube.login": "YouTube wants the server signed in before it will hand that one over",
+  "youtube.decipher": "YouTube changed something the server has not caught up with yet",
+  "fetch": "the server could not reach that site",
+  "rate_exceeded": "the server says too many at once - wait a minute"
+};
+function saverError(code){
+  code = String(code || "").replace(/^error\.api\./, "");
+  for (const k of Object.keys(SAVER_ERRORS)) if (code.startsWith(k)) return SAVER_ERRORS[k];
+  return code ? "the server said " + code : "the server said no";
+}
+async function saverMissing(){
+  if (!(await osConfirm("Saving from links is not set up",
+    "Sites like YouTube never hand over a file, so SEA OS asks a cobalt server for one - the open-source downloader, " +
+    "which you can run on your own machine the same way as Tide's. Its address goes in Settings \u203A Seahorse \u203A Saving from links.",
+    "Open Settings"))) return;
+  settingsPage = "browser";
+  const w = launch("settings");
+  if (w && w.api && w.api.refresh) w.api.refresh();
+  refreshSettings();
+}
+/* Saves one link's song or video into SEA OS. Returns where it went, or null. */
+async function saveFromLink(url, audio){
+  let host = "";
+  try { host = new URL(url).hostname.replace(/^www\./, ""); } catch (e){ osAlert("Save from a link", "That is not a web address."); return null; }
+  if (/(^|\.)spotify\.(com|link)$/.test(host)){
+    await addMediaLinks([url]);
+    refreshMediaViews();
+    osAlert("Spotify cannot be saved",
+      "Spotify locks its songs so only its own player can play them, so there is no file for anything to save. " +
+      "The link is in Media instead, where it plays - whole songs when you are signed in to Spotify in this browser.");
+    return null;
+  }
+  const api = saverUrl();
+  if (!api){ saverMissing(); return null; }
+  const fail = why => { notify("Not saved", host + ": " + why + ".", "\u26A0\uFE0F"); return null; };
+  notify("Saving", host + (audio ? ", as a song" : ", as a video") + "\u2026", "\u2B07\uFE0F");
+  let j;
+  try {
+    const res = await netFetch(api, { method: "POST", headers: saverHeaders(), body: JSON.stringify({
+      url, downloadMode: audio ? "audio" : "auto", audioFormat: "mp3", videoQuality: "720",
+      youtubeVideoCodec: "h264", filenameStyle: "basic", alwaysProxy: true }) });
+    j = await res.json();
+  } catch (e){ return fail("the saving server did not answer"); }
+  let file = "", name = (j && j.filename) || "";
+  if (j.status === "tunnel" || j.status === "redirect") file = j.url;
+  else if (j.status === "picker"){
+    if (audio && j.audio){ file = j.audio; name = j.audioFilename || name; }
+    else {
+      const pick = (j.picker || []).find(p => p.type === "video") || (j.picker || [])[0];
+      if (pick) file = pick.url;
+    }
+  }
+  else if (j.status === "error") return fail(saverError(j.error && j.error.code));
+  else if (j.status === "local-processing") return fail("that one has to be put together in the browser, which SEA OS cannot do yet - try it as a song");
+  if (!file) return fail("nothing came back to save");
+  let res;
+  try { res = await netFetch(file); } catch (e){ return fail("the file would not come"); }
+  if (!res.ok || !res.body) return fail("the file would not come (" + res.status + ")");
+  const type = String(res.headers.get("content-type") || (audio ? "audio/mpeg" : "video/mp4")).split(";")[0].trim();
+  const parts = [];
+  let size = 0;
+  try {
+    const rd = res.body.getReader();
+    for (;;){
+      const { done, value } = await rd.read();
+      if (done) break;
+      size += value.byteLength;
+      if (size > DOWNLOAD_MAX){
+        try { await rd.cancel(); } catch (e){}
+        return fail("it went over " + fmtBytes(DOWNLOAD_MAX) + ", more than SEA OS keeps");
+      }
+      parts.push(value);
+    }
+  } catch (e){ return fail("it stopped partway"); }
+  if (!size) return fail("the file came back empty");
+  name = safeName(name) || downloadName(file, type);
+  if (!extOf(name) || !(isAudio(name) || isVideo(name))) name = name.replace(/\.[^.]*$/, "") + (audio || type.startsWith("audio/") ? ".mp3" : ".mp4");
+  const dir = HOME + (isVideo(name) ? "/Videos" : "/Music");
+  const saved = await importMediaFile(new File(parts, name, { type }), dir);
+  if (!saved) return fail("it could not be written into " + tilde(dir));
+  refreshFilesViews();
+  refreshMediaViews();
+  notify("Saved", saved + " (" + fmtBytes(size) + ") is in " + tilde(dir) + ".", isVideo(saved) ? "\uD83C\uDFAC" : "\uD83C\uDFB5");
+  return dir + "/" + saved;
+}
+async function askSaveLink(audio){
+  if (!saverUrl()) return saverMissing();
+  const raw = await osPrompt(audio ? "Save a song from a link" : "Save a video from a link",
+    "A link from YouTube, SoundCloud, TikTok, Vimeo, Twitch clips and most other sites. It is saved into " +
+    (audio ? "~/Music as an MP3" : "~/Videos") + ", inside SEA OS.", "");
+  if (!raw) return;
+  const u = linksIn(raw)[0];
+  if (!u) return osAlert("No link there", "Paste a whole web address, starting with https://.");
+  return saveFromLink(u, audio);
 }
 
 /* ============================================================
@@ -9512,6 +10007,9 @@ function musicApp(win, startPath, only){
           for (const l of others.slice(0, 8))
             items.push({ icon: "\u2795", label: "Add to " + l.name, run: () => addToLinkList(l, t.url) });
           items.push({ icon: "\u2728", label: "New playlist with this\u2026", run: () => newLinkList([t.url]) });
+          if ((t.kind === "yt" || t.kind === "embed") && !/(^|\.)spotify\./i.test(hostOfUrl(t.url)))
+            items.push("-", { icon: "\u2B07\uFE0F", label: "Save the song into SEA OS", run: () => saveFromLink(t.url, true) },
+                       { icon: "\u2B07\uFE0F", label: "Save the video into SEA OS", disabled: !!t.audio, run: () => saveFromLink(t.url, false) });
           if (here){
             const k = here.urls.indexOf(t.url);
             items.push("-",
@@ -9718,7 +10216,7 @@ function musicApp(win, startPath, only){
     if (p) play(p);
   }
   function addMedia(){
-    showAddMedia($('[data-m="link"]', B), { link: playLink, files: fromFiles, computer: importMedia });
+    showAddMedia($('[data-m="link"]', B), { link: playLink, files: fromFiles, computer: importMedia, noAudio: only === "video" });
   }
 
   function play(path){
@@ -10315,7 +10813,7 @@ function galleryApp(win, startPath){
     const p = await importMediaFromComputer(true);
     if (p){ find.value = ""; play(p); }
   }
-  const addMedia = () => showAddMedia(vb("add"), { link: addLink, files: addFromFiles, computer: addFromComputer });
+  const addMedia = () => showAddMedia(vb("add"), { link: addLink, files: addFromFiles, computer: addFromComputer, noAudio: true });
 
   $(".vd-back", B).onclick = library;
   vb("refresh").onclick = scan;
@@ -10477,6 +10975,26 @@ const HELP_TOPICS = [
     ["h", "Downloads"],
     ["p", "Click a link to a file and it is saved into Downloads inside SEA OS, never onto the real computer. File › Show Downloads opens the folder."]
   ]},
+  { id: "webapps", icon: "\uD83C\uDF10", title: "Websites as apps", body: [
+    ["p", "A site you keep going back to can be an app of its own, with a place in the menu and the Dock and a window that shows just the site - no tabs, no bookmarks bar."],
+    ["l", ["In Seahorse, the \u2630 menu has Make this site an app for the page you are on, and Put this site on the desktop for a plain shortcut.",
+           "Settings \u203A Apps \u203A Websites as apps lists them, adds one from an address, and removes them. Right-clicking the desktop has Make a website an app too.",
+           "The \u2197 button in an app's window opens the page in Seahorse proper. Right-click one in the menu to remove it.",
+           "They open through Tide when Tide is set up, and the same way Seahorse does when it is not."]],
+    ["h", "The icons"],
+    ["p", "Every app has a drawn icon now: a flat tile with its own colour. Settings \u203A Desktop \u203A App icons switches back to the emoji they had before. A website app gets its first letter on a colour of its own."]
+  ]},
+  { id: "saving", icon: "\u2B07\uFE0F", title: "Saving from YouTube and more", body: [
+    ["p", "YouTube, SoundCloud, TikTok, Vimeo and most sites like them never hand over a file. A cobalt server can - the open-source downloader, which you can run on your own machine the same way as Tide's."],
+    ["l", ["Put its address in Settings \u203A Seahorse \u203A Saving from links, and press Test.",
+           "Add media, in Media, then has Save a song from a link and Save a video from a link. The Gallery has Save a video.",
+           "Right-click a link already in Media for Save the song or Save the video.",
+           "grab <url>, or grab <url> --audio, does it from the Terminal.",
+           "Songs land in ~/Music as MP3s and videos in ~/Videos, inside SEA OS. Nothing is saved onto the real computer. Anything over 100 MB is refused.",
+           "If the network blocks the server and Tide is set up, the request goes through Tide instead."]],
+    ["h", "Spotify"],
+    ["p", "Spotify cannot be saved: its songs are locked so only its own player can play them. A Spotify link goes into Media instead, where it plays."]
+  ]},
   { id: "unbox", icon: "📦", title: "unbox: music, video, pictures", body: [
     ["p", "unbox is a terminal command that brings freely licensed media in from the open web. Openverse (which covers Jamendo, Freesound and ccMixter), Wikimedia Commons and the Internet Archive."],
     ["h", "How to use it"],
@@ -10563,7 +11081,8 @@ const HELP_TOPICS = [
            "Downloads land in ~/Downloads inside SEA OS, never on the real computer - links marked as downloads, files a page makes on the spot, and anything a browser would save rather than show. Anything over 100 MB is refused.",
            "A page can never open a tab in your real browser: links that want one open in the same frame.",
            "If a page will not load, Settings \u203A Developer \u203A Tide \u203A Test says whether the machine is answering.",
-           "Clear what it cached, in the same place, throws away the helper Tide installs in this browser and starts it fresh."]],
+           "Clear what it cached, in the same place, throws away the helper Tide installs in this browser and starts it fresh.",
+           "Run speed test, there too, times connecting to the machine, a round trip through it, and a download through it next to the same download made directly. The last few results stay, so Scramjet 2 and 1.1.0, or home and school, can be compared. tide speed in the Terminal does the same."]],
     ["h", "Video"],
     ["p", "Sites load in any browser, but video through Tide needs one that can pass a half-finished download between pages. Chrome and Edge can; Firefox cannot yet, so YouTube opens but a video says an error occurred. Media plays YouTube links directly without Tide, which is the easier way to watch something."]
   ]},
@@ -12945,7 +13464,7 @@ function drawDock(){
   const add = (id, isPinned) => {
     const a = APPS[id];
     const b = el("button", "dock-app" + (running.has(id) ? " running" : ""));
-    setAppIcon(b, a.icon);
+    setAppIcon(b, a.icon, id);
     if (id === "chat" && Chat.unread){
       const badge = el("span", "dock-badge", Chat.unread > 99 ? "99+" : String(Chat.unread));
       b.appendChild(badge);
@@ -12990,9 +13509,12 @@ function drawDock(){
   brandTree(dock);
   if (dockIntroPending) runDockIntro();
 }
-/* an app icon may be an emoji or a piece of inline SVG */
-function setAppIcon(elm, icon){
-  if (typeof icon === "string" && icon.trim().startsWith("<svg")) elm.innerHTML = icon;
+/* an app icon may be an emoji or a piece of inline SVG; given what it is
+   the icon of, the drawn tile is used instead unless emoji are chosen */
+function setAppIcon(elm, icon, key){
+  const drawn = State.iconStyle !== "emoji" && key ? drawnIcon(key) : null;
+  if (drawn) elm.innerHTML = drawn;
+  else if (typeof icon === "string" && icon.trim().startsWith("<svg")) elm.innerHTML = icon;
   else elm.textContent = icon;
 }
 /* boot: the dock slides up, then the icons hop in one after another */
@@ -13348,7 +13870,7 @@ function settingsApp(win){
         x.title = "Remove";
         x.onclick = () => removeShortcut(s.id);
         const si = el("span", "g");
-        setAppIcon(si, s.icon);
+        setAppIcon(si, s.icon, shortcutIconKey(s));
         r.append(si, n, x);
         listBox.appendChild(r);
       }
@@ -13362,6 +13884,11 @@ function settingsApp(win){
     add.onclick = newShortcutDialog;
     scRow.appendChild(add);
     d.appendChild(scRow);
+
+    const icRow = row("App icons");
+    icRow.appendChild(seg([["drawn", "Drawn"], ["emoji", "Emoji"]], State.iconStyle === "emoji" ? "emoji" : "drawn",
+      v => setIconStyle(v)));
+    d.appendChild(icRow);
 
     const sizeRow = row("Icon size");
     sizeRow.appendChild(seg([["small", "Small"], ["medium", "Medium"], ["large", "Large"]], State.iconSize,
@@ -13550,6 +14077,31 @@ function settingsApp(win){
       tdOff.append(forget, clean);
       td.appendChild(tdOff);
     }
+    /* how fast it all is */
+    const tdSp = row("Speed");
+    const tdRun = el("button", "btn", "Run speed test");
+    tdRun.disabled = !tideOn();
+    if (!tideOn()) tdRun.title = "Save an address and a key first";
+    tdSp.appendChild(tdRun);
+    td.appendChild(tdSp);
+    const tdRes = el("div", "tsp");
+    if ((State.tideSpeeds || []).length) tdRes.appendChild(speedTable(State.tideSpeeds));
+    td.appendChild(tdRes);
+    tdRun.onclick = async () => {
+      tdRun.disabled = true;
+      const live = el("div", "store-note", "Starting\u2026");
+      tdRes.innerHTML = "";
+      tdRes.appendChild(live);
+      const r = await tideSpeedTest(step => { live.textContent = step; });
+      tdRun.disabled = false;
+      if (r.error){ live.textContent = "\u2717 " + r.error; live.style.color = "#c9534b"; return; }
+      tdRes.innerHTML = "";
+      tdRes.appendChild(speedTable(State.tideSpeeds));
+    };
+    td.appendChild(el("div", "store-note",
+      "Connect is how long " + (tideHost() || "the server") + " takes to answer. Round trip is a tiny request to a site through it and back. " +
+      "Via Tide and Direct are the same download made both ways, so you can see what Tide costs. Try it on each Scramjet, or at home and at school."));
+
     if (!Store.on && Tide.token){
       const warn = el("div", "store-note");
       warn.style.color = "#c9534b";
@@ -13567,6 +14119,54 @@ function settingsApp(win){
     td.appendChild(el("div", "store-note",
       "The key only lets the machine open connections for you, and it is kept out of backup files. " +
       "Help \u203A Tide has the whole of it."));
+
+    /* --- saving from links --- */
+    const sv = section("Saving from links", "browser");
+    sv.appendChild(el("div", "store-note",
+      "YouTube, SoundCloud, TikTok and most other sites never hand over a file. A cobalt server - the open-source " +
+      "downloader - can. Give its address here and Add media, in Media and the Gallery, gets Save a song and Save a video; " +
+      "right-clicking a link in Media does too. What it saves goes into ~/Music or ~/Videos inside SEA OS, never onto this " +
+      "computer. Spotify cannot be saved: its songs are locked to its own player."));
+    const svAddr = row("Server");
+    const svIn = el("input", "modal-in");
+    svIn.value = State.saverHost || "";
+    svIn.placeholder = "cobalt.example.com";
+    svIn.spellcheck = false;
+    svIn.style.cssText = "flex:1;min-width:170px;margin:0";
+    svIn.onchange = () => { State.saverHost = svIn.value.trim(); saveSettings(); render(); };
+    const svTest = el("button", "btn", "Test");
+    svAddr.append(svIn, svTest);
+    sv.appendChild(svAddr);
+    const svKeyRow = row("Key");
+    const svKey = el("input", "modal-in");
+    svKey.type = "password";
+    svKey.autocomplete = "off";
+    svKey.placeholder = LinkSaver.key ? "\u2022\u2022\u2022\u2022 saved \u2022\u2022\u2022\u2022" : "only if the server asks for one";
+    svKey.style.cssText = "flex:1;min-width:170px;margin:0";
+    const svSave = el("button", "btn", "Save");
+    svSave.onclick = () => { if (svKey.value.trim()){ setSaverKey(svKey.value); notify("Key saved", "Saving from links will use it.", "\uD83D\uDD11"); } };
+    svKeyRow.append(svKey, svSave);
+    if (LinkSaver.key){
+      const svForget = el("button", "btn", "Forget");
+      svForget.onclick = () => setSaverKey("");
+      svKeyRow.appendChild(svForget);
+    }
+    sv.appendChild(svKeyRow);
+    const svNote = el("div", "store-note", saverUrl()
+      ? "Ready. The key, if there is one, is kept out of backup files, like Tide's."
+      : "No server yet. You can run one yourself - github.com/imputnet/cobalt - on the same machine as Tide's.");
+    sv.appendChild(svNote);
+    svTest.onclick = async () => {
+      State.saverHost = svIn.value.trim();
+      saveSettings();
+      svTest.disabled = true;
+      svNote.textContent = "Checking\u2026";
+      svNote.style.color = "";
+      const r = await saverTest();
+      svTest.disabled = false;
+      svNote.textContent = (r.ok ? "\u2713 " : "\u2717 ") + r.why;
+      svNote.style.color = r.ok ? "var(--accent)" : "#c9534b";
+    };
 
     /* --- boot screen --- */
     const bs = section("Boot screen", "startup");
@@ -13681,6 +14281,41 @@ function settingsApp(win){
     ap.appendChild(apHost);
     storeSection(apHost);
 
+    const wa = section("Websites as apps", "apps");
+    wa.appendChild(el("div", "store-note",
+      "A site you keep going back to can be an app: a place in the menu and the Dock, and a window with just the site in it. " +
+      "Seahorse's \u2630 menu makes one from the page you are on, too, or puts that page on the desktop as a shortcut."));
+    if ((State.webApps || []).length){
+      const list = el("div", "wa-list");
+      for (const a of State.webApps){
+        const r = el("div", "wa-row");
+        const g = el("span", "g");
+        setAppIcon(g, "\uD83C\uDF10", a.id);
+        const n = el("div", "n");
+        n.append(el("span", null, a.name), el("small", null, a.url));
+        const open = el("button", "btn", "Open");
+        open.onclick = () => launch(a.id);
+        const desk = el("button", "btn", "To desktop");
+        desk.title = "Put it on the desktop";
+        desk.onclick = () => {
+          if (State.shortcuts.some(sc => sc.kind === "app" && sc.target === a.id))
+            return notify("Already there", a.name + " is already on the desktop.", "\u2139\uFE0F");
+          addShortcut({ kind: "app", target: a.id, icon: "\uD83C\uDF10", label: a.name });
+        };
+        const x = el("button", "xbtn", "\u2715");
+        x.title = "Remove this app";
+        x.onclick = () => removeWebApp(a.id);
+        r.append(g, n, open, desk, x);
+        list.appendChild(r);
+      }
+      wa.appendChild(list);
+    }
+    const waRow = row(null);
+    const waAdd = el("button", "btn primary", "Add a website\u2026");
+    waAdd.onclick = () => newWebAppDialog();
+    waRow.appendChild(waAdd);
+    wa.appendChild(waRow);
+
     /* --- developer --- */
     if (State.devMode){
       const dv = section("Developer", "dev");
@@ -13691,7 +14326,7 @@ function settingsApp(win){
       dvClear.onclick = () => {
         try { localStorage.removeItem("boxos.repolist"); } catch (e){}
         REPO_LISTS.clear();
-        notify("Listings forgotten", "The repository's folders will be asked about again.", "\\uD83D\\uDCE6");
+        notify("Listings forgotten", "The repository's folders will be asked about again.", "\uD83D\uDCE6");
       };
       dvRow.appendChild(dvClear);
       dv.appendChild(dvRow);
@@ -13947,7 +14582,7 @@ function drawMenu(filter){
     const txt = el("span");
     txt.append(el("div", "n", a.name), el("div", "d", a.desc));
     const gi = el("span", "g");
-    setAppIcon(gi, a.icon);
+    setAppIcon(gi, a.icon, id);
     b.append(gi, txt);
     b.onclick = () => { closeMenu(); launch(id); };
     b.oncontextmenu = e => {
@@ -13959,7 +14594,8 @@ function drawMenu(filter){
             if (State.shortcuts.some(s => s.kind === "app" && s.target === id))
               return notify("Already there", a.name + " is already on the desktop.", "\u2139\uFE0F");
             addShortcut({ kind: "app", target: id, icon: a.icon, label: a.name });
-          } }
+          } },
+        ...(a.web ? ["-", { icon: "\u2716", label: "Remove this app", run: () => { closeMenu(); removeWebApp(id); } }] : [])
       ]);
     };
     appsEl.appendChild(b);
@@ -14108,6 +14744,7 @@ addEventListener("contextmenu", e => {
     { icon: "\uD83D\uDCC1", label: "Open Files",    run: () => launch("files") },
     "-",
     { icon: "\uD83D\uDCCC", label: "New shortcut\u2026",   run: newShortcutDialog },
+    { icon: "\uD83C\uDF10", label: "Make a website an app\u2026", run: () => newWebAppDialog() },
     { icon: "\uD83D\uDDBC\uFE0F", label: "Change wallpaper\u2026", run: () => launch("settings") },
     { icon: "🧩", label: "Widgets…", run: () => launch("settings") },
     { icon: "\uD83C\uDF19", label: "Toggle theme",   run: () => toggleTheme($("#traytheme")) }
@@ -14444,12 +15081,14 @@ async function firstRun(){
     State.helpDockPhase = "done";
     saveSettings();
   }
+  /* apps that are not built in are registered first, so their Dock pins are not taken for strays */
+  (State.installed || []).forEach(registerStoreApp);
+  (State.webApps || []).forEach(registerWebApp);
   /* names that moved on, so old Dock pins and shortcuts point somewhere real */
   State.dock = (State.dock || []).map(id => APP_ALIAS[id] || id).filter((id, i, a) => a.indexOf(id) === i && (APPS[id] || String(id).startsWith("game:")));
   State.shortcuts = (State.shortcuts || []).map(sc => (sc.kind === "app" && APP_ALIAS[sc.target] ? Object.assign({}, sc, { target: APP_ALIAS[sc.target] }) : sc));
   refreshSystemFiles();
   if (State.perfHud && State.devMode) perfHud(true);
-  (State.installed || []).forEach(registerStoreApp);
   LINKED_GAMES.concat(myGames()).forEach(registerGame);
   applyBrand(); applyTheme(); applyAccent(); applyWallpaper(); applyChrome();
   drawDesktop(); drawNotifications(); clockTick();

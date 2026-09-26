@@ -28,6 +28,14 @@ Nothing else is needed — commit the file and it is picked up. Anything you
 choose inside **Settings** overrides these, so the files are defaults rather
 than hard rules.
 
+### App icons
+
+Every app has a drawn icon: a flat tile in its own colour with a white glyph,
+drawn in SVG inside `index.html`, so the Dock, the menu, window titles and the
+desktop all match. **Settings → Desktop → App icons** switches back to the
+emoji they had before. A website made into an app gets its first letter on a
+colour of its own.
+
 ### Desktop environments
 
 **Settings → Desktop environment** switches the whole shell:
@@ -159,8 +167,9 @@ cat notes.md | sort | uniq -c > counts.txt
 ```
 
 Besides the file commands there are `grep`, `head`, `tail`, `wc`, `sort`,
-`uniq`, `du`, `df` and `stat`; `play`, `wget` (into `~/Downloads`),
-`bookmarks` and `tide` reach the rest of the desktop; `termtheme` and
+`uniq`, `du`, `df` and `stat`; `play`, `wget` (into `~/Downloads`), `grab`
+(a YouTube video or song, see below), `bookmarks` and `tide` reach the rest of
+the desktop; `termtheme` and
 `fontsize` change its look; and `neofetch` shows what it is all running on.
 `help grep` explains one command.
 
@@ -220,6 +229,12 @@ and Ctrl+Shift+T to bring one back. A new window opens with last time's tabs.
 bookmarks bar sits underneath (Ctrl+Shift+B). **History** is kept in this
 browser, with a searchable page (Ctrl+H) and suggestions as you type in the
 address bar. Settings → ChalkBrowser turns history off or clears it.
+
+**Websites as apps**: the ☰ menu has *Make this site an app*, which gives the
+page you are on a place in the menu and the Dock and a window with just the
+site in it, and *Put this site on the desktop* for a plain shortcut.
+**Settings → Apps → Websites as apps** lists them and adds one from an address;
+right-clicking the desktop can too.
 
 Anything else only opens if the site allows other pages to read it, and almost
 none do: a page in a browser cannot fetch other websites for itself, and GitHub
@@ -357,11 +372,32 @@ let out - and a page can never open a tab in your real browser.
 Both have to be on an `https://` address; a page opened from a file on disk
 cannot install a service worker.
 
+**Run speed test**, in the same place (or `tide speed` in the Terminal), times
+connecting to the server, a round trip through it, and a download through it
+next to the same download made directly, using Cloudflare's speed-test files.
+The last few results stay, so Scramjet 2 and 1.1.0 - or home and school - can
+be compared.
+
 Video needs a browser that can pass a half-finished download between pages.
 Chrome and Edge can; Firefox cannot yet, so pages load there but video says an
 error occurred. Settings says so when it applies. Media plays YouTube links
 directly, without Tide, either way. Every site visited sees the server machine's
 address as the visitor, not yours.
+
+## Saving from YouTube and more
+
+YouTube, SoundCloud, TikTok, Vimeo and most sites like them never hand over a
+file. A [cobalt](https://github.com/imputnet/cobalt) server can: put its
+address into **Settings → ChalkBrowser → Saving from links** (plus a key, if the
+server wants one - it is kept out of backups, like Tide's). Then **Add media**
+in Media has *Save a song from a link* and *Save a video from a link*, a link
+already in Media can be right-clicked and saved, and `grab <url> [--audio]` does
+it from the Terminal.
+
+Songs land in `~/Music` as MP3s and videos in `~/Videos` - inside CHALK OS, never
+on the real computer - and anything over 100 MB is refused. If the network
+blocks the server and Tide is set up, the request goes through Tide instead.
+There is no public server built in; run your own next to Tide's.
 
 ## Spotify
 
@@ -371,6 +407,9 @@ it plays is Spotify's decision, not ours: whole songs if you are signed in to
 Spotify in that browser, thirty-second tastes if you are not. `spotify.link`
 short links have to be opened once in a browser first, since the real address
 is what CHALK OS reads.
+
+Spotify songs cannot be saved as files: Spotify locks them so only its own
+player can play them. Saving a Spotify link puts it in Media instead.
 
 ## Screen saver
 
